@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import tsconfig from './tsconfig.json';
+import tsconfig from './tsconfig.app.json';
 
 const SRC_PATH = path.resolve(__dirname, 'src');
 
