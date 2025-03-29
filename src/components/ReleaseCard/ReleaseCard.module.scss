@@ -1,0 +1,68 @@
+.releaseCard {
+  background-color: var(--card-bg);
+  width: 350px;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.releaseCardBody {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+  padding-top: $spacing-xs;
+  padding-left: $spacing-xs;
+}
+
+.releaseCard.open .releaseCardBody {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.releaseCardHeader {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--text-primary);
+  transition: border-bottom-color 0.5s ease-in-out;
+}
+
+.releaseCardInfo {
+  margin-top: -5px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: $spacing-xs;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.releaseCardCover {
+  max-width: 300px;
+  max-height: 300px;
+  min-height: 300px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin: auto;
+}
+
+/*
+.blurBackground {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px);
+  transform: scale(1.2);
+}*/

@@ -1,0 +1,89 @@
+.text {
+  line-height: 1.5;
+  color: var(--text-primary);
+  transition: color 0.5s ease-in-out;
+}
+
+.text-normal{
+  font-weight: 400;
+}
+.text-medium{
+  font-weight: 500;
+}
+.text-bold{
+  font-weight: 700;
+}
+
+.text-title{
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 48px;
+}
+.text-button{
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 18px;
+  color:var(--button-primary-text)
+}
+.text-p-20{
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+}
+.text-p-18{
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+}
+.text-p-16{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+}
+.text-p-14{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.text-primary{
+  color: var(--text-primary);
+}
+.text-secondary{
+  color: var(--text-secondary);
+}
+.text-accent{
+  color: var(--text-accent);
+}
+
+
+.text-maxLines-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.text-maxLines-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.text-maxLines-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.text-maxLines-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+.text-maxLines-5 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}

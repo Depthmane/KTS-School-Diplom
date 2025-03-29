@@ -1,0 +1,19 @@
+.themeButton {
+  background-color: var(--default-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--text-secondary);
+  padding: $spacing-s $spacing-m;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.themeButton:hover {
+  background-color: var(--text-accent);
+  color: var(--card-bg);
+}
+
+.themeButton:focus {
+  outline: none;
+}

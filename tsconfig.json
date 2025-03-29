@@ -1,5 +1,17 @@
 {
-  "files": [],
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "components": ["components/*"],
+      "pages": ["App/pages/*"],
+      "config": ["config/*"],
+      "styles": ["styles/*"],
+      "utils": ["utils/*"],
+      "firebaseConfig": ["firebaseConfig"],
+      "types": ["types/*"],
+      "hooks": ["hooks/*"]
+    }
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

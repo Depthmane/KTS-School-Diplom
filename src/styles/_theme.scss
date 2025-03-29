@@ -1,0 +1,25 @@
+@mixin theme($mode) {
+  @if $mode == light {
+    --text-primary: #{$text-primary};
+    --text-secondary: #{$text-secondary};
+    --text-accent: #{$text-accent};
+    --card-bg: #{$card-bg};
+    --default-bg: #{$default-bg};
+    --shadow-color: rgba(0, 0, 0, 0.25)
+  } @else if $mode == dark {
+    --text-primary: #{$text-primary-dt};
+    --text-secondary: #{$text-secondary-dt};
+    --text-accent: #{$text-accent-dt};
+    --card-bg: #{$card-bg-dt};
+    --default-bg: #{$default-bg-dt};
+    --shadow-color: rgba(255, 255, 255, 0.2)
+  }
+}
+
+[data-theme="light"] {
+  @include theme(light);
+}
+
+[data-theme="dark"] {
+  @include theme(dark);
+}

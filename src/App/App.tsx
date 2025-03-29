@@ -1,10 +1,34 @@
-function App() {
+import * as React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from 'pages/HomePage/HomePage';
+import BandDetails from 'pages/BandDetails/BandDetails';
+import Navbar from "components/Navbar/Navbar";
+import 'styles/global.scss';
+import 'styles/_theme.scss';
+
+const getInitialTheme = () => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) return storedTheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+};
+
+const App: React.FC = () => {
+    const [theme, setTheme] = React.useState(getInitialTheme);
+
+    React.useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+    }, [theme]);
+
     return (
-        <div>
-            <h1>заголовок</h1>
-            <p>параграф</p>
-        </div>
-    )
-}
+        <Router>
+            <Navbar theme={theme} setTheme={setTheme} />
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/band/:id" element={<BandDetails />} />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App

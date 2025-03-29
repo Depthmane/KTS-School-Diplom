@@ -26,7 +26,7 @@ dist-ssr
 /src/jsons/releases.json
 /src/jsons/bands.json
 /bandpedia-56963-firebase-adminsdk-fbsvc-37f2cb1776.json
-/src/utilities/importBands.cjs
-/src/utilities/importReleases.cjs
+/src/utils/importBands.cjs
+/src/utils/importReleases.cjs
 /src/jsons/releases_backup.json
 /src/jsons/bands_backup.json
