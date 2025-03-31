@@ -1,0 +1,32 @@
+.bandDetails {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-l;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-l;
+}
+
+.bandImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-width: 500px;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.bandInfo {
+  padding-right: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bandBio {
+  display: flex;
+  margin-right: auto;
+}

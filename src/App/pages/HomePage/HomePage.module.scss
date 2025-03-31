@@ -1,0 +1,20 @@
+.bandList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-l;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-l;
+}
+
+@media (max-width: 1024px) {
+  .bandList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .bandList {
+    grid-template-columns: 1fr;
+  }
+}

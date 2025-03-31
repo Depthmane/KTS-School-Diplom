@@ -1,0 +1,17 @@
+import {Member} from "types/band";
+import Text from "components/Text";
+
+const BandMembers = ({members}: { members: Member[] }) => (
+    <div>
+        <Text className="text-bold" tag="h2"> Участники: </Text>
+        <ul>
+            {members.map((member, index) => (
+                <li key={index}>
+                    <Text> {member.first_name} {member.last_name} ({member.english}) — {member.instrument} </Text>
+                </li>
+            ))}
+        </ul>
+    </div>
+);
+
+export default BandMembers;

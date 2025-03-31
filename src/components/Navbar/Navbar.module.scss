@@ -1,0 +1,86 @@
+.navbar {
+  background-color: var(--default-bg);
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  padding: $spacing-l $spacing-xl;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  margin-bottom: 30px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navItems {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  gap: $spacing-l;
+}
+
+.rightSection {
+  margin-left: auto;
+}
+
+.navItems li {
+  margin-right: $spacing-l;
+
+}
+
+.navItems a, .menuButton {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.5s ease;
+}
+
+.navItems a:hover, .menuButton:hover {
+  color: var(--text-accent);
+}
+
+.dropdown {
+  position: relative;
+  z-index: 2;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.5s ease;
+
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--card-bg);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 150px;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.dropdownMenu li {
+  padding: $spacing-m;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.dropdownMenu li:hover {
+  background-color: var(--default-bg);
+}
