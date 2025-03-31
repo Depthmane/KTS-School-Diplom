@@ -3,13 +3,17 @@ import {useEffect, useRef, useState} from "react";
 import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
 import Text from 'components/Text/Text';
 import styles from "./Navbar.module.scss";
+import {NavLink, useLocation} from "react-router-dom";
 
 type NavbarProps = {
     theme: string;
     setTheme: React.Dispatch<React.SetStateAction<string>>;
 };
 
+
 const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
+    const location = useLocation();
+
     const [isOpen, setIsOpen] = useState(false);
 
     const menuRef = useRef<HTMLUListElement | null>(null);
@@ -38,7 +42,16 @@ const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
         <nav className={styles.navbar}>
             <div className={styles.container}>
                 <ul className={styles.navItems}>
-                    <li><a href="/">Home</a></li>
+                    <li>
+                        <NavLink
+                            to="/"
+                            onClick={(e) => {
+                                if (location.pathname === "/") e.preventDefault();
+                            }}
+                        >
+                            Home
+                        </NavLink>
+                    </li>
                 </ul>
 
                 <div className={styles.rightSection}>

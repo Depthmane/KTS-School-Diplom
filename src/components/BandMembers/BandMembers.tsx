@@ -1,9 +1,9 @@
-import {Member} from "types/index";
-import Text from "components/Text/Text";
+import {Member} from "types/band";
+import Text from "components/Text";
 
 const BandMembers = ({members}: { members: Member[] }) => (
     <div>
-        <Text className="text-bold" tag="h1"> Участники: </Text>
+        <Text className="text-bold" tag="h2"> Участники: </Text>
         <ul>
             {members.map((member, index) => (
                 <li key={index}>

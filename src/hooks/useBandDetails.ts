@@ -1,9 +1,8 @@
-import {useEffect, useState} from 'react';
-import {getBandById, getReleasesByBandId} from 'utils/firebaseLoader/firebaseLoader';
-import {Band, Release} from "types";
+import { useEffect, useState } from "react";
+import { getBandById, getReleasesByBandId } from "utils/firebaseLoader";
+import { Band, Release } from "types";
 
-
-export const useBandDetails = (id: string | undefined) => {
+export const useBandDetails = (id?: string) => {
     const [band, setBand] = useState<Band | null>(null);
     const [releases, setReleases] = useState<Release[]>([]);
     const [loading, setLoading] = useState(true);
@@ -13,16 +12,24 @@ export const useBandDetails = (id: string | undefined) => {
 
         const fetchBand = async () => {
             setLoading(true);
-            const data = await getBandById(id);
-            if (data) setBand(data as Band);
+            try {
+                // Выполняем оба запроса параллельно
+                const [bandData, releasesData] = await Promise.all([
+                    getBandById(id),
+                    getReleasesByBandId(id)
+                ]);
 
-            const releasesData = await getReleasesByBandId(id);
-            if (releasesData) setReleases(releasesData);
-            setLoading(false);
+                if (bandData) setBand(bandData as Band);
+                if (releasesData) setReleases(releasesData);
+            } catch (error) {
+                console.error("Ошибка загрузки данных:", error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchBand();
     }, [id]);
 
-    return {band, releases, loading};
+    return { band, releases, loading };
 };

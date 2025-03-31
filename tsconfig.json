@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
       "components": ["components/*"],
-      "pages": ["App/pages/*"],
+      "pages/*": ["App/pages/*"],
       "config": ["config/*"],
       "styles": ["styles/*"],
       "utils": ["utils/*"],
       "firebaseConfig": ["firebaseConfig"],
-      "types": ["types/*"],
+      "types/*": ["types/*"],
       "hooks": ["hooks/*"]
     }
   },

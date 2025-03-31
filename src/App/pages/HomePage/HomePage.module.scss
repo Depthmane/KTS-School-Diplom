@@ -1,11 +1,10 @@
 .bandList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  gap: $spacing-l;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  padding: $spacing-l;
 }
 
 @media (max-width: 1024px) {

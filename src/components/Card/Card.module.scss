@@ -3,15 +3,18 @@
   margin: 0;
   max-width: 348px;
   max-height: 622px;
+  cursor: pointer;
   background-color: var(--card-bg);
   gap: $spacing-xl;
-  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
-}
+  transition:
+          background-color 0.5s ease-in-out,
+          color 0.5s ease-in-out,
+          box-shadow 0.5s ease-in-out;
 
-.card:hover {
-  box-shadow: 0 6px 10px 0 var(--shadow-color);
+  &:hover {
+    box-shadow: 0 6px 10px 0 var(--shadow-color);
+  }
 }
-
 .cardHeader {
   position: relative;
   display: flex;
@@ -39,11 +42,6 @@
   z-index: 1;
 }
 
-.captionPlaceholder {
-  margin: 0;
-  gap: 0;
-}
-
 .cardBody {
   display: grid;
   gap: 8px;
@@ -51,32 +49,4 @@
   padding-left: $spacing-xs;
   /*  margin-bottom: -4px;*/
   padding-bottom: $spacing-xs;
-}
-
-.textTitle {
-  font-weight: 500;
-}
-
-/*.cardFooter {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: $spacing-xs;
-  padding-left: $spacing-xs;
-  width: 100%;
-  gap: $spacing-xxs;
-  padding-bottom: $spacing-xl;
-}*/
-
-.textCaption {
-}
-
-.textSubtitle {
-}
-
-.textPricing {
-}
-
-.actionSlot {
 }

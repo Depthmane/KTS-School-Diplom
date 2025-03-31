@@ -1,5 +1,5 @@
 import ReleaseCard from 'components/ReleaseCard/ReleaseCard';
-import {Release} from "types/index";
+import {Release} from "types/release";
 import Text from "components/Text/Text";
 import styles from "./BandReleases.module.scss";
 

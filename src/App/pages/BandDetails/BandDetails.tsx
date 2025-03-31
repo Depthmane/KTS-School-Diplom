@@ -1,22 +1,22 @@
-import {useParams} from 'react-router-dom';
+import {NavLink, useParams} from 'react-router-dom';
 import {useBandDetails} from 'hooks/useBandDetails';
 import BandMembers from 'components/BandMembers/BandMembers';
 import BandReleases from 'components/BandReleases/BandReleases';
 import Text from "components/Text/Text";
 import styles from "./BandDetails.module.scss";
-import {Band} from "types/band";
 
 const BandDetails = () => {
     const {id} = useParams<{ id: string }>();
     const {band, releases, loading} = useBandDetails(id);
 
     if (loading) return <Text view="title">сюда надо добавить лоадер</Text>;
-    if (!band) return <Text view="title">группа не найдена - <a href={`/`}>тык</a></Text>;
+    if (!band) return <Text view="title">группа не найдена - <NavLink to={`/`}>тык</NavLink></Text>;
 
     return (
         <div className={styles.bandDetails}>
+            <div className={styles.bandBio}>
             <div className={styles.bandInfo}>
-                <Text className="text-title">{band.name}</Text>
+                <Text view="title">{band.name}</Text>
                 <Text>
                     <strong>Страна:</strong> {band.country}
                 </Text>
@@ -40,6 +40,7 @@ const BandDetails = () => {
                 <Text>{band.description_long}</Text>
             </div>
             <img className={styles.bandImage} src={band.image} alt={band.name}/>
+            </div>
             <BandMembers members={band.members}/>
             <BandReleases releases={releases}/>
         </div>

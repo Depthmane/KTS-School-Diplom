@@ -1,15 +1,15 @@
-import * as React from "react";
-import {useState} from "react";
-import {Release} from "types/index";
+import { useState } from "react";
+import clsx from "clsx";
+import { Release } from "types/index";
 import Text from "components/Text/Text";
-import styles from './ReleaseCard.module.scss';
+import styles from "./ReleaseCard.module.scss";
 
 interface ReleaseCardProps {
     release: Release;
     className?: string;
 }
 
-const ReleaseCard: React.FC<ReleaseCardProps> = ({release, className}) => {
+const ReleaseCard: React.FC<ReleaseCardProps> = ({ release, className }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = (e: React.MouseEvent) => {
@@ -19,19 +19,19 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({release, className}) => {
 
     return (
         <div
-            className={`${styles.releaseCard} ${isOpen ? styles.open : ''} ${className || ''}`}
+            className={clsx(styles.releaseCard, isOpen && styles.open, className ?? "")}
             onClick={toggleOpen}
         >
             <div className={styles.releaseCardHeader}>
-                <Text className={styles.releaseCardTitle} weight="bold">
+                <Text weight="bold">
                     {release.title} ({release.year})
                 </Text>
             </div>
-            <img src={release.cover} alt={release.title} className={styles.releaseCardCover}/>
+            <img src={release.cover} alt={release.title} className={styles.releaseCardCover} />
             <div className={styles.releaseCardBody}>
                 <Text className={styles.releaseCardInfo}>
                     Рейтинг: {release.rating}
-                    <br/>
+                    <br />
                     Продолжительность: {release.total_length}
                 </Text>
                 <Text>Треки:</Text>

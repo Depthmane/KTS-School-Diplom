@@ -1,11 +1,11 @@
 .bandDetails {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 $spacing-l;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: $spacing-l;
 }
 
 .bandImage {
@@ -26,11 +26,7 @@
   gap: 10px;
 }
 
-.text-title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.band-description {
-  font-size: 16px;
+.bandBio {
+  display: flex;
+  margin-right: auto;
 }

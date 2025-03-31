@@ -1,20 +1,14 @@
-import * as React from 'react'
-import './Text.scss'
+import * as React from 'react';
+import clsx from 'clsx';
+import styles from './Text.module.scss';
 
 export type TextProps = {
-    /** Дополнительный класс */
     className?: string;
-    /** Стиль отображения */
     view?: 'title' | 'button' | 'p-20' | 'p-18' | 'p-16' | 'p-14';
-    /** Html-тег */
     tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div' | 'p' | 'span';
-    /** Начертание шрифта */
     weight?: 'normal' | 'medium' | 'bold';
-    /** Контент */
     children: React.ReactNode;
-    /** Цвет */
     color?: 'primary' | 'secondary' | 'accent';
-    /** Максимальное кол-во строк */
     maxLines?: number;
 };
 
@@ -22,22 +16,21 @@ const Text: React.FC<TextProps> = ({
                                        tag: Tag = "p",
                                        view,
                                        weight,
-                                       className = "",
+                                       className,
                                        children,
                                        color,
                                        maxLines,
                                    }) => {
-    const classes = [
-        "text",
-        weight ? `text-${weight}` : view ? `text-${view}` : "",
-        color && `text-${color}`,
-        maxLines ? `text-maxLines-${maxLines}` : "",
-        className,
-    ]
-        .filter(Boolean)
-        .join(" ")
+    const classes = clsx(
+        styles.text,
+        weight && styles[`text-${weight}`],
+        view && styles[`text-${view}`],
+        color && styles[`text-${color}`],
+        maxLines && styles[`text-maxLines`],
+        className ?? ""
+    );
 
-    return <Tag className={classes}>{children}</Tag>
+    return <Tag className={classes} style={{ '--max-lines': maxLines } as React.CSSProperties}>{children}</Tag>;
 }
 
 export default Text;
