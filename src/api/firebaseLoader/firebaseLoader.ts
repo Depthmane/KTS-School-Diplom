@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from 'firebaseConfig';
-import { Band, Release } from 'types';
+import { Band, Release } from 'types/index';
 
 export const getBands = async (): Promise<Band[]> => {
     try {

@@ -1,20 +1,22 @@
-import {useEffect, useState} from 'react';
-import {getBands} from 'utils/firebaseLoader';
+import {useEffect} from 'react';
+import { observer } from "mobx-react-lite";
+import bandStore from 'stores/BandStore'
 import {useNavigate} from 'react-router-dom';
-import Card from "components/Card/Card";
-import styles from './HomePage.module.scss';
+import Card from "components/Card";
+import styles from './HomePage.module.scss'; // починить импорты
+import Text from "components/Text";
 
-const HomePage = () => {
-    const [bands, setBands] = useState([]);
+const HomePage = observer(() => {
+    const {bands, loading} = bandStore;
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchBands = async () => {
-            const data = await getBands();
-            setBands(data);
-        };
-        fetchBands();
+        bandStore.loadBands();
     }, []);
+
+    if (loading) {
+        return <Text view="title">сделать скелеты карточек</Text>;
+    }
 
     return (
         <div className={styles.bandList}>
@@ -30,6 +32,6 @@ const HomePage = () => {
             ))}
         </div>
     );
-};
+});
 
 export default HomePage;

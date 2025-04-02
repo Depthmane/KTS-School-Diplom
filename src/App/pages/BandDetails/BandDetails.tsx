@@ -1,15 +1,25 @@
+import { observer} from "mobx-react-lite";
+import bandDetailsStore from "stores/BandDetailsStore";
 import {NavLink, useParams} from 'react-router-dom';
-import {useBandDetails} from 'hooks/useBandDetails';
 import BandMembers from 'components/BandMembers/BandMembers';
 import BandReleases from 'components/BandReleases/BandReleases';
 import Text from "components/Text/Text";
 import styles from "./BandDetails.module.scss";
+import {useEffect} from "react";
 
-const BandDetails = () => {
+const BandDetails = observer(() => {
     const {id} = useParams<{ id: string }>();
-    const {band, releases, loading} = useBandDetails(id);
+
+    useEffect(() => {
+        if (id) {
+            bandDetailsStore.loadBandById(id);
+        }
+    },[]);
+
+    const {band, releases, loading} = bandDetailsStore;
 
     if (loading) return <Text view="title">сюда надо добавить лоадер</Text>;
+
     if (!band) return <Text view="title">группа не найдена - <NavLink to={`/`}>тык</NavLink></Text>;
 
     return (
@@ -45,6 +55,6 @@ const BandDetails = () => {
             <BandReleases releases={releases}/>
         </div>
     );
-};
+});
 
 export default BandDetails;

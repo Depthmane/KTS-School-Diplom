@@ -10,7 +10,9 @@
       "utils": ["utils/*"],
       "firebaseConfig": ["firebaseConfig"],
       "types/*": ["types/*"],
-      "hooks": ["hooks/*"]
+      "hooks": ["hooks/*"],
+      "stores": ["stores/*"],
+      "api": ["api/*"]
     }
   },
   "references": [
