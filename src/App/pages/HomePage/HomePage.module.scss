@@ -1,8 +1,16 @@
+.container {
+  max-width: 1200px;
+  margin: auto;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .bandList {
+  width: auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: $spacing-l;
-  max-width: 1200px;
   margin: 0 auto;
   padding: $spacing-l;
 }
@@ -17,4 +25,8 @@
   .bandList {
     grid-template-columns: 1fr;
   }
+}
+
+.container::-webkit-scrollbar {
+  display: none;
 }

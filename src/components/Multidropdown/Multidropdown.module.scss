@@ -1,0 +1,26 @@
+
+.input-body.input-black-text input {
+  color: var(--text-secondary);
+}
+
+.dropdownMenu{
+  margin-top: var(--space-xxs);
+  width: 400px;
+  background-color: var(--dropdown-options-bg);
+  box-shadow: 0 4px 10px 0 #00000040;
+
+}
+.dropdownItem {
+  padding: var(--space-s) var(--space-xs);
+  display: flex;
+  height: 48px;
+  align-items: center;
+}
+
+.dropdown-item:hover {
+  color: var(--text-secondary)
+}
+
+.dropdown-item.selected {
+  color: var(--text-accent)
+}

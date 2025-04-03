@@ -4,15 +4,10 @@ import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
 import Text from 'components/Text/Text';
 import styles from "./Navbar.module.scss";
 import {NavLink, useLocation} from "react-router-dom";
-import { useTheme } from "contexts/ThemeContext";
-import {observer} from "mobx-react-lite";
 
 
-const Navbar: React.FC = observer(() => {
+const Navbar: React.FC = () => {
     const location = useLocation();
-    const uiStore = useTheme();
-
-    console.log(uiStore.theme);
 
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLUListElement | null>(null);
@@ -71,6 +66,6 @@ const Navbar: React.FC = observer(() => {
             </div>
         </nav>
     );
-});
+};
 
 export default Navbar;

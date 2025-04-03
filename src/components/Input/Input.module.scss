@@ -1,0 +1,40 @@
+.inputBody {
+  position: relative;
+  width: 1135px;
+  margin-left: $spacing-l;
+  height: 52px;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  color: var(--text-primary);
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  padding: var(--space-s) var(--space-xs);
+  font-size: 18px;
+}
+
+.input:focus {
+  background-color: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  outline: none;
+}
+
+.input:disabled {
+  background-color: var(--input-bg-disabled);
+  border-color: var(--input-border-disabled);
+}
+
+
+/*
+.input-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}*/
