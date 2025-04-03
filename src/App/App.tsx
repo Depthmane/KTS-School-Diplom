@@ -4,32 +4,31 @@ import HomePage from './pages/HomePage';
 import BandDetails from './pages/BandDetails';
 import NotFoundPage from './pages/NotFoundPage';
 import Navbar from "components/Navbar";
+import { ThemeProvider} from "contexts/ThemeContext";
 import 'styles/global.scss';
 import 'styles/_theme.scss';
-
-const getInitialTheme = () => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) return storedTheme;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-};
+import {useEffect} from "react";
+import {uiStore} from "stores/UIStore";
 
 const App: React.FC = () => {
-    const [theme, setTheme] = React.useState(getInitialTheme);
+    useEffect(() => {
 
-    React.useEffect(() => {
-        document.documentElement.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-    }, [theme]);
+        const currentTheme = uiStore.theme;
+        document.documentElement.setAttribute("data-theme", currentTheme);
+    }, []);
+
 
     return (
+        <ThemeProvider>
         <Router>
-            <Navbar theme={theme} setTheme={setTheme} />
+            <Navbar/>
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/band/:id" element={<BandDetails />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
+        </ThemeProvider>
     );
 };
 

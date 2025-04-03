@@ -1,5 +1,5 @@
 import bandStore from "./BandStore";
 import bandDetailsStore from "./BandDetailsStore";
-import themeStore from "./ThemeStore";
+import {uiStore} from "./UIStore.ts";
 
-export { bandStore, bandDetailsStore, themeStore };
+export { bandStore, bandDetailsStore, uiStore };

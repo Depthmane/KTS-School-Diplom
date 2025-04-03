@@ -12,7 +12,8 @@
       "types/*": ["types/*"],
       "hooks": ["hooks/*"],
       "stores": ["stores/*"],
-      "api": ["api/*"]
+      "api": ["api/*"],
+      "contexts": ["contexts/*"]
     }
   },
   "references": [

@@ -4,18 +4,17 @@ import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
 import Text from 'components/Text/Text';
 import styles from "./Navbar.module.scss";
 import {NavLink, useLocation} from "react-router-dom";
-
-type NavbarProps = {
-    theme: string;
-    setTheme: React.Dispatch<React.SetStateAction<string>>;
-};
+import { useTheme } from "contexts/ThemeContext";
+import {observer} from "mobx-react-lite";
 
 
-const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
+const Navbar: React.FC = observer(() => {
     const location = useLocation();
+    const uiStore = useTheme();
+
+    console.log(uiStore.theme);
 
     const [isOpen, setIsOpen] = useState(false);
-
     const menuRef = useRef<HTMLUListElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -32,10 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
         };
 
         document.addEventListener("click", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
+        return () => document.removeEventListener("click", handleClickOutside);
     }, []);
 
     return (
@@ -67,7 +63,7 @@ const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
                             <ul className={styles.dropdownMenu} ref={menuRef}>
                                 <li><Text>заглушка</Text></li>
                                 <li><Text>заглушка</Text></li>
-                                <li><ThemeSwitch theme={theme} setTheme={setTheme}/></li>
+                                <li><ThemeSwitch /></li>
                             </ul>
                         )}
                     </div>
@@ -75,6 +71,6 @@ const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
             </div>
         </nav>
     );
-};
+});
 
 export default Navbar;
