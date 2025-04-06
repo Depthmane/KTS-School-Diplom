@@ -24,3 +24,24 @@
 .dropdownItemSelected {
   color: var(--text-accent)
 }
+
+.clearButton {
+  margin-left: 20px;
+  background-color: var(--default-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--text-secondary);
+  padding: $spacing-s $spacing-m;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.clearButton:hover {
+  background-color: var(--text-accent);
+  color: var(--card-bg);
+}
+
+.clearButton:focus {
+  outline: none;
+}

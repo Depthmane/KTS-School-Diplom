@@ -77,7 +77,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
                 placeholder={value.length === 0 ? getTitle(value) : undefined}
                 className={!isOpen ? '' : 'input-black-text'}
             />
-            <button onClick={handleClearSelection} disabled={disabled}>Clear</button>
+            <button onClick={handleClearSelection} disabled={disabled} className={styles.clearButton}> Clear</button>
             {!disabled && isOpen && filteredOptions.length > 0 && (
                 <div className={styles.dropdownMenu}>
                     {filteredOptions.map((option) => (
