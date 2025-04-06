@@ -7,7 +7,7 @@
   margin-top: var(--space-xxs);
   width: 400px;
   background-color: var(--dropdown-options-bg);
-  box-shadow: 0 4px 10px 0 #00000040;
+  box-shadow: 0 4px 10px 0 var(--shadow-color);
 
 }
 .dropdownItem {
@@ -17,10 +17,10 @@
   align-items: center;
 }
 
-.dropdown-item:hover {
+.dropdownItem:hover {
   color: var(--text-secondary)
 }
 
-.dropdown-item.selected {
+.dropdownItemSelected {
   color: var(--text-accent)
 }

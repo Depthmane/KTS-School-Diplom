@@ -2,9 +2,7 @@ import * as React from 'react'
 import { useEffect, useRef, useState } from 'react';
 import Input from "components/Input";
 /*import ArrowDownIcon from "../icons/ArrowDownIcon";*/
-import styles from './Multidropdown.module.scss';
-import { observer } from 'mobx-react-lite';
-import bandStore from 'stores/BandStore';
+import styles from './MultiDropdown.module.scss';
 
 export type Option = {
     key: string;
@@ -20,7 +18,7 @@ export type MultiDropdownProps = {
     getTitle: (value: Option[]) => string;
 };
 
-const MultiDropdown: React.FC<MultiDropdownProps> = observer(({
+const MultiDropdown: React.FC<MultiDropdownProps> = ({
                                                                   options,
                                                                   value,
                                                                   onChange,
@@ -30,7 +28,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = observer(({
                                                               }) => {
     const [isOpen, setOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
-    const dropDownRef = useRef<HTMLDivElement>(null);
+    const dropDownRef = useRef<HTMLDivElement | null>(null);
 
     const handleFocus = () => {
         if (!disabled) {
@@ -44,6 +42,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = observer(({
             ? value.filter((val) => val.key !== option.key)
             : [...value, option];
 
+        setSearchText('');
         onChange(newValues);
     };
 
@@ -73,7 +72,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = observer(({
                 value={searchText || (value.length > 0 ? getTitle(value) : '')}
                 onChange={setSearchText}
                 onFocus={handleFocus}
-                afterSlot={<ArrowDownIcon color="secondary" />}
+                /*afterSlot={<ArrowDownIcon color="secondary" />}*/
                 disabled={disabled}
                 placeholder={value.length === 0 ? getTitle(value) : undefined}
                 className={!isOpen ? '' : 'input-black-text'}
@@ -84,7 +83,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = observer(({
                     {filteredOptions.map((option) => (
                         <div
                             key={option.key}
-                            className={`${styles.dropdownItem} ${value.some((val) => val.key === option.key) ? "selected" : ""}`}
+                            className={`${styles.dropdownItem} ${value.some((val) => val.key === option.key) ? `${styles.dropdownItemSelected}` : ""}`}
                             onClick={() => handleSearch(option)}
                         >
                             {option.value}
@@ -94,6 +93,6 @@ const MultiDropdown: React.FC<MultiDropdownProps> = observer(({
             )}
         </div>
     );
-});
+};
 
 export default MultiDropdown;

@@ -1,13 +1,13 @@
 import { makeAutoObservable, action } from "mobx";
 import { Band } from "types/band";
 import { getBands } from "api/firebaseLoader";
+import filtersStore from "./FiltersStore";
 
 class BandStore {
     bands: Band[] = [];
+    genres: string[] = [];
     loading: boolean = false;
     currentPage: number = 1;
-    searchQuery: string = '';
-    selectedCategories: string[] = [];
     lastVisible: any = null;
 
     constructor() {
@@ -18,6 +18,10 @@ class BandStore {
         this.bands = bands;
     }
 
+    @action setGenres(genres: string[]) {
+        this.genres = genres;
+    }
+
     @action setLastVisible(lastVisible: any) {
         this.lastVisible = lastVisible;
     }
@@ -26,36 +30,32 @@ class BandStore {
         this.loading = loading;
     }
 
-    @action setSearchQuery(query: string) {
-        this.searchQuery = query;
-    }
-
-    @action setSelectedCategories(categories: string[]) {
-        this.selectedCategories = categories;
-    }
-
     @action setCurrentPage(page: number) {
         this.currentPage = page;
     }
 
     @action
-    async loadBands(page: number, search: string, categories: string[]) {
-        if (this.loading) return;  // Защита от повторных запросов
+    async loadBands(page: number) {
+        const { searchQuery, selectedCategories } = filtersStore;
+
+        if (this.loading) return;
 
         this.setLoading(true);
         try {
-            const { bands, lastVisible } = await getBands(page, search, categories, this.lastVisible);
+            const { bands, lastVisible } = await getBands(page, searchQuery, [], this.lastVisible);
+
+            const filteredBands = this.filterBandsByGenres(bands, selectedCategories);
 
             if (page === 1) {
-                this.setBands(bands);
+                this.setBands(filteredBands);
             } else {
-                this.setBands([...this.bands, ...bands]);
+                this.setBands([...this.bands, ...filteredBands]);
             }
 
             this.setCurrentPage(page);
-            this.setSearchQuery(search);
-            this.setSelectedCategories(categories);
             this.setLastVisible(lastVisible);
+
+            this.updateGenresBasedOnCurrentBands();
         } catch (error) {
             console.error("Ошибка загрузки групп:", error);
         } finally {
@@ -66,9 +66,58 @@ class BandStore {
     @action
     async loadMoreBands() {
         const nextPage = this.currentPage + 1;
-        await this.loadBands(nextPage, this.searchQuery, this.selectedCategories);
+        await this.loadBands(nextPage);
+    }
+
+    @action
+    async getBandsWithoutGenreFilter(search: string) {
+        try {
+            const {bands} = await getBands(1, search, [], null);
+            return {bands};
+        } catch(error) {
+            console.error("Ошибка при загрузке групп (загрузка без фильтра)", error);
+            return {bands: []};
+        }
+    }
+
+    filterBandsByGenres(bands: Band[], genres:string[]): Band[] {
+        if (genres.length === 0) return bands;
+        return bands.filter((band) =>
+            genres.every((genre) => band.genres.includes(genre))
+        );
+    }
+
+    @action
+    async loadGenres() {
+        try {
+            const { searchQuery, selectedCategories } = filtersStore;
+
+            const { bands } = await this.getBandsWithoutGenreFilter(searchQuery);
+
+            const filterBands = this.filterBandsByGenres(bands, selectedCategories);
+
+            const genresSet = new Set<string>();
+            filterBands.forEach((band) => {
+                band.genres.forEach((genre) => genresSet.add(genre));
+            });
+
+            this.setGenres(Array.from(genresSet));
+        } catch (error) {
+            console.error("Ошибка загрузки жанров:", error);
+        }
+    }
+
+
+    @action
+    updateGenresBasedOnCurrentBands() {
+        const genresSet = new Set<string>();
+        this.bands.forEach(band => {
+            band.genres.forEach(genre => genresSet.add(genre));
+        });
+        this.setGenres(Array.from(genresSet));
     }
 }
 
 const bandStore = new BandStore();
 export default bandStore;
+
