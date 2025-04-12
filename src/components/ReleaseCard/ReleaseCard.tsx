@@ -4,6 +4,7 @@ import { Release } from "types/index";
 import Text from "components/Text/Text";
 import styles from "./ReleaseCard.module.scss";
 import {observer} from "mobx-react-lite";
+import * as React from "react";
 
 interface ReleaseCardProps {
     release: Release;
@@ -50,4 +51,4 @@ const ReleaseCard: React.FC<ReleaseCardProps> = observer(({ release, className }
     );
 });
 
-export default ReleaseCard;
+export default React.memo(ReleaseCard);

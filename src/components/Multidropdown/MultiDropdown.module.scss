@@ -1,17 +1,18 @@
-
-.input-body.input-black-text input {
-  color: var(--text-secondary);
-}
-
+/*.multiDropdown {
+  width: 500px !important;
+}*/
+// надо не забыть разобраться со стилями здесь
 .dropdownMenu{
-  margin-top: var(--space-xxs);
-  width: 400px;
-  background-color: var(--dropdown-options-bg);
+  margin-top: $spacing-xxs;
+  width: 200px;
+  background-color: var(--default-bg);
   box-shadow: 0 4px 10px 0 var(--shadow-color);
+  position: absolute;
+  z-index: 2;
 
 }
 .dropdownItem {
-  padding: var(--space-s) var(--space-xs);
+  padding: $spacing-s $spacing-xs;
   display: flex;
   height: 48px;
   align-items: center;
@@ -25,23 +26,4 @@
   color: var(--text-accent)
 }
 
-.clearButton {
-  margin-left: 20px;
-  background-color: var(--default-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--text-secondary);
-  padding: $spacing-s $spacing-m;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 4px;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
 
-.clearButton:hover {
-  background-color: var(--text-accent);
-  color: var(--card-bg);
-}
-
-.clearButton:focus {
-  outline: none;
-}

@@ -1,8 +1,10 @@
 .inputBody {
   position: relative;
-  width: 1135px;
+  max-width: 1135px;
   margin-left: $spacing-l;
   height: 52px;
+  margin-bottom: $spacing-xxs;
+
 }
 
 .input {
@@ -11,8 +13,9 @@
   color: var(--text-primary);
   border: 1px solid var(--input-border);
   background-color: var(--input-bg);
-  padding: var(--space-s) var(--space-xs);
+  padding: $spacing-s $spacing-xs;
   font-size: 18px;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
 .input:focus {
@@ -26,9 +29,7 @@
   border-color: var(--input-border-disabled);
 }
 
-
-/*
-.input-icon {
+.inputIcon {
   position: absolute;
   top: 50%;
   right: 12px;
@@ -36,5 +37,4 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-}*/
+}

@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
                                 if (location.pathname === "/") e.preventDefault();
                             }}
                         >
-                            Home
+                            BandPedia
                         </NavLink>
                     </li>
                 </ul>

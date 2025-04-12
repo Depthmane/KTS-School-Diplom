@@ -1,26 +1,28 @@
 import { observer} from "mobx-react-lite";
-import bandDetailsStore from "stores/BandDetailsStore";
+import { BandDetailsStore } from "stores/BandDetailsStore";
 import {NavLink, useParams} from 'react-router-dom';
 import BandMembers from 'components/BandMembers/BandMembers';
 import BandReleases from 'components/BandReleases/BandReleases';
 import Text from "components/Text/Text";
 import styles from "./BandDetails.module.scss";
 import {useEffect} from "react";
+import {useLocalStore} from "hooks/useLocalStore";
+import * as React from "react";
+import NotFoundPage from "pages/NotFoundPage";
 
 const BandDetails = observer(() => {
     const {id} = useParams<{ id: string }>();
+    const store = useLocalStore(() => new BandDetailsStore());
 
     useEffect(() => {
-        if (id) {
-            bandDetailsStore.loadBandById(id);
-        }
-    },[]);
+        store.loadBandById(id);
+    }, [id]);
 
-    const {band, releases, loading} = bandDetailsStore;
+    const {band, releases, loading} = store;
 
     if (loading) return <Text view="title">сюда надо добавить лоадер</Text>;
 
-    if (!band) return <Text view="title">группа не найдена - <NavLink to={`/`}>тык</NavLink></Text>;
+    if (!band) return <NotFoundPage/>
 
     return (
         <div className={styles.bandDetails}>

@@ -1,8 +1,9 @@
 import { makeAutoObservable, action } from "mobx";
-import { Band, Release } from "types/index";
+import { Band, Release } from "types";
 import { getBandById, getReleasesByBandId } from "api/firebaseLoader";
+import {ILocalStore} from "./ILocalStore";
 
-class BandDetailsStore {
+export class BandDetailsStore implements ILocalStore {
     band: Band | null = null;
     releases: Release[] = [];
     loading: boolean = false;
@@ -11,23 +12,23 @@ class BandDetailsStore {
         makeAutoObservable(this);
     }
 
-    @action
     setBand(band: Band | null) {
         this.band = band;
     }
 
-    @action
     setReleases(releases: Release[]) {
         this.releases = releases;
     }
 
-    @action
     setLoading(loading: boolean) {
         this.loading = loading;
     }
 
-    @action
-    async loadBandById(id: string) {
+    async loadBandById(id: string | undefined) {
+        if (!id) {
+            console.error("ID не передано в loadBandById");
+            return;
+        }
         if (this.band?.id === id) return;
         this.setLoading(true);
         try {
@@ -47,7 +48,9 @@ class BandDetailsStore {
             this.setLoading(false);
         }
     }
-}
 
-const bandDetailsStore = new BandDetailsStore();
-export default bandDetailsStore;
+    destroy() {
+        this.band = null;
+        this.releases = [];
+    }
+}

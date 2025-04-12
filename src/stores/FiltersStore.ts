@@ -1,28 +1,58 @@
-import {makeAutoObservable, action} from "mobx";
+import { makeAutoObservable } from "mobx";
+import {Option} from "components/Multidropdown";
 
 class FiltersStore {
     searchQuery: string = '';
     selectedCategories: string[] = [];
+    currentPage: number = 1;
 
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this);
     }
 
-    @action
-    setSearchQuery (query: string) {
+    setSearchQuery(query: string) {
         this.searchQuery = query;
-}
-    @action
-    setSelectedCategories (categories: string[]) {
+    }
+
+    setSelectedCategories(categories: string[]) {
         this.selectedCategories = categories;
     }
 
-    @action
+    get selectedCategoriesOptions(): Option[] {
+        return this.selectedCategories.map((cat) => ({ key: cat, value: cat }));
+    }
+
+
+    setCurrentPage(page: number) {
+        this.currentPage = page;
+    }
+
     clearFilters() {
         this.searchQuery = '';
-        this.selectedCategories =[];
+        this.selectedCategories = [];
+        this.currentPage = 1;
+    }
+
+    syncFromSearchParams(params: URLSearchParams) {
+        const page = parseInt(params.get("page") || "1", 10);
+        const search = params.get("search") || '';
+        const categories = params.get("categories") ? params.get("categories")!.split(",") : [];
+
+        this.setSearchQuery(search);
+        this.setSelectedCategories(categories);
+        this.setCurrentPage(page);
+    }
+
+    toSearchParams() {
+        const params = new URLSearchParams();
+        params.set("page", String(this.currentPage));
+        if (this.searchQuery) params.set("search", this.searchQuery);
+        if (this.selectedCategories.length) {
+            params.set("categories", this.selectedCategories.join(","));
+        }
+        return params;
     }
 }
 
-const filtersStore = new FiltersStore()
-export default filtersStore
+const filtersStore = new FiltersStore();
+export default filtersStore;

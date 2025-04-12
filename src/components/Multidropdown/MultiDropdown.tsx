@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import Input from "components/Input";
-/*import ArrowDownIcon from "../icons/ArrowDownIcon";*/
 import styles from './MultiDropdown.module.scss';
+import { CrossIcon } from "icons";
+import clsx from "clsx";
 
 export type Option = {
     key: string;
@@ -18,7 +19,7 @@ export type MultiDropdownProps = {
     getTitle: (value: Option[]) => string;
 };
 
-const MultiDropdown: React.FC<MultiDropdownProps> = ({
+const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
                                                                   options,
                                                                   value,
                                                                   onChange,
@@ -36,7 +37,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         }
     };
 
-    const handleSearch = (option: Option) => {
+    const handleSearch = useCallback((option: Option) => {
         const isSelected = value.some((val) => val.key === option.key);
         let newValues = isSelected
             ? value.filter((val) => val.key !== option.key)
@@ -44,7 +45,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
 
         setSearchText('');
         onChange(newValues);
-    };
+    }, [value, onChange]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -58,32 +59,49 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         };
     }, []);
 
-    const filteredOptions = options.filter((option) =>
-        option.value.toLowerCase().includes(searchText.toLowerCase())
-    );
+    const filteredOptions = useMemo(() => {
+        return options.filter((option) =>
+            option.value.toLowerCase().includes(searchText.toLowerCase())
+        );
+    }, [options, searchText]);
+
+    const isSelected = useCallback((option: Option) => {
+        return value.some((val) => val.key === option.key);
+    }, [value]);
 
     const handleClearSelection = () => {
-        onChange([]);
+        setSearchText('');
+        onChange([])
     };
 
     return (
-        <div className={`multi-dropdown ${className || ""}`.trim()} ref={dropDownRef}>
+        <div className={clsx('multiDropdown', className || '')} ref={dropDownRef} style={{ width: '500px' }}>
             <Input
                 value={searchText || (value.length > 0 ? getTitle(value) : '')}
                 onChange={setSearchText}
                 onFocus={handleFocus}
-                /*afterSlot={<ArrowDownIcon color="secondary" />}*/
+                afterSlot= {
+                    searchText.length > 0 || value.length > 0 ? (
+                        <CrossIcon
+                            color="primary"
+                            onClick={() => handleClearSelection()}
+                            style = {{cursor: 'pointer'}}
+                        />
+                        ) : null
+            }
                 disabled={disabled}
-                placeholder={value.length === 0 ? getTitle(value) : undefined}
-                className={!isOpen ? '' : 'input-black-text'}
+                placeholder={value.length === 0 ? 'Поиск по жанрам..' : undefined}
+                className={isOpen ? 'input-black-text' : ''}
             />
-            <button onClick={handleClearSelection} disabled={disabled} className={styles.clearButton}> Clear</button>
             {!disabled && isOpen && filteredOptions.length > 0 && (
                 <div className={styles.dropdownMenu}>
                     {filteredOptions.map((option) => (
                         <div
                             key={option.key}
-                            className={`${styles.dropdownItem} ${value.some((val) => val.key === option.key) ? `${styles.dropdownItemSelected}` : ""}`}
+                            className={clsx(
+                                styles.dropdownItem,
+                                isSelected(option) && styles.dropdownItemSelected
+                            )}
                             onClick={() => handleSearch(option)}
                         >
                             {option.value}
@@ -93,6 +111,6 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
             )}
         </div>
     );
-};
+});
 
 export default MultiDropdown;

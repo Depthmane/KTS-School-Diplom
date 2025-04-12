@@ -1,106 +1,79 @@
-import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useLocation, useNavigate } from "react-router-dom";
-import bandStore from "stores/BandStore";
-import filtersStore from "stores/FiltersStore";
+import { useNavigate } from "react-router-dom";
+import bandsStore from "stores/BandsStore";
+import { usePagination } from "hooks/usePagination";
+import { useFilters } from "hooks/useFilters";
 import Card from "components/Card";
 import Text from "components/Text";
 import Input from "components/Input";
 import MultiDropdown from "components/MultiDropdown";
-import { Option } from "components/Multidropdown";
 import styles from "./HomePage.module.scss";
-import {useGenresLoader} from "hooks/useGenresLoader";
+import { filtersStore } from "stores";
+import {createRef, useEffect, useRef} from "react";
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const query = new URLSearchParams(location.search);
+    const { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL } = useFilters();
+    const { handleScroll, initialLoadDone, shouldScrollToSavedPage, isFirstLoad} = usePagination(true, updateURL);
 
-    const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]);
+    const cardRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
 
-    useGenresLoader(setCategoriesOptions);
-
+    if (cardRefs.current.length !== bandsStore.bands.length) {
+        cardRefs.current = Array.from({ length: bandsStore.bands.length }, (_, i) => cardRefs.current[i] ?? createRef<HTMLDivElement>());
+    }
+/*
+    const cardRefs = useMemo(() => Array.from({ length: bandsStore.bands.length }, () => createRef<HTMLDivElement>()), [bandsStore.bands.length]);
+*/
 
     useEffect(() => {
-        const options = bandStore.genres.map((genre) => ({ key: genre, value: genre }));
-        setCategoriesOptions(options);
-    }, [bandStore.genres]);
+        const page = filtersStore.currentPage;
+        const indexToScroll = (page - 1) * 10;
 
-    useEffect(() => {
-        const page = parseInt(query.get("page") || "1", 10);
-        const search = query.get("search") || "";
-        const categories = query.get("categories") ? query.get("categories")!.split(",") : [];
-
-        filtersStore.setSearchQuery(search);
-        filtersStore.setSelectedCategories(categories);
-
-        if (page === 1) {
-            bandStore.setLastVisible(null);
+        if (
+            page > 1 &&
+            shouldScrollToSavedPage.current &&
+            initialLoadDone &&
+            isFirstLoad.current &&
+            bandsStore.bands.length >= indexToScroll + 1 &&
+            cardRefs.current[indexToScroll]?.current
+        ) {
+            shouldScrollToSavedPage.current = false;
+            cardRefs.current[indexToScroll]!.current!.scrollIntoView({
+                behavior: "auto",
+                block: "start",
+            });
         }
+    }, [initialLoadDone, filtersStore.currentPage, bandsStore.bands.length]);
 
-
-        bandStore.loadBands(page);
-    }, [location.search]);
-
-    const updateURL = (page: number, search: string, categories: string[]) => {
-        const params = new URLSearchParams();
-        params.set("page", String(page));
-        if (search) params.set("search", search);
-        if (categories.length > 0) params.set("categories", categories.join(","));
-        navigate(`?${params.toString()}`);
-    };
-
-    const handleSearchChange = (value: string) => {
-        filtersStore.setSearchQuery(value);
-        bandStore.setLastVisible(null);
-        updateURL(1, value, filtersStore.selectedCategories);
-    };
-
-    const handleCategoryChange = (categories: string[]) => {
-        filtersStore.setSelectedCategories(categories);
-        bandStore.setCurrentPage(1);
-        bandStore.setLastVisible(null);
-        updateURL(1, filtersStore.searchQuery, categories);
-    };
-
-    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const isBottom =
-            e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.clientHeight;
-
-        if (isBottom && !bandStore.loading && bandStore.bands.length > 0) {
-            const nextPage = bandStore.currentPage + 1;
-            bandStore.loadMoreBands();
-            updateURL(nextPage, filtersStore.searchQuery, filtersStore.selectedCategories);
-        }
-    };
-
-    if (bandStore.loading && bandStore.bands.length === 0) {
+    if (bandsStore.loading && bandsStore.bands.length === 0) {
         return <Text view="title">все еще нужно добавить лоадер..</Text>;
     }
 
     return (
         <div className={styles.container} onScroll={handleScroll}>
             <Input
-                value={filtersStore.searchQuery}
-                onChange={handleSearchChange}
-                /*debounce={true}*/
+                value={localSearchValue}
+                onChange={setLocalSearchValue}
+                placeholder={"Поиск по названию группы.."}
             />
             <MultiDropdown
                 options={categoriesOptions}
-                value={filtersStore.selectedCategories.map((cat) => ({ key: cat, value: cat }))}
+                value={filtersStore.selectedCategoriesOptions}
                 onChange={(options) => handleCategoryChange(options.map((opt) => opt.value))}
                 getTitle={(selected) => selected.map((s) => s.value).join(", ")}
             />
             <div className={styles.bandList}>
-                {bandStore.bands.map((band) => (
-                    <Card
-                        key={band.id}
-                        image={band.image}
-                        title={band.name}
-                        captionSlot={band.genres.join(", ")}
-                        subtitle={band.description_short}
-                        onClick={() => navigate(`/band/${band.id}`)}
-                    />
+                {bandsStore.bands.map((band, index) => (
+                    <div ref={cardRefs.current[index]} key={band.id}>
+                        <Card
+                            data-index={index}
+                            image={band.image}
+                            title={band.name}
+                            captionSlot={band.genres.join(", ")}
+                            subtitle={band.description_short}
+                            onClick={() => navigate(`/band/${band.id}`)}
+                        />
+                    </div>
                 ))}
             </div>
         </div>
