@@ -43,7 +43,16 @@ const BandDetails = observer(() => {
                 </Text>}
                 {/*сделать опциональный рендер если группа пересобралась с гиперссылкой <a> типо Joy Division\New Order*/}
                 <Text>
-                    <strong>Жанры:</strong> {band.genres.join(' · ')}
+                    <strong>Жанры: </strong>
+                    {band.genres.map((genre, index) => (
+                        <NavLink
+                            key={genre}
+                            to={{ pathname: "/", search: `?categories=${genre}` }}
+                            className={styles.genreLink}
+                        >
+                            {genre}{index < band.genres.length - 1 && ' · '}
+                        </NavLink>
+                    ))}
                 </Text>
                 <Text><strong>Сайт: </strong>
                     <a href={`https://${band.website}`} target="_blank" rel="noopener noreferrer">{band.website}</a>
