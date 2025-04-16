@@ -14,7 +14,8 @@
       "stores": ["stores/*"],
       "api": ["api/*"],
       "contexts": ["contexts/*"],
-      "icons": ["components/icons"]
+      "icons": ["components/icons"],
+      "routes": ["routes"]
     }
   },
   "references": [

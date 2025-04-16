@@ -1,7 +1,8 @@
-import { makeAutoObservable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { Band, Release } from "types";
 import { getBandById, getReleasesByBandId } from "api/firebaseLoader";
-import {ILocalStore} from "./ILocalStore";
+import { ILocalStore } from "./ILocalStore";
+import {normalizeBandData, normalizeReleaseData} from "utils/normilizeData";
 
 export class BandDetailsStore implements ILocalStore {
     band: Band | null = null;
@@ -12,36 +13,27 @@ export class BandDetailsStore implements ILocalStore {
         makeAutoObservable(this);
     }
 
-    setBand(band: Band | null) {
-        this.band = band;
-    }
-
-    setReleases(releases: Release[]) {
-        this.releases = releases;
-    }
-
-    setLoading(loading: boolean) {
-        this.loading = loading;
-    }
 
     async loadBandById(id: string | undefined) {
         if (!id) {
             console.error("ID не передано в loadBandById");
             return;
         }
-        if (this.band?.id === id) return;
-        if (this.loading) return
+        if (this.band?.id === id || this.loading) return;
+
         this.setLoading(true);
         try {
-            const bandData = await getBandById(id);
+            const serverBand = await getBandById(id);
             const bandReleases = await getReleasesByBandId(id);
 
-            if (bandData) {
-                this.setBand(bandData);
+            if (serverBand) {
+                const normalizedBand = normalizeBandData(serverBand);
+                this.setBand(normalizedBand);
             }
 
             if (bandReleases) {
-                this.setReleases(bandReleases);
+                const normalizedReleases = bandReleases.map(normalizeReleaseData);
+                this.setReleases(normalizedReleases);
             }
         } catch (error) {
             console.log("Ошибка загрузки данных", error);
@@ -53,5 +45,18 @@ export class BandDetailsStore implements ILocalStore {
     destroy() {
         this.band = null;
         this.releases = [];
+    }
+
+
+    private setBand(band: Band | null) {
+        this.band = band;
+    }
+
+    private setReleases(releases: Release[]) {
+        this.releases = releases;
+    }
+
+    private setLoading(loading: boolean) {
+        this.loading = loading;
     }
 }

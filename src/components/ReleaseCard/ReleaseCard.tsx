@@ -4,13 +4,14 @@ import { Release } from "types/index";
 import Text from "components/Text/Text";
 import styles from "./ReleaseCard.module.scss";
 import * as React from "react";
+import {observer} from "mobx-react-lite";
 
 interface ReleaseCardProps {
     release: Release;
     className?: string;
 }
 
-const ReleaseCard: React.FC<ReleaseCardProps> = ({ release, className }) => {
+const ReleaseCard: React.FC<ReleaseCardProps> = observer(({ release, className }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = (e: React.MouseEvent) => {
@@ -48,6 +49,6 @@ const ReleaseCard: React.FC<ReleaseCardProps> = ({ release, className }) => {
             </div>
         </div>
     );
-};
+});
 
 export default React.memo(ReleaseCard);

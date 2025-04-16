@@ -11,36 +11,18 @@ class FiltersStore {
         makeAutoObservable(this);
     }
 
-    setSearchQuery(query: string) {
-        this.searchQuery = query;
-    }
-
-    setSelectedCategories(categories: string[]) {
-        this.selectedCategories = categories;
-    }
-
     get selectedCategoriesOptions(): Option[] {
-        return this.selectedCategories.map((cat) => ({ key: cat, value: cat }));
+        return this.selectedCategories.map((cat) => ({key: cat, value: cat}));
     }
 
-
-    setCurrentPage(page: number) {
-        this.currentPage = page;
-    }
-
-
-    clearFilters() {
-        this.searchQuery = '';
-        this.selectedCategories = [];
-        this.currentPage = 1;
-    }
-
-    syncFromSearchParams(params: URLSearchParams) {
-        const { page, search, categories } = parseQueryParams(params);
+    syncFromSearchParams(params: URLSearchParams): { page: number, search: string, categories: string[] } {
+        const {page, search, categories} = parseQueryParams(params);
 
         this.setSearchQuery(search);
         this.setSelectedCategories(categories);
         this.setCurrentPage(page);
+
+        return {page, search, categories};
     }
 
     toSearchParams() {
@@ -51,6 +33,26 @@ class FiltersStore {
             params.set("categories", this.selectedCategories.join(","));
         }
         return params;
+    }
+
+    clearFilters() {
+        this.searchQuery = '';
+        this.selectedCategories = [];
+        this.currentPage = 1;
+    }
+
+
+    private setSearchQuery(query: string) {
+        this.searchQuery = query;
+    }
+
+    private setSelectedCategories(categories: string[]) {
+        this.selectedCategories = categories;
+    }
+
+
+    private setCurrentPage(page: number) {
+        this.currentPage = page;
     }
 }
 

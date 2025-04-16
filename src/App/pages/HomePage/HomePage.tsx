@@ -10,11 +10,12 @@ import MultiDropdown from "components/MultiDropdown";
 import styles from "./HomePage.module.scss";
 import { filtersStore } from "stores";
 import {createRef, useEffect, useRef} from "react";
+import AppRoutes from "routes";
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
     const { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL } = useFilters();
-    const { handleScroll, initialLoadDone, shouldScrollToSavedPage, isFirstLoad} = usePagination(updateURL);
+    const { initialLoadDone, shouldScrollToSavedPage, isFirstLoad } = usePagination(updateURL);
 
     const cardRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
 
@@ -69,8 +70,8 @@ const HomePage = observer(() => {
                             image={band.image}
                             title={band.name}
                             captionSlot={band.genres.join(", ")}
-                            subtitle={band.description_short}
-                            onClick={() => navigate(`/band/${band.id}`)}
+                            subtitle={band.descriptionShort}
+                            onClick={() => navigate(AppRoutes.bands.detail(band.id))}
                         />
                     </div>
                 ))}

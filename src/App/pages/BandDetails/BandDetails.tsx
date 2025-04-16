@@ -33,13 +33,13 @@ const BandDetails = observer(() => {
                     <strong>Страна:</strong> {band.country}
                 </Text>
                 <Text>
-                    <strong>Год основания:</strong> {band.creation_year}
+                    <strong>Год основания:</strong> {band.creationYear}
                 </Text>
                 <Text>
-                    <strong>Статус:</strong> {band.is_active ? 'Активна' : 'Неактивна'}
+                    <strong>Статус:</strong> {band.isActive ? 'Активна' : 'Неактивна'}
                 </Text>
-                {!band.is_active && <Text>
-                    <strong>Год распада:</strong> {band.end_year}
+                {!band.isActive && <Text>
+                    <strong>Год распада:</strong> {band.endYear}
                 </Text>}
                 {/*сделать опциональный рендер если группа пересобралась с гиперссылкой <a> типо Joy Division\New Order*/}
                 <Text>
@@ -48,8 +48,8 @@ const BandDetails = observer(() => {
                 <Text><strong>Сайт: </strong>
                     <a href={`https://${band.website}`} target="_blank" rel="noopener noreferrer">{band.website}</a>
                 </Text>
-                <Text>{band.description_short}</Text>
-                <Text>{band.description_long}</Text>
+                <Text>{band.descriptionShort}</Text>
+                <Text>{band.descriptionLong}</Text>
             </div>
             <img className={styles.bandImage} src={band.image} alt={band.name}/>
             </div>

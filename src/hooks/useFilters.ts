@@ -11,22 +11,15 @@ export function useFilters() {
     const [isInitialSearchApplied, setIsInitialSearchApplied] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const updateURL = useCallback((page: number, search: string, categories: string[]) => {
-        const params = new URLSearchParams();
-        params.set("page", String(page));
-        if (search) params.set("search", search);
-        if (categories.length > 0) params.set("categories", categories.join(","));
+    const updateURL = useCallback(() => {
+        const params = filtersStore.toSearchParams();
         setSearchParams(params);
     }, [setSearchParams]);
 
     const categoriesOptions = bandsStore.categoriesOptions;
 
     useEffect(() => {
-        const { page, search, categories } = parseQueryParams(searchParams);
-        filtersStore.setSearchQuery(search);
-        filtersStore.setSelectedCategories(categories);
-        filtersStore.setCurrentPage(page);
-        filtersStore.syncFromSearchParams(searchParams);
+        const { page, search } = filtersStore.syncFromSearchParams(searchParams);
 
         setLocalSearchValue(search);
 
@@ -44,16 +37,14 @@ export function useFilters() {
         }
         filtersStore.setSearchQuery(debouncedSearchValue);
         filtersStore.setCurrentPage(1);
-        bandsStore.setLastVisible(null);
-        updateURL(1, debouncedSearchValue, filtersStore.selectedCategories);
+        updateURL();
     }, [debouncedSearchValue]);
 
     const handleCategoryChange = useCallback((categories: string[]) => {
         filtersStore.setSelectedCategories(categories);
         filtersStore.setCurrentPage(1);
-        bandsStore.setLastVisible(null);
-        updateURL(1, filtersStore.searchQuery, categories);
-    }, [filtersStore, bandsStore, updateURL]);
+        updateURL();
+    }, [updateURL]);
 
     return { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL };
 }
