@@ -1,23 +1,16 @@
 import * as React from 'react';
 import styles from "./ThemeSwitch.module.scss";
+import { useTheme } from "contexts/ThemeContext";
+import { observer } from "mobx-react-lite";
 
-type ThemeSwitchProps = {
-    theme: string;
-    setTheme: React.Dispatch<React.SetStateAction<string>>;
-};
-
-const ThemeSwitch: React.FC<ThemeSwitchProps> = ({theme, setTheme}) => {
-    const switchTheme = () => {
-        const newTheme = theme === "light" ? "dark" : "light";
-        setTheme(newTheme);
-        localStorage.setItem("theme", newTheme);
-    };
+const ThemeSwitch: React.FC = observer(() => {
+    const uiStore = useTheme();
 
     return (
-        <button className={styles.themeButton} onClick={switchTheme}>
-            {theme === "light" ? "Темная тема" : "Светлая тема"}
+        <button className={styles.themeButton} onClick={() => uiStore.toggleTheme()}>
+            {uiStore.nextTheme === "dark" ? "Темная тема" : "Светлая тема"}
         </button>
     );
-};
+});
 
 export default ThemeSwitch;

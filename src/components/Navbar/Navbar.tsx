@@ -5,17 +5,11 @@ import Text from 'components/Text/Text';
 import styles from "./Navbar.module.scss";
 import {NavLink, useLocation} from "react-router-dom";
 
-type NavbarProps = {
-    theme: string;
-    setTheme: React.Dispatch<React.SetStateAction<string>>;
-};
 
-
-const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
+const Navbar: React.FC = () => {
     const location = useLocation();
 
     const [isOpen, setIsOpen] = useState(false);
-
     const menuRef = useRef<HTMLUListElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -32,10 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
         };
 
         document.addEventListener("click", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
+        return () => document.removeEventListener("click", handleClickOutside);
     }, []);
 
     return (
@@ -49,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
                                 if (location.pathname === "/") e.preventDefault();
                             }}
                         >
-                            Home
+                            BandPedia
                         </NavLink>
                     </li>
                 </ul>
@@ -67,7 +58,7 @@ const Navbar: React.FC<NavbarProps> = ({theme, setTheme}) => {
                             <ul className={styles.dropdownMenu} ref={menuRef}>
                                 <li><Text>заглушка</Text></li>
                                 <li><Text>заглушка</Text></li>
-                                <li><ThemeSwitch theme={theme} setTheme={setTheme}/></li>
+                                <li><ThemeSwitch /></li>
                             </ul>
                         )}
                     </div>

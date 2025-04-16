@@ -4,13 +4,18 @@
     "baseUrl": "src",
     "paths": {
       "components": ["components/*"],
-      "pages/*": ["App/pages/*"],
+      "pages": ["App/pages"],
       "config": ["config/*"],
       "styles": ["styles/*"],
       "utils": ["utils/*"],
       "firebaseConfig": ["firebaseConfig"],
       "types/*": ["types/*"],
-      "hooks": ["hooks/*"]
+      "hooks": ["hooks/*"],
+      "stores": ["stores/*"],
+      "api": ["api/*"],
+      "contexts": ["contexts/*"],
+      "icons": ["components/icons"],
+      "routes": ["routes"]
     }
   },
   "references": [

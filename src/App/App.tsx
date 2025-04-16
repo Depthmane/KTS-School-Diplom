@@ -1,35 +1,26 @@
 import * as React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes as ReactRoutes, Route } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import BandDetails from './pages/BandDetails';
 import NotFoundPage from './pages/NotFoundPage';
 import Navbar from "components/Navbar";
+import { ThemeProvider } from "contexts/ThemeContext";
+import AppRoutes from "../routes";
 import 'styles/global.scss';
 import 'styles/_theme.scss';
 
-const getInitialTheme = () => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) return storedTheme;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-};
-
 const App: React.FC = () => {
-    const [theme, setTheme] = React.useState(getInitialTheme);
-
-    React.useEffect(() => {
-        document.documentElement.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-    }, [theme]);
-
     return (
-        <Router>
-            <Navbar theme={theme} setTheme={setTheme} />
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/band/:id" element={<BandDetails />} />
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-        </Router>
+        <ThemeProvider>
+            <Router>
+                <Navbar />
+                <ReactRoutes>
+                    <Route path={AppRoutes.home} element={<HomePage />} />
+                    <Route path={AppRoutes.bands.mask} element={<BandDetails />} />
+                    <Route path={AppRoutes.notFound} element={<NotFoundPage />} />
+                </ReactRoutes>
+            </Router>
+        </ThemeProvider>
     );
 };
 

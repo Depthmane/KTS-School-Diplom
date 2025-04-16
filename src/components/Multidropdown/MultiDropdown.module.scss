@@ -1,0 +1,28 @@
+.crossIcon {
+  cursor: pointer;
+}
+
+.dropdownMenu {
+  margin-top: $spacing-xxs;
+  width: 200px;
+  background-color: var(--default-bg);
+  box-shadow: 0 4px 10px 0 var(--shadow-color);
+  position: absolute;
+  color: var(--text-primary);
+  z-index: 2;
+
+  .dropdownItem {
+    padding: $spacing-s $spacing-xs;
+    display: flex;
+    height: 48px;
+    align-items: center;
+
+    &:hover {
+      color: var(--text-secondary);
+    }
+
+    &.dropdownItemSelected {
+      color: var(--text-accent);
+    }
+  }
+}

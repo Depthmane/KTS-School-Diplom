@@ -5,14 +5,26 @@
     --text-accent: #{$text-accent};
     --card-bg: #{$card-bg};
     --default-bg: #{$default-bg};
-    --shadow-color: rgba(0, 0, 0, 0.25)
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --input-border:#{$input-border};
+    --input-bg:#{$input-bg};
+    --input-bg-focus:#{$input-bg-focus};
+    --input-border-focus:#{$input-border-focus};
+    --input-bg-disabled:#{$input-bg-disabled};
+    --input-border-disabled:#{$input-border-disabled};
   } @else if $mode == dark {
     --text-primary: #{$text-primary-dt};
     --text-secondary: #{$text-secondary-dt};
     --text-accent: #{$text-accent-dt};
     --card-bg: #{$card-bg-dt};
     --default-bg: #{$default-bg-dt};
-    --shadow-color: rgba(255, 255, 255, 0.2)
+    --shadow-color: rgba(255, 255, 255, 0.2);
+    --input-border:#{$input-border-dt};
+    --input-bg:#{$input-bg-dt};
+    --input-bg-focus:#{$input-bg-focus-dt};
+    --input-border-focus:#{$input-border-focus-dt};
+    --input-bg-disabled:#{$input-bg-disabled-dt};
+    --input-border-disabled:#{$input-border-disabled-dt};
   }
 }
 

@@ -14,6 +14,13 @@ $text-accent: #1F883D;
 $card-bg: #FFFFFF;
 $default-bg: #E8E8F6;
 
+$input-border:#000000;
+$input-bg:#FFFFFF;
+$input-bg-focus:#FFFFFF;
+$input-border-focus:#1F883D;
+$input-bg-disabled:#FFFFFF;
+$input-border-disabled:#FFFFFF;
+
 /*переменные темной темы*/
 
 $text-primary-dt: #FFFFFF;
@@ -23,4 +30,9 @@ $text-accent-dt: #FFD700;
 $card-bg-dt: #222222;
 $default-bg-dt: #111111;
 
-
+$input-border-dt:#A0A0A0;
+$input-bg-dt:#222222;
+$input-bg-focus-dt:#222222;
+$input-border-focus-dt:#FFD700;
+$input-bg-disabled-dt:#FFFFFF;
+$input-border-disabled-dt:#FFFFFF;
