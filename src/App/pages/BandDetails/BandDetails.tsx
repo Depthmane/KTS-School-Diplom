@@ -50,7 +50,7 @@ const BandDetails = observer(() => {
                             to={{ pathname: "/", search: `?categories=${genre}` }}
                             className={styles.genreLink}
                         >
-                            {genre}{index < band.genres.length - 1 && ' · '}
+                            {genre} {index < band.genres.length - 1 && ' · '}
                         </NavLink>
                     ))}
                 </Text>
