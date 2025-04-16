@@ -1,9 +1,8 @@
 import {Member} from "types/band";
 import Text from "components/Text";
-import {observer} from "mobx-react-lite";
 import * as React from "react";
 
-const BandMembers = observer(({members}: { members: Member[] }) => (
+const BandMembers = ({members}: { members: Member[] }) => (
     <div>
         <Text className="text-bold" tag="h2"> Участники: </Text>
         <ul>
@@ -14,6 +13,6 @@ const BandMembers = observer(({members}: { members: Member[] }) => (
             ))}
         </ul>
     </div>
-));
+);
 
 export default React.memo(BandMembers);

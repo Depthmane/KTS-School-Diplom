@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import {Option} from "components/Multidropdown";
+import {parseQueryParams} from "../utils/queryParams";
 
 class FiltersStore {
     searchQuery: string = '';
@@ -27,6 +28,7 @@ class FiltersStore {
         this.currentPage = page;
     }
 
+
     clearFilters() {
         this.searchQuery = '';
         this.selectedCategories = [];
@@ -34,9 +36,7 @@ class FiltersStore {
     }
 
     syncFromSearchParams(params: URLSearchParams) {
-        const page = parseInt(params.get("page") || "1", 10);
-        const search = params.get("search") || '';
-        const categories = params.get("categories") ? params.get("categories")!.split(",") : [];
+        const { page, search, categories } = parseQueryParams(params);
 
         this.setSearchQuery(search);
         this.setSelectedCategories(categories);

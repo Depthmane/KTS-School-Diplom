@@ -84,8 +84,8 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
                     searchText.length > 0 || value.length > 0 ? (
                         <CrossIcon
                             color="primary"
-                            onClick={() => handleClearSelection()}
-                            style = {{cursor: 'pointer'}}
+                            onClick={handleClearSelection}
+                            className = {styles.crossIcon}
                         />
                         ) : null
             }

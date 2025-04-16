@@ -3,7 +3,6 @@ import filtersStore from "stores/FiltersStore";
 import bandsStore from "stores/BandsStore";
 
 export function usePagination(
-    initialLoadDone: boolean,
     updateURL: (page: number, search: string, categories: string[]) => void
 ) {
     const shouldScrollToSavedPage = useRef(true);
@@ -17,7 +16,6 @@ export function usePagination(
 
 
         if (
-            initialLoadDone &&
             isBottom &&
             !bandsStore.loading &&
             bandsStore.bands.length > 0 &&
@@ -29,7 +27,7 @@ export function usePagination(
             bandsStore.loadMoreBands();
             updateURL(nextPage, filtersStore.searchQuery, filtersStore.selectedCategories);
         }
-    }, [initialLoadDone, updateURL]);
+    }, [updateURL]);
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
@@ -37,5 +35,5 @@ export function usePagination(
     }, [handleScroll]);
 
 
-    return { handleScroll, initialLoadDone, shouldScrollToSavedPage, isFirstLoad };
+    return { handleScroll, shouldScrollToSavedPage, isFirstLoad };
 }

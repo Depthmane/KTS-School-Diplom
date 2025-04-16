@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './Input.module.scss';
+import clsx from "clsx";
 
 export type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> & {
     value: string;
@@ -17,7 +18,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 
         return (
-            <div className={`${styles.inputBody} ${className || ''}`.trim()}>
+            <div className={clsx(styles.inputBody, className || '')} >
                 <input
                     {...rest}
                     className={styles.input}

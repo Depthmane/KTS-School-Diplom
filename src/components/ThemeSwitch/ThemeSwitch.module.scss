@@ -7,13 +7,13 @@
   font-size: 14px;
   border-radius: 4px;
   transition: background-color 0.5s ease, color 0.5s ease;
-}
 
-.themeButton:hover {
-  background-color: var(--text-accent);
-  color: var(--card-bg);
-}
+  &:hover {
+    background-color: var(--text-accent);
+    color: var(--card-bg);
+  }
 
-.themeButton:focus {
-  outline: none;
+  &:focus {
+    outline: none;
+  }
 }

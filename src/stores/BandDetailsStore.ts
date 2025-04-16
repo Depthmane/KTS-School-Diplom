@@ -30,6 +30,7 @@ export class BandDetailsStore implements ILocalStore {
             return;
         }
         if (this.band?.id === id) return;
+        if (this.loading) return
         this.setLoading(true);
         try {
             const bandData = await getBandById(id);

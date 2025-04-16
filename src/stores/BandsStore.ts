@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { Band } from "types/band";
 import { getBands } from "api/firebaseLoader";
 import filtersStore from "./FiltersStore";
+import {Option} from "../components/Multidropdown";
 
 class BandsStore {
     bands: Band[] = [];
@@ -28,6 +29,10 @@ class BandsStore {
 
     setLoading(loading: boolean) {
         this.loading = loading;
+    }
+
+    get categoriesOptions(): Option[] {
+        return this.genres.map(genre => ({ key: genre, value: genre }));
     }
 
     setHasMore(value: boolean) {

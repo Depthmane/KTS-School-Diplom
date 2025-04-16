@@ -1,10 +1,11 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
 
 class UIStore {
-    theme: "light"| "dark" = this.getInitialTheme();
+    theme: "light" | "dark" = this.getInitialTheme();
 
     constructor() {
         makeAutoObservable(this);
+        document.documentElement.setAttribute("data-theme", this.theme);
     }
 
     private getInitialTheme(): "light" | "dark" {
@@ -18,7 +19,15 @@ class UIStore {
     setTheme(newTheme: "light" | "dark") {
         this.theme = newTheme;
         document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme)
+        localStorage.setItem("theme", newTheme);
+    }
+
+    toggleTheme() {
+        this.setTheme(this.theme === "light" ? "dark" : "light");
+    }
+
+    get nextTheme(): "light" | "dark" {
+        return this.theme === "light" ? "dark" : "light";
     }
 }
 

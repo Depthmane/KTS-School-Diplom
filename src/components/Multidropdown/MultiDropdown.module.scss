@@ -1,8 +1,4 @@
-/*.multiDropdown {
-  width: 500px !important;
-}*/
-// надо не забыть разобраться со стилями здесь
-.dropdownMenu{
+.dropdownMenu {
   margin-top: $spacing-xxs;
   width: 200px;
   background-color: var(--default-bg);
@@ -10,20 +6,22 @@
   position: absolute;
   z-index: 2;
 
-}
-.dropdownItem {
-  padding: $spacing-s $spacing-xs;
-  display: flex;
-  height: 48px;
-  align-items: center;
-}
+  .dropdownItem {
+    padding: $spacing-s $spacing-xs;
+    display: flex;
+    height: 48px;
+    align-items: center;
 
-.dropdownItem:hover {
-  color: var(--text-secondary)
+    &:hover {
+      color: var(--text-secondary);
+    }
+
+    &.dropdownItemSelected {
+      color: var(--text-accent);
+    }
+  }
+
+  .crossIcon {
+    cursor: pointer;
+  }
 }
-
-.dropdownItemSelected {
-  color: var(--text-accent)
-}
-
-

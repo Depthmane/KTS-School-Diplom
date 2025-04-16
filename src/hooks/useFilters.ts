@@ -1,13 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import filtersStore from "stores/FiltersStore";
-import { Option } from "components/MultiDropdown";
 import { parseQueryParams } from "utils/queryParams";
 import { useDebounce } from "./useDebounce";
 import { bandsStore } from "stores";
 
 export function useFilters() {
-    const [categoriesOptions, setCategoriesOptions] = useState<Option[]>([]);
     const [localSearchValue, setLocalSearchValue] = useState(filtersStore.searchQuery);
     const debouncedSearchValue = useDebounce(localSearchValue, 500);
     const [isInitialSearchApplied, setIsInitialSearchApplied] = useState(false);
@@ -21,10 +19,7 @@ export function useFilters() {
         setSearchParams(params);
     }, [setSearchParams]);
 
-    useEffect(() => {
-        const options = bandsStore.genres.map((genre) => ({ key: genre, value: genre }));
-        setCategoriesOptions(options);
-    }, [bandsStore.genres]);
+    const categoriesOptions = bandsStore.categoriesOptions;
 
     useEffect(() => {
         const { page, search, categories } = parseQueryParams(searchParams);

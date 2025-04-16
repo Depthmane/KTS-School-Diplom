@@ -14,7 +14,7 @@ import {createRef, useEffect, useRef} from "react";
 const HomePage = observer(() => {
     const navigate = useNavigate();
     const { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL } = useFilters();
-    const { handleScroll, initialLoadDone, shouldScrollToSavedPage, isFirstLoad} = usePagination(true, updateURL);
+    const { handleScroll, initialLoadDone, shouldScrollToSavedPage, isFirstLoad} = usePagination(updateURL);
 
     const cardRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
 
@@ -32,7 +32,6 @@ const HomePage = observer(() => {
         if (
             page > 1 &&
             shouldScrollToSavedPage.current &&
-            initialLoadDone &&
             isFirstLoad.current &&
             bandsStore.bands.length >= indexToScroll + 1 &&
             cardRefs.current[indexToScroll]?.current
@@ -50,7 +49,7 @@ const HomePage = observer(() => {
     }
 
     return (
-        <div className={styles.container} onScroll={handleScroll}>
+        <div className={styles.container}>
             <Input
                 value={localSearchValue}
                 onChange={setLocalSearchValue}
