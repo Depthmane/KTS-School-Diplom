@@ -1,13 +1,24 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { getFavoriteBands, addFavoriteBand, removeFavoriteBand } from "api/firebaseLoader/favoriteBandsLoader";
+import {
+    getFavoriteBands,
+    addFavoriteBand,
+    removeFavoriteBand,
+    getBandsByIds
+} from "api/firebaseLoader/favoriteBandsLoader";
+import {Band} from "types/band";
 
 class FavoriteBandsStore {
     bands: string[] = [];
+    bandsData: Band[] = []
     loading: boolean = false;
     error: string = '';
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    isFavorite(bandId: string) {
+        return this.bands.includes(bandId);
     }
 
     async fetch(userId: string) {
@@ -18,6 +29,11 @@ class FavoriteBandsStore {
             runInAction(() => {
                 this.bands = bands;
             });
+
+            const bandsData = await getBandsByIds(bands);
+            runInAction(() => {
+                this.bandsData = bandsData;
+            })
         } catch (error) {
             runInAction(() => {
                 this.error = error.message;
@@ -35,6 +51,10 @@ class FavoriteBandsStore {
             runInAction(() => {
                 this.bands.push(bandId);
             });
+            const [band] = await getBandsByIds([bandId]);
+            runInAction(() => {
+                if (band) this.bandsData.push(band);
+            });
         } catch (error) {
             runInAction(() => {
                 this.error = error.message;
@@ -47,6 +67,7 @@ class FavoriteBandsStore {
             await removeFavoriteBand(userId, bandId);
             runInAction(() => {
                 this.bands = this.bands.filter(id => id !== bandId);
+                this.bandsData = this.bandsData.filter(b => b.id !== bandId);
             });
         } catch (error) {
             runInAction(() => {

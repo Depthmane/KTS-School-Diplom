@@ -78,7 +78,7 @@ const Navbar: React.FC = observer(() => {
                                                 <button onClick={() => {
                                                     authStore.logout();
                                                     setIsOpen(false);
-                                                }}>
+                                                }} className={styles.exitButton}>
                                                     Выйти из аккаунта
                                                 </button>
                                             </li>

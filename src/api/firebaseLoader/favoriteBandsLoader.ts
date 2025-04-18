@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {doc, getDoc, getDocs, where, updateDoc, arrayUnion, arrayRemove, query, collection, QuerySnapshot} from "firebase/firestore";
 import { db } from 'firebaseConfig';
 
 interface UserData {
@@ -18,6 +18,30 @@ export const getFavoriteBands = async (userId: string) => {
         return [];
     } catch (error) {
         console.error('Ошибка при загрузке избранных групп - ', error);
+        return [];
+    }
+};
+
+export const getBandsByIds = async (ids: string[]) => {
+    if (ids.length === 0) return [];
+
+    const chunks = [];
+    for (let i = 0; i < ids.length; i += 10) {
+        chunks.push(ids.slice(i, i + 10));
+    }
+
+    try {
+        const snapshots: QuerySnapshot[] = await Promise.all(
+            chunks.map(chunk =>
+                getDocs(query(collection(db, 'bands'), where('__name__', 'in', chunk)))
+            )
+        );
+
+        return snapshots.flatMap(snapshot =>
+            snapshot.docs.map(bandDoc => ({ id: bandDoc.id, ...bandDoc.data() }))
+        );
+    } catch (error) {
+        console.error('Ошибка загрузки групп по ID', error);
         return [];
     }
 };

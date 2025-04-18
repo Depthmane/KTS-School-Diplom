@@ -11,6 +11,7 @@ import styles from "./HomePage.module.scss";
 import { filtersStore } from "stores";
 import {createRef, useEffect, useRef} from "react";
 import AppRoutes from "routes";
+import FavoriteButton from "components/FavoriteButton";
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
@@ -71,6 +72,7 @@ const HomePage = observer(() => {
                             title={band.name}
                             captionSlot={band.genres.join(", ")}
                             subtitle={band.descriptionShort}
+                            actionSlot={<FavoriteButton bandId={band.id}/>}
                             onClick={() => navigate(AppRoutes.bands.detail(band.id))}
                         />
                     </div>

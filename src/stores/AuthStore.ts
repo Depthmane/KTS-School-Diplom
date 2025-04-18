@@ -3,6 +3,7 @@ import {makeAutoObservable} from "mobx";
 import { auth } from "firebaseConfig";
 import {getCurrentUser, loginUser, logoutUser, registerUser} from "api/firebaseLoader/authLoader";
 import userStore from "./UserStore";
+import favoriteBandsStore from "./FavoriteBandsStore";
 
 class AuthStore {
     user: User | null = null;
@@ -37,6 +38,7 @@ class AuthStore {
             this.user = await loginUser(email, password)
             if (this.user) {
                 await userStore.fetchUserProfileByUid(this.user.uid);
+                await favoriteBandsStore.fetch(this.user.uid);
             }
         } catch (error) {
             this.error = error.message
@@ -50,6 +52,7 @@ class AuthStore {
                 console.log("Авторизован Firebase-пользователь:", firebaseUser.uid);
                 await userStore.fetchUserProfileByUid(firebaseUser.uid);
                 this.user = firebaseUser;
+                await favoriteBandsStore.fetch(this.user.uid);
             } else {
                 console.log("Нет авторизованного пользователя");
                 userStore.clearProfile();
