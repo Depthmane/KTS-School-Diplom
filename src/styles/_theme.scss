@@ -12,6 +12,7 @@
     --input-border-focus:#{$input-border-focus};
     --input-bg-disabled:#{$input-bg-disabled};
     --input-border-disabled:#{$input-border-disabled};
+    --skeleton-bg:#{$skeleton-bg}
   } @else if $mode == dark {
     --text-primary: #{$text-primary-dt};
     --text-secondary: #{$text-secondary-dt};
@@ -25,6 +26,7 @@
     --input-border-focus:#{$input-border-focus-dt};
     --input-bg-disabled:#{$input-bg-disabled-dt};
     --input-border-disabled:#{$input-border-disabled-dt};
+    --skeleton-bg:#{$skeleton-bg}
   }
 }
 

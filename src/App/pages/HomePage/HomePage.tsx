@@ -22,9 +22,9 @@ const HomePage = observer(() => {
     if (cardRefs.current.length !== bandsStore.bands.length) {
         cardRefs.current = Array.from({ length: bandsStore.bands.length }, (_, i) => cardRefs.current[i] ?? createRef<HTMLDivElement>());
     }
-/*
-    const cardRefs = useMemo(() => Array.from({ length: bandsStore.bands.length }, () => createRef<HTMLDivElement>()), [bandsStore.bands.length]);
-*/
+    /*
+        const cardRefs = useMemo(() => Array.from({ length: bandsStore.bands.length }, () => createRef<HTMLDivElement>()), [bandsStore.bands.length]);
+    */
 
     useEffect(() => {
         const page = filtersStore.currentPage;

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { Band } from "types/band";
-import { getBands } from "api/firebaseLoader";
+import { getBands, getRandomBandId } from "api/firebaseLoader";
 import filtersStore from "./FiltersStore";
 import {Option} from "components/Multidropdown";
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
@@ -11,6 +11,7 @@ class BandsStore {
     bands: Band[] = [];
     genres: string[] = [];
     loading: boolean = false;
+    isInitialLoading: boolean = true;
     lastVisible: QueryDocumentSnapshot<DocumentData> | null = null;
     hasMore: boolean = true;
 
@@ -24,7 +25,11 @@ class BandsStore {
         if (this.loading) return;
 
         this.setLoading(true);
+
         try {
+            if (currentPage === 1) {
+                this.setIsInitialLoading(true);
+            }
             const { bands: serverBands, lastVisible } = await getBands(currentPage, searchQuery, selectedCategories, this.lastVisible);
 
             const normalizedBands = serverBands.map(normalizeBandData);
@@ -43,15 +48,19 @@ class BandsStore {
             console.error("Ошибка загрузки групп:", error);
         } finally {
             this.setLoading(false);
+            if (currentPage === 1) {
+                this.setIsInitialLoading(false);
+            }
+
         }
     }
-
     async loadMoreBands() {
         await this.loadBands();
     }
 
     async preparePaginationCursor(targetPage: number) {
         this.setLastVisible(null);
+
         let lastVisible = null;
         let allBands: Band[] = [];
 
@@ -75,6 +84,16 @@ class BandsStore {
         return this.genres.map(genre => ({ key: genre, value: genre }));
     }
 
+    async fetchRandomBandId(): Promise<string | null> {
+        try {
+            const randomId = await getRandomBandId();
+            return randomId;
+        } catch (error) {
+            console.error("Ошибка при получении случайной группы:", error);
+            return null;
+        }
+    }
+
     private setBands(bands: Band[]) {
         this.bands = bands;
     }
@@ -87,10 +106,13 @@ class BandsStore {
         this.lastVisible = lastVisible;
     }
 
-    private setLoading(loading: boolean) {
+    setLoading(loading: boolean) {
         this.loading = loading;
     }
 
+    private setIsInitialLoading(value: boolean) {
+        this.isInitialLoading = value;
+    }
 
     private setHasMore(value: boolean) {
         this.hasMore = value;

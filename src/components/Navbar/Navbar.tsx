@@ -4,12 +4,19 @@ import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
 import Text from 'components/Text/Text';
 import styles from "./Navbar.module.scss";
 import {NavLink, useLocation} from "react-router-dom";
+import RandomBandLink from "../RandomBandLink/RandomBandLink";
+import {authStore} from "stores";
+import AuthModal from "components/AuthModal/AuthModal";
+import userStore from "stores/UserStore";
+import {observer} from "mobx-react-lite";
 
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = observer(() => {
     const location = useLocation();
 
     const [isOpen, setIsOpen] = useState(false);
+    const [showAuthModal, setShowAuthModal] = useState(false)
+
     const menuRef = useRef<HTMLUListElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -30,42 +37,68 @@ const Navbar: React.FC = () => {
     }, []);
 
     return (
-        <nav className={styles.navbar}>
-            <div className={styles.container}>
-                <ul className={styles.navItems}>
-                    <li>
-                        <NavLink
-                            to="/"
-                            onClick={(e) => {
+        <>
+            <nav className={styles.navbar}>
+                <div className={styles.container}>
+                    <ul className={styles.navItems}>
+                        <li>
+                            <NavLink to="/" onClick={(e) => {
                                 if (location.pathname === "/") e.preventDefault();
-                            }}
-                        >
-                            BandPedia
-                        </NavLink>
-                    </li>
-                </ul>
+                            }}>BandPedia</NavLink>
+                        </li>
+                    </ul>
 
-                <div className={styles.rightSection}>
-                    <div className={styles.dropdown}>
-                        <button
-                            className={styles.menuButton}
-                            onClick={() => setIsOpen(!isOpen)}
-                            ref={buttonRef}
-                        >
-                            Меню
-                        </button>
-                        {isOpen && (
-                            <ul className={styles.dropdownMenu} ref={menuRef}>
-                                <li><Text>заглушка</Text></li>
-                                <li><Text>заглушка</Text></li>
-                                <li><ThemeSwitch /></li>
-                            </ul>
+                    <div className={styles.rightSection}>
+                        {!authStore.user ? (
+                            <button onClick={() => setShowAuthModal(true)} className={styles.authButton}>
+                                Войти или зарегистрироваться
+                            </button>
+                        ) : (
+                            <span className={styles.username}>Салют, {userStore.profile?.login}!</span>
                         )}
+
+                        <div className={styles.dropdown}>
+                            <button
+                                className={styles.menuButton}
+                                onClick={() => setIsOpen(!isOpen)}
+                                ref={buttonRef}
+                            >
+                                Меню
+                            </button>
+                            {isOpen && (
+                                <ul className={styles.dropdownMenu} ref={menuRef}>
+                                    {authStore.user ? (
+                                        <>
+                                            <li>
+                                                <NavLink to={userStore.profile ? `/profile/${userStore.profile.login}` : "/"} onClick={() => setIsOpen(false)}>
+                                                    Мой профиль
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <button onClick={() => {
+                                                    authStore.logout();
+                                                    setIsOpen(false);
+                                                }}>
+                                                    Выйти из аккаунта
+                                                </button>
+                                            </li>
+                                        </>
+                                    ) : (
+                                        <>
+                                        </>
+                                    )}
+                                    <li><RandomBandLink /></li>
+                                    <li><ThemeSwitch /></li>
+                                </ul>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+
+            <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+        </>
     );
-};
+});
 
 export default Navbar;

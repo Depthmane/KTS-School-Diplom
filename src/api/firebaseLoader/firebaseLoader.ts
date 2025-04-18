@@ -62,3 +62,12 @@ export const getReleasesByBandId = async (bandId: string): Promise<ServerRelease
         return [];
     }
 };
+export const getRandomBandId = async (): Promise<string | null> => {
+    const snapshot = await getDocs(collection(db, "bands"));
+    const allBands = snapshot.docs.map(doc => doc.id);
+
+    if (allBands.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * allBands.length);
+    return allBands[randomIndex]; // плохо оптимизировано, надо бы придумать как изменить метод
+};

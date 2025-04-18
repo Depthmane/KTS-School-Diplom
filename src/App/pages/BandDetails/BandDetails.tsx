@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import {useLocalStore} from "hooks/useLocalStore";
 import * as React from "react";
 import NotFoundPage from "pages/NotFoundPage";
+import BandDetailsSkeleton from "./BandDetailsSkeleton";
 
 const BandDetails = observer(() => {
     const {id} = useParams<{ id: string }>();
@@ -18,9 +19,13 @@ const BandDetails = observer(() => {
         store.loadBandById(id);
     }, [id]);
 
+    useEffect (() => {
+        window.scroll(0,0);
+    },[])
+
     const {band, releases, loading} = store;
 
-    if (loading) return <Text view="title">сюда надо добавить лоадер</Text>;
+    if (loading) return <BandDetailsSkeleton />;
 
     if (!band) return <NotFoundPage/>
 
