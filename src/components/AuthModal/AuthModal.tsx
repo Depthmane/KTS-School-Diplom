@@ -31,7 +31,7 @@ const AuthModal: React.FC<ModalProps> = observer(({ isOpen, onClose }) => {
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modalWindow} onClick={e => e.stopPropagation()}>
-                <h2>{isLogin ? 'Вход' : 'Регистрация'}</h2>
+                <h2 className={styles.modalTitle}>{isLogin ? 'Вход' : 'Регистрация'}</h2>
                 <form onSubmit={handleSubmit}>
                     {!isLogin && (
                         <input className={styles.modalInput}

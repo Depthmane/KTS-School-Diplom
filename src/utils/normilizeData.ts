@@ -1,4 +1,4 @@
-import {Band, Member, ServerBand, ServerMember} from "types/band";
+import {Band, Member, ServerBand, ServerMember, ServerLink, Link } from "types/band";
 import {ServerRelease, Release, ServerReleaseTrack, ReleaseTrack} from "types/release";
 
 
@@ -8,6 +8,14 @@ export function normalizeMemberData(serverMember: ServerMember): Member {
         lastName: serverMember.last_name,
         english: serverMember.english,
         instrument: serverMember.instrument
+    };
+}
+
+export function normalizeLinksData(serverLink?: ServerLink): Link {
+    return {
+        spotify: serverLink?.spotify,
+        youtube: serverLink?.youtube,
+        yandex: serverLink?.yandex,
     };
 }
 
@@ -24,7 +32,8 @@ export function normalizeBandData(serverBand: ServerBand): Band {
         website: serverBand.website,
         descriptionShort: serverBand.description_short,
         descriptionLong: serverBand.description_long,
-        members: serverBand.members.map(normalizeMemberData)
+        members: serverBand.members.map(normalizeMemberData),
+        resourcesLinks: normalizeLinksData(serverBand.resources_links),
     };
 }
 

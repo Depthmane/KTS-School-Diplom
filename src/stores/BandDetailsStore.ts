@@ -1,12 +1,13 @@
 import { makeAutoObservable } from "mobx";
 import { Band, Release } from "types";
-import { getBandById, getReleasesByBandId } from "api/firebaseLoader";
+import { getBandById, getReleasesByBandId, getSimilarBands } from "api/firebaseLoader";
 import { ILocalStore } from "./ILocalStore";
 import {normalizeBandData, normalizeReleaseData} from "utils/normilizeData";
 
 export class BandDetailsStore implements ILocalStore {
     band: Band | null = null;
     releases: Release[] = [];
+    similarBands: Band[] = [];
     loading: boolean = false;
 
     constructor() {
@@ -29,6 +30,9 @@ export class BandDetailsStore implements ILocalStore {
             if (serverBand) {
                 const normalizedBand = normalizeBandData(serverBand);
                 this.setBand(normalizedBand);
+
+                const similar = await getSimilarBands(serverBand.genres, serverBand.id);
+                this.setSimilarBands(similar.map(normalizeBandData));
             }
 
             if (bandReleases) {
@@ -58,5 +62,9 @@ export class BandDetailsStore implements ILocalStore {
 
     private setLoading(loading: boolean) {
         this.loading = loading;
+    }
+
+    private setSimilarBands(bands: Band[]) {
+        this.similarBands = bands;
     }
 }

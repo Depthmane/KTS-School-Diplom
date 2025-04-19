@@ -71,3 +71,57 @@ export const getRandomBandId = async (): Promise<string | null> => {
     const randomIndex = Math.floor(Math.random() * allBands.length);
     return allBands[randomIndex]; // плохо оптимизировано, надо бы придумать как изменить метод
 };
+
+export const getSimilarBands = async (genres: string[], currentId: string): Promise<ServerBand[]> => {
+    if (!genres.length) return [];
+
+    const bandsCollection = collection(db, 'bands');
+    const uniqueResults: Record<string, ServerBand> = {};
+
+    try {
+        const exactQuery = query(
+            bandsCollection,
+            where('genres', '==', genres),
+            limit(4)
+        );
+        const exactSnapshot = await getDocs(exactQuery);
+        exactSnapshot.docs.forEach(doc => {
+            const band = { id: doc.id, ...doc.data() } as ServerBand;
+            if (band.id !== currentId) uniqueResults[band.id] = band;
+        });
+
+        if (Object.keys(uniqueResults).length < 3) {
+            const twoMatchGenres = genres.slice(0, 2);
+            if (twoMatchGenres.length) {
+                const twoMatchQuery = query(
+                    bandsCollection,
+                    where('genres', 'array-contains-any', twoMatchGenres),
+                    limit(6)
+                );
+                const twoMatchSnapshot = await getDocs(twoMatchQuery);
+                twoMatchSnapshot.docs.forEach(doc => {
+                    const band = { id: doc.id, ...doc.data() } as ServerBand;
+                    if (band.id !== currentId) uniqueResults[band.id] = band;
+                });
+            }
+        }
+
+        if (Object.keys(uniqueResults).length < 3) {
+            const oneMatchQuery = query(
+                bandsCollection,
+                where('genres', 'array-contains-any', genres),
+                limit(10)
+            );
+            const oneMatchSnapshot = await getDocs(oneMatchQuery);
+            oneMatchSnapshot.docs.forEach(doc => {
+                const band = { id: doc.id, ...doc.data() } as ServerBand;
+                if (band.id !== currentId) uniqueResults[band.id] = band;
+            });
+        }
+
+        return Object.values(uniqueResults).slice(0, 3);
+    } catch (error) {
+        console.error('Ошибка загрузки похожих групп', error);
+        return [];
+    }
+};
