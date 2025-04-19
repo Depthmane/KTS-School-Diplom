@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import Input from "components/Input";
 import styles from './MultiDropdown.module.scss';
-import { CrossIcon } from "icons";
+import {ArrowDownIcon, CrossIcon} from "icons";
 import clsx from "clsx";
 
 export type Option = {
@@ -87,10 +87,15 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
                             onClick={handleClearSelection}
                             className = {styles.crossIcon}
                         />
-                        ) : null
+                        ) :
+                        <ArrowDownIcon
+                            color="primary"
+                            className = {styles.crossIcon}
+                            onClick={handleFocus}
+                        />
             }
                 disabled={disabled}
-                placeholder={value.length === 0 ? 'Поиск по жанрам..' : undefined}
+                placeholder={value.length === 0 ? 'Жанры..' : undefined}
                 className={isOpen ? 'input-black-text' : ''}
             />
             {!disabled && isOpen && filteredOptions.length > 0 && (
