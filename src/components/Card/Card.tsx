@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({
                 <img src={image} alt="card-image" className={styles.image} />
             </div>
             <div className={styles.cardBody}>
-                {actionSlot}
+                <div className={styles.favoriteButton}>{actionSlot}</div>
                 {captionSlot && (
                     <Text view="p-14" color="secondary">
                         {captionSlot}

@@ -6,12 +6,15 @@ import {
     getBandsByIds
 } from "api/firebaseLoader/favoriteBandsLoader";
 import {Band} from "types/band";
+import {collection, getDocs} from "firebase/firestore";
+import {db} from "firebaseConfig";
 
 class FavoriteBandsStore {
     bands: string[] = [];
     bandsData: Band[] = []
     loading: boolean = false;
     error: string = '';
+    favoriteBandIds: Set<string> = new Set();
 
     constructor() {
         makeAutoObservable(this);
@@ -19,6 +22,11 @@ class FavoriteBandsStore {
 
     isFavorite(bandId: string) {
         return this.bands.includes(bandId);
+    }
+
+    async loadFavoriteBands(userId: string) {
+        const snapshot = await getDocs(collection(db, `users/${userId}/favoriteBands`));
+        this.favoriteBandIds = new Set(snapshot.docs.map(doc => doc.id));
     }
 
     async fetch(userId: string) {

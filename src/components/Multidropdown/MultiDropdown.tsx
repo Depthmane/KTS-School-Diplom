@@ -89,7 +89,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
                         />
                         ) :
                         <ArrowDownIcon
-                            color="primary"
+                            color="secondary"
                             className = {styles.crossIcon}
                             onClick={handleFocus}
                         />

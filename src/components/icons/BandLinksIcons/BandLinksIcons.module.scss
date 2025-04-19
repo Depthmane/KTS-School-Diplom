@@ -1,0 +1,11 @@
+.bandLinksIconsContainer {
+  display: flex;
+  gap: $spacing-l;
+  color: var(--text-primary);
+  transition: color 0.5s ease-in-out;
+
+  .icon:hover {
+    color: var(--text-accent);
+    transition: color 0.5s ease-in-out;
+  }
+}

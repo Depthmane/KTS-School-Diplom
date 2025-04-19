@@ -11,6 +11,7 @@ export interface ServerBand {
     description_short: string;
     description_long: string;
     members: ServerMember[];
+    resources_links?: ServerLink;
 }
 
 export interface ServerMember {
@@ -19,6 +20,13 @@ export interface ServerMember {
     english: string;
     instrument: string;
 }
+
+export interface ServerLink {
+    spotify?: string;
+    youtube?: string;
+    yandex?: string;
+}
+
 
 export interface Band {
     id: string;
@@ -33,6 +41,7 @@ export interface Band {
     descriptionShort: string;
     descriptionLong: string;
     members: Member[];
+    resourcesLinks?: Link;
 }
 
 export interface Member {
@@ -40,4 +49,10 @@ export interface Member {
     lastName: string;
     english: string;
     instrument: string;
+}
+
+export interface Link {
+    spotify?: string;
+    youtube?: string;
+    yandex?: string;
 }
