@@ -30,3 +30,12 @@
   display: flex;
   margin-right: auto;
 }
+
+.genreLink {
+  color: var(--text-primary);
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--text-accent);
+  }
+}

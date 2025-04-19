@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import {useLocalStore} from "hooks/useLocalStore";
 import * as React from "react";
 import NotFoundPage from "pages/NotFoundPage";
+import BandDetailsSkeleton from "./BandDetailsSkeleton";
 
 const BandDetails = observer(() => {
     const {id} = useParams<{ id: string }>();
@@ -18,9 +19,13 @@ const BandDetails = observer(() => {
         store.loadBandById(id);
     }, [id]);
 
+    useEffect (() => {
+        window.scroll(0,0);
+    },[])
+
     const {band, releases, loading} = store;
 
-    if (loading) return <Text view="title">сюда надо добавить лоадер</Text>;
+    if (loading) return <BandDetailsSkeleton />;
 
     if (!band) return <NotFoundPage/>
 
@@ -43,7 +48,16 @@ const BandDetails = observer(() => {
                 </Text>}
                 {/*сделать опциональный рендер если группа пересобралась с гиперссылкой <a> типо Joy Division\New Order*/}
                 <Text>
-                    <strong>Жанры:</strong> {band.genres.join(' · ')}
+                    <strong>Жанры: </strong>
+                    {band.genres.map((genre, index) => (
+                        <NavLink
+                            key={genre}
+                            to={{ pathname: "/", search: `?categories=${genre}` }}
+                            className={styles.genreLink}
+                        >
+                            {genre} {index < band.genres.length - 1 && ' · '}
+                        </NavLink>
+                    ))}
                 </Text>
                 <Text><strong>Сайт: </strong>
                     <a href={`https://${band.website}`} target="_blank" rel="noopener noreferrer">{band.website}</a>

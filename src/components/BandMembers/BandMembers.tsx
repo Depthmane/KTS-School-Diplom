@@ -9,7 +9,7 @@ const BandMembers = observer(({members}: { members: Member[] }) => (
         <ul>
             {members.map((member, index) => (
                 <li key={index}>
-                    <Text> {member.first_name} {member.last_name} ({member.english}) — {member.instrument} </Text>
+                    <Text> <strong>{member.firstName} {member.lastName} </strong> ({member.english}) — {member.instrument} </Text>
                 </li>
             ))}
         </ul>

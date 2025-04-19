@@ -1,0 +1,24 @@
+.favoriteButton{
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  margin-left: 295px;
+  margin-top: -5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.crossIcon{
+  width: 30px;
+  height: 30px;
+  transition: transform 0.2s ease, color 0.2s ease;
+  opacity: 0.5;
+
+  &:hover {
+  color: var(--text-secondary);
+    transform: scale(1.1);
+    opacity: 1;
+}}

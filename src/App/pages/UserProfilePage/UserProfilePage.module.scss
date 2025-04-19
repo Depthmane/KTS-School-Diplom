@@ -1,0 +1,41 @@
+.profilePage {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.profileHeader {
+  margin-bottom: $spacing-l;
+}
+
+.favoriteGenres {
+  margin-bottom: $spacing-l;
+}
+
+.genres {
+  margin-top: $spacing-l;
+  text-decoration: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xxs;
+}
+
+.genre {
+  cursor: pointer;
+}
+
+.genreLink {
+  color: inherit;
+
+  &:hover {
+    color: var(--text-accent);
+  }
+}
+
+.bandList {
+  width: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-l;
+  margin: 0 auto;
+  padding: $spacing-l;
+}

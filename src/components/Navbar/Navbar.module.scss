@@ -41,7 +41,15 @@
 
   .rightSection {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+}
+
+.authButton, .username {
+  margin-right: $spacing-l;
 }
 
 .dropdown {
@@ -59,6 +67,18 @@
 
     &:hover {
       color: var(--text-accent);
+    }
+  }
+  .exitButton{
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: color 0.5s ease;
+
+    &:hover {
+      color: red;
     }
   }
 

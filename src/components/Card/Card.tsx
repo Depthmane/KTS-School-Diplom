@@ -7,6 +7,7 @@ export type CardProps = {
     className?: string;
     image: string;
     captionSlot?: React.ReactNode;
+    actionSlot?: React.ReactNode;
     title: React.ReactNode;
     subtitle: React.ReactNode;
     onClick?: React.MouseEventHandler;
@@ -16,6 +17,7 @@ const Card: React.FC<CardProps> = ({
                                        className,
                                        image,
                                        captionSlot,
+                                       actionSlot,
                                        title,
                                        subtitle,
                                        onClick,
@@ -27,6 +29,7 @@ const Card: React.FC<CardProps> = ({
                 <img src={image} alt="card-image" className={styles.image} />
             </div>
             <div className={styles.cardBody}>
+                {actionSlot}
                 {captionSlot && (
                     <Text view="p-14" color="secondary">
                         {captionSlot}
