@@ -17,6 +17,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: $spacing-xxs;
+  margin-left: $spacing-l;
 }
 
 .genre {
@@ -24,7 +25,7 @@
 }
 
 .genreLink {
-  color: inherit;
+  color: var(--text-accent-default);
 
   &:hover {
     color: var(--text-accent);

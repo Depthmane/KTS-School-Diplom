@@ -12,11 +12,17 @@ import { filtersStore } from "stores";
 import {createRef, useEffect, useRef} from "react";
 import AppRoutes from "routes";
 import FavoriteButton from "components/FavoriteButton";
+import CheckBox from "components/CheckBox"
+import {favoriteBandsStore} from "../../../stores";
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
-    const { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL } = useFilters();
+    const { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL, handleHideFavorites } = useFilters();
     const { initialLoadDone, shouldScrollToSavedPage, isFirstLoad } = usePagination(updateURL);
+
+    const displayedBands = filtersStore.hideFavorites
+        ? bandsStore.bands.filter(band => !favoriteBandsStore.bands.includes(band.id))
+        : bandsStore.bands;
 
     const cardRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
 
@@ -57,14 +63,24 @@ const HomePage = observer(() => {
                 onChange={setLocalSearchValue}
                 placeholder={"Поиск по названию группы.."}
             />
-            <MultiDropdown
-                options={categoriesOptions}
-                value={filtersStore.selectedCategoriesOptions}
-                onChange={(options) => handleCategoryChange(options.map((opt) => opt.value))}
-                getTitle={(selected) => selected.map((s) => s.value).join(", ")}
-            />
+            <div className={styles.dropdownAndCheckboxContainer}>
+                <MultiDropdown
+                    options={categoriesOptions}
+                    value={filtersStore.selectedCategoriesOptions}
+                    onChange={(options) => handleCategoryChange(options.map((opt) => opt.value))}
+                    getTitle={(selected) => selected.map((s) => s.value).join(", ")}
+                />
+                <CheckBox
+                    checked={filtersStore.hideFavorites}
+                    onChange={handleHideFavorites}
+                    className={styles.checkBox}
+                >
+                    Скрыть избранные группы
+                </CheckBox>
+            </div>
+
             <div className={styles.bandList}>
-                {bandsStore.bands.map((band, index) => (
+                {displayedBands.map((band, index) => (
                     <div ref={cardRefs.current[index]} key={band.id}>
                         <Card
                             data-index={index}

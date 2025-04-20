@@ -83,6 +83,10 @@ class FavoriteBandsStore {
             });
         }
     }
+
+    clear() {
+        this.bands = [];
+    }
 }
 
 const favoriteBandsStore = new FavoriteBandsStore();

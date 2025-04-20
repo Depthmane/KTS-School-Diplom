@@ -67,6 +67,8 @@ class AuthStore {
 
         try {
             await logoutUser();
+            userStore.clearProfile();
+            favoriteBandsStore.clear();
             this.user = null;
         } catch (error) {
             this.error = error.message;

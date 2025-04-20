@@ -3,6 +3,17 @@
   margin: auto;
 }
 
+.dropdownAndCheckboxContainer{
+  display: flex;
+  align-items: center;
+  gap: $spacing-xl;
+
+  .checkBox{
+    gap: $spacing-s;
+    margin-bottom: 6px;
+  }
+}
+
 .bandList {
   width: auto;
   display: grid;

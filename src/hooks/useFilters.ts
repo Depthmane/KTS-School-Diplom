@@ -4,6 +4,7 @@ import filtersStore from "stores/FiltersStore";
 import { parseQueryParams } from "utils/queryParams";
 import { useDebounce } from "./useDebounce";
 import { bandsStore } from "stores";
+import {favoriteBandsStore} from "../stores";
 
 export function useFilters() {
     const [localSearchValue, setLocalSearchValue] = useState(filtersStore.searchQuery);
@@ -46,5 +47,13 @@ export function useFilters() {
         updateURL();
     }, [updateURL]);
 
-    return { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL };
+    const handleHideFavorites = useCallback((checked: boolean) => {
+        filtersStore.setHideFavorites(checked);
+        filtersStore.setCurrentPage(1);
+        console.log(favoriteBandsStore.bands)
+        console.log(bandsStore.bands)
+        updateURL();
+    }, [updateURL, handleCategoryChange]);
+
+    return { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL, handleHideFavorites };
 }

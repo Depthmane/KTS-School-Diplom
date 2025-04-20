@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, query, where, limit, startAfter, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { db } from 'firebaseConfig';
-import {Band, Release, ServerBand, ServerRelease} from 'types';
+import { ServerBand, ServerRelease } from 'types';
 
 export const getBands = async (
     page: number,
@@ -13,7 +13,10 @@ export const getBands = async (
         let q = query(bandsCollection, limit(10));
 
         if (search) {
-            q = query(q, where('name', '>=', search), where('name', '<=', search + '\uf8ff'));
+            q = query(
+                q,
+                where('search_keywords', 'array-contains', search.toLowerCase())
+            );
         }
 
         if (categories.length > 0) {
@@ -36,7 +39,6 @@ export const getBands = async (
     }
 };
 
-
 export const getBandById = async (id: string): Promise<ServerBand | null> => {
     try {
         const bandDoc = doc(db, 'bands', id);
@@ -50,6 +52,7 @@ export const getBandById = async (id: string): Promise<ServerBand | null> => {
         return null;
     }
 };
+
 export const getReleasesByBandId = async (bandId: string): Promise<ServerRelease[]> => {
     try {
         const releasesRef = collection(db, 'releases');

@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable} from "mobx";
 import { Band } from "types/band";
 import { getBands, getRandomBandId } from "api/firebaseLoader";
 import filtersStore from "./FiltersStore";
@@ -30,8 +30,8 @@ class BandsStore {
             if (currentPage === 1) {
                 this.setIsInitialLoading(true);
             }
-            const { bands: serverBands, lastVisible } = await getBands(currentPage, searchQuery, selectedCategories, this.lastVisible);
 
+            const { bands: serverBands, lastVisible } = await getBands(currentPage, searchQuery, selectedCategories, this.lastVisible);
             const normalizedBands = serverBands.map(normalizeBandData);
             const filteredBands = this.filterBandsByGenres(normalizedBands, selectedCategories);
 
@@ -44,6 +44,7 @@ class BandsStore {
             this.setLastVisible(lastVisible);
             this.setHasMore(filteredBands.length === 10);
             this.updateGenresBasedOnCurrentBands();
+
         } catch (error) {
             console.error("Ошибка загрузки групп:", error);
         } finally {
@@ -51,9 +52,9 @@ class BandsStore {
             if (currentPage === 1) {
                 this.setIsInitialLoading(false);
             }
-
         }
     }
+
     async loadMoreBands() {
         await this.loadBands();
     }
@@ -86,8 +87,7 @@ class BandsStore {
 
     async fetchRandomBandId(): Promise<string | null> {
         try {
-            const randomId = await getRandomBandId();
-            return randomId;
+            return await getRandomBandId();
         } catch (error) {
             console.error("Ошибка при получении случайной группы:", error);
             return null;
@@ -120,7 +120,7 @@ class BandsStore {
 
     private filterBandsByGenres(bands: Band[], genres: string[]): Band[] {
         if (!genres.length) return bands;
-        return bands.filter((band) => genres.every((genre) => band.genres.includes(genre)));
+        return bands.filter(band => genres.every(genre => band.genres.includes(genre)));
     }
 
     private updateGenresBasedOnCurrentBands() {
@@ -134,3 +134,4 @@ class BandsStore {
 
 const bandsStore = new BandsStore();
 export default bandsStore;
+
