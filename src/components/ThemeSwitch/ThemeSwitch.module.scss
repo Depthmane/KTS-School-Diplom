@@ -1,19 +1,33 @@
 .themeButton {
-  background-color: var(--default-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--text-secondary);
-  padding: $spacing-s $spacing-m;
+  background: none;
+  border: none;
   cursor: pointer;
-  font-size: 14px;
-  border-radius: 4px;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+  margin-right: $spacing-xl;
 
   &:hover {
-    background-color: var(--text-accent);
-    color: var(--card-bg);
+    color: var(--text-accent);
   }
 
   &:focus {
     outline: none;
   }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
 }

@@ -37,8 +37,8 @@ class AuthStore {
         try {
             this.user = await loginUser(email, password)
             if (this.user) {
-                await userStore.fetchUserProfileByUid(this.user.uid);
-                await favoriteBandsStore.fetch(this.user.uid);
+                await userStore.fetchOwnProfile(this.user.uid);
+                await favoriteBandsStore.fetchForUser(this.user.uid, true);
             }
         } catch (error) {
             this.error = error.message
@@ -50,12 +50,12 @@ class AuthStore {
         onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
                 console.log("Авторизован Firebase-пользователь:", firebaseUser.uid);
-                await userStore.fetchUserProfileByUid(firebaseUser.uid);
+                await userStore.fetchOwnProfile(firebaseUser.uid);
                 this.user = firebaseUser;
-                await favoriteBandsStore.fetch(this.user.uid);
+                await favoriteBandsStore.fetchForUser(this.user.uid, true);
             } else {
                 console.log("Нет авторизованного пользователя");
-                userStore.clearProfile();
+                userStore.clearOwnProfile();
                 this.user = null;
             }
         });
@@ -67,7 +67,7 @@ class AuthStore {
 
         try {
             await logoutUser();
-            userStore.clearProfile();
+            userStore.clearOwnProfile();
             favoriteBandsStore.clear();
             this.user = null;
         } catch (error) {

@@ -50,8 +50,6 @@ export function useFilters() {
     const handleHideFavorites = useCallback((checked: boolean) => {
         filtersStore.setHideFavorites(checked);
         filtersStore.setCurrentPage(1);
-        console.log(favoriteBandsStore.bands)
-        console.log(bandsStore.bands)
         updateURL();
     }, [updateURL, handleCategoryChange]);
 

@@ -12,6 +12,7 @@ import {db} from "firebaseConfig";
 class FavoriteBandsStore {
     bands: string[] = [];
     bandsData: Band[] = []
+    viewedUserBands: Band[] = [];
     loading: boolean = false;
     error: string = '';
     favoriteBandIds: Set<string> = new Set();
@@ -29,19 +30,21 @@ class FavoriteBandsStore {
         this.favoriteBandIds = new Set(snapshot.docs.map(doc => doc.id));
     }
 
-    async fetch(userId: string) {
+    async fetchForUser(userId: string, isCurrentUser = false) {
         this.loading = true;
         this.error = '';
         try {
             const bands = await getFavoriteBands(userId);
-            runInAction(() => {
-                this.bands = bands;
-            });
-
             const bandsData = await getBandsByIds(bands);
+
             runInAction(() => {
-                this.bandsData = bandsData;
-            })
+                if (isCurrentUser) {
+                    this.bands = bands;
+                    this.bandsData = bandsData;
+                } else {
+                    this.viewedUserBands = bandsData;
+                }
+            });
         } catch (error) {
             runInAction(() => {
                 this.error = error.message;
@@ -52,7 +55,6 @@ class FavoriteBandsStore {
             });
         }
     }
-
     async add(userId: string, bandId: string) {
         try {
             await addFavoriteBand(userId, bandId);
@@ -86,6 +88,8 @@ class FavoriteBandsStore {
 
     clear() {
         this.bands = [];
+        this.bandsData = [];
+        this.favoriteBandIds.clear();
     }
 }
 

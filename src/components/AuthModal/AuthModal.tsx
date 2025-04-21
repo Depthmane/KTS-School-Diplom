@@ -2,6 +2,7 @@ import { useState } from "react";
 import { authStore } from "stores";
 import styles from './AuthModal.module.scss';
 import {observer} from "mobx-react-lite";
+import AuthButton from "./AuthButton/AuthButton";
 
 interface ModalProps {
     isOpen: boolean;
@@ -57,9 +58,11 @@ const AuthModal: React.FC<ModalProps> = observer(({ isOpen, onClose }) => {
                         required
                     />
                     {authStore.error && <p className={styles.error}>{authStore.error}</p>}
-                    <button type="submit" disabled={authStore.loading} className={styles.modalButton}>
+                    <AuthButton type="submit"
+                                disabled={authStore.loading}
+                                loading={authStore.loading}>
                         {isLogin ? 'Войти' : 'Зарегистрироваться'}
-                    </button>
+                    </AuthButton>
                 </form>
                 <p className={styles.toggleText}>
                     {isLogin ? (

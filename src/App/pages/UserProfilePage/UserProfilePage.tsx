@@ -8,33 +8,55 @@ import userStore from "stores/UserStore";
 import authStore from "stores/AuthStore";
 import styles from "./UserProfilePage.module.scss";
 import FavoriteButton from "components/FavoriteButton";
-import {favoriteBandsStore} from "stores";
-import {Card} from "components";
+import { favoriteBandsStore } from "stores";
+import { Card } from "components";
+import UserProfilePageSkeleton from "./UserProfilePageSkeleton";
 
 const UserProfilePage: React.FC = observer(() => {
     const { login } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (login) {
-            userStore.fetchUserProfileByLogin(login);
-        }
+        if (!login) return;
+
+        const fetch = async () => {
+            if (authStore.user?.uid && userStore.ownProfile?.login === login) {
+                await favoriteBandsStore.fetchForUser(authStore.user.uid, true);
+            } else {
+                const user = await userStore.fetchUserProfileByLogin(login);
+                if (user) {
+                    await favoriteBandsStore.fetchForUser(user.id, false);
+                }
+            }
+        };
+
+        fetch();
+
+        return () => {
+            favoriteBandsStore.viewedUserBands = [];
+            userStore.clearViewedProfile();
+        };
+
     }, [login]);
 
-    if (userStore.loading) return <div>Идет загрузка</div>;
+    if (userStore.loading) return <UserProfilePageSkeleton />;
     if (userStore.error) return <div>Error: {userStore.error}</div>;
 
-    const profile = userStore.profile;
+    const profile = (authStore.user?.uid && userStore.ownProfile?.login === login)
+        ? userStore.ownProfile
+        : userStore.viewedProfile;
+
+    const bands = (authStore.user?.uid && userStore.ownProfile?.login === login)
+        ? favoriteBandsStore.bandsData
+        : favoriteBandsStore.viewedUserBands;
 
     const uniqueGenres = Array.from(
         new Set(
-            favoriteBandsStore.bandsData.flatMap(band => band.genres || [])
+            bands.flatMap(band => band.genres || [])
         )
     );
 
     if (!profile) return <div>Нет данных для данного профиля</div>;
-
-
 
     return (
         <div className={clsx(styles.profilePage)}>
@@ -48,10 +70,10 @@ const UserProfilePage: React.FC = observer(() => {
                     <div className={styles.genres}>
                         {uniqueGenres.map((genre, index) => (
                             <span key={genre} className={styles.genre}>
-                    <NavLink to={{ pathname: "/", search: `?categories=${genre}` }} className={styles.genreLink}>
-                        {genre} {index < uniqueGenres.length - 1 && " · "}
-                    </NavLink>
-                </span>
+                                <NavLink to={{ pathname: "/", search: `?categories=${genre}` }} className={styles.genreLink}>
+                                    {genre} {index < uniqueGenres.length - 1 && " · "}
+                                </NavLink>
+                            </span>
                         ))}
                     </div>
                 ) : (
@@ -62,8 +84,8 @@ const UserProfilePage: React.FC = observer(() => {
             <div className={styles.favoriteBands}>
                 <h2>Любимые группы: </h2>
                 <div className={styles.bandList}>
-                    {favoriteBandsStore.bandsData.length > 0 ? (
-                        favoriteBandsStore.bandsData.map(band => (
+                    {bands.length > 0 ? (
+                        bands.map(band => (
                             <Card
                                 key={band.id}
                                 image={band.image}

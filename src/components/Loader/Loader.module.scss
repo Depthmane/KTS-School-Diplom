@@ -1,0 +1,11 @@
+.loader {
+  animation: spin 1s linear infinite;
+  color: var(--text-primary);
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

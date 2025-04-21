@@ -46,6 +46,19 @@
     justify-content: center;
   }
 
+  .authButton{
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--text-accent-default);
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.5s ease;
+    &:hover {
+      color: var(--text-accent);
+    }
+  }
+
 }
 
 .authButton, .username {

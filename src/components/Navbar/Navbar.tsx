@@ -46,15 +46,17 @@ const Navbar: React.FC = observer(() => {
                                 if (location.pathname === "/") e.preventDefault();
                             }}>BandPedia</NavLink>
                         </li>
+
                     </ul>
 
                     <div className={styles.rightSection}>
+                            <ThemeSwitch />
                         {!authStore.user ? (
                             <button onClick={() => setShowAuthModal(true)} className={styles.authButton}>
                                 Войти или зарегистрироваться
                             </button>
                         ) : (
-                            <span className={styles.username}>Салют, {userStore.profile?.login}!</span>
+                            <span className={styles.username}>Салют, {userStore.ownProfile?.login}!</span>
                         )}
 
                         <div className={styles.dropdown}>
@@ -70,7 +72,7 @@ const Navbar: React.FC = observer(() => {
                                     {authStore.user ? (
                                         <>
                                             <li>
-                                                <NavLink to={userStore.profile ? `/profile/${userStore.profile.login}` : "/"} onClick={() => setIsOpen(false)}>
+                                                <NavLink to={userStore.ownProfile ? `/profile/${userStore.ownProfile.login}` : "/"} onClick={() => setIsOpen(false)}>
                                                     Мой профиль
                                                 </NavLink>
                                             </li>
@@ -88,7 +90,6 @@ const Navbar: React.FC = observer(() => {
                                         </>
                                     )}
                                     <li><RandomBandLink /></li>
-                                    <li><ThemeSwitch /></li>
                                 </ul>
                             )}
                         </div>

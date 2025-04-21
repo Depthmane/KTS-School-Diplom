@@ -15,7 +15,7 @@ import {observer} from "mobx-react-lite";
 
 const App: React.FC = observer(() => {
     useEffect(() => {
-        authStore.checkAuth(); // <-- тут ловим юзера при запуске
+        authStore.checkAuth();
     }, []);
 
     return (

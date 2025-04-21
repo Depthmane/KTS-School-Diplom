@@ -1,24 +1,29 @@
-import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
+import {observer} from "mobx-react-lite";
+import {useNavigate} from "react-router-dom";
 import bandsStore from "stores/BandsStore";
-import { usePagination } from "hooks/usePagination";
-import { useFilters } from "hooks/useFilters";
+import {usePagination} from "hooks/usePagination";
+import {useFilters} from "hooks/useFilters";
 import Card from "components/Card";
-import Text from "components/Text";
 import Input from "components/Input";
 import MultiDropdown from "components/MultiDropdown";
 import styles from "./HomePage.module.scss";
-import { filtersStore } from "stores";
+import {favoriteBandsStore, filtersStore} from "stores";
 import {createRef, useEffect, useRef} from "react";
 import AppRoutes from "routes";
 import FavoriteButton from "components/FavoriteButton";
 import CheckBox from "components/CheckBox"
-import {favoriteBandsStore} from "../../../stores";
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
-    const { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL, handleHideFavorites } = useFilters();
-    const { initialLoadDone, shouldScrollToSavedPage, isFirstLoad } = usePagination(updateURL);
+    const {
+        categoriesOptions,
+        localSearchValue,
+        setLocalSearchValue,
+        handleCategoryChange,
+        updateURL,
+        handleHideFavorites
+    } = useFilters();
+    const {initialLoadDone, shouldScrollToSavedPage, isFirstLoad} = usePagination(updateURL);
 
     const displayedBands = filtersStore.hideFavorites
         ? bandsStore.bands.filter(band => !favoriteBandsStore.bands.includes(band.id))
@@ -27,7 +32,7 @@ const HomePage = observer(() => {
     const cardRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
 
     if (cardRefs.current.length !== bandsStore.bands.length) {
-        cardRefs.current = Array.from({ length: bandsStore.bands.length }, (_, i) => cardRefs.current[i] ?? createRef<HTMLDivElement>());
+        cardRefs.current = Array.from({length: bandsStore.bands.length}, (_, i) => cardRefs.current[i] ?? createRef<HTMLDivElement>());
     }
     /*
         const cardRefs = useMemo(() => Array.from({ length: bandsStore.bands.length }, () => createRef<HTMLDivElement>()), [bandsStore.bands.length]);
@@ -52,9 +57,10 @@ const HomePage = observer(() => {
         }
     }, [initialLoadDone, filtersStore.currentPage, bandsStore.bands.length]);
 
-    if (bandsStore.loading && bandsStore.bands.length === 0) {
-        return <Text view="title">все еще нужно добавить лоадер..</Text>;
-    }
+    /*    if (bandsStore.loading || bandsStore.bands.length === 0) {
+            console.log('грузим')
+            return <Text view="title">все еще нужно добавить лоадер..</Text>;
+        }*/
 
     return (
         <div className={styles.container}>

@@ -4,7 +4,7 @@ import { getBands, getRandomBandId } from "api/firebaseLoader";
 import filtersStore from "./FiltersStore";
 import {Option} from "components/Multidropdown";
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
-import {normalizeBandData} from "utils/normilizeData";
+import { normalizeBandData } from "utils/normilizeData";
 
 
 class BandsStore {
@@ -12,6 +12,7 @@ class BandsStore {
     genres: string[] = [];
     loading: boolean = false;
     isInitialLoading: boolean = true;
+    isLoadingMore: boolean = false;
     lastVisible: QueryDocumentSnapshot<DocumentData> | null = null;
     hasMore: boolean = true;
 
@@ -25,12 +26,13 @@ class BandsStore {
         if (this.loading) return;
 
         this.setLoading(true);
+        if (currentPage === 1) {
+            this.setIsInitialLoading(true);
+        } else {
+            this.setIsLoadingMore(true);
+        }
 
         try {
-            if (currentPage === 1) {
-                this.setIsInitialLoading(true);
-            }
-
             const { bands: serverBands, lastVisible } = await getBands(currentPage, searchQuery, selectedCategories, this.lastVisible);
             const normalizedBands = serverBands.map(normalizeBandData);
             const filteredBands = this.filterBandsByGenres(normalizedBands, selectedCategories);
@@ -51,6 +53,8 @@ class BandsStore {
             this.setLoading(false);
             if (currentPage === 1) {
                 this.setIsInitialLoading(false);
+            } else {
+                this.setIsLoadingMore(false);
             }
         }
     }
@@ -108,6 +112,10 @@ class BandsStore {
 
     setLoading(loading: boolean) {
         this.loading = loading;
+    }
+
+    private setIsLoadingMore(value: boolean) {
+        this.isLoadingMore = value;
     }
 
     private setIsInitialLoading(value: boolean) {

@@ -23,10 +23,10 @@ const Card: React.FC<CardProps> = ({
                                        onClick,
                                    }) => {
     return (
-        <div className={clsx(styles.card, className?? "")} onClick={onClick}>
+        <div className={clsx(styles.card, className ?? "")} onClick={onClick}>
             <div className={styles.cardHeader}>
-                <div className={styles.blurBackground} style={{ backgroundImage: `url(${image})` }} />
-                <img src={image} alt="card-image" className={styles.image} />
+                <div className={styles.blurBackground} style={{backgroundImage: `url(${image})`}}/>
+                <img src={image} alt="card-image" className={styles.image}/>
             </div>
             <div className={styles.cardBody}>
                 <div className={styles.favoriteButton}>{actionSlot}</div>
@@ -47,5 +47,16 @@ const Card: React.FC<CardProps> = ({
         </div>
     );
 };
+
+/*Card.Skeleton = () => (
+    <div className={styles.card}>
+        <div className={styles.skeletonImage} />
+        <div className={styles.content}>
+            <div className={styles.skeletonTitle} />
+            <div className={styles.skeletonSubtitle} />
+            <div className={styles.skeletonCaption} />
+        </div>
+    </div>
+);*/
 
 export default React.memo(Card);
