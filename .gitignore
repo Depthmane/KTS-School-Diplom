@@ -22,8 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-*.css.map
-*.css
 /src/jsons/releases.json
 /src/jsons/bands.json
 /bandpedia-56963-firebase-adminsdk-fbsvc-37f2cb1776.json
