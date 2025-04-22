@@ -10,7 +10,7 @@
     "lint:fix": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --fix",
     "preview": "vite preview",
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d dist -b hw-6"
+    "deploy": "gh-pages -d dist -b gh-pages"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
