@@ -1,0 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.css.map
+*.css
+/src/jsons/releases.json
+/src/jsons/bands.json
+/bandpedia-56963-firebase-adminsdk-fbsvc-37f2cb1776.json
+/src/utils/importBands.cjs
+/src/utils/importReleases.cjs
+/src/jsons/releases_backup.json
+/src/jsons/bands_backup.json
