@@ -3,8 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import filtersStore from "stores/FiltersStore";
 import { parseQueryParams } from "utils/queryParams";
 import { useDebounce } from "./useDebounce";
-import { bandsStore } from "stores";
-import {favoriteBandsStore} from "../stores";
+import { bandsStore, favoriteBandsStore } from "stores/index";
 
 export function useFilters() {
     const [localSearchValue, setLocalSearchValue] = useState(filtersStore.searchQuery);

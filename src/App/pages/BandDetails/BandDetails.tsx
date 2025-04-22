@@ -8,10 +8,10 @@ import styles from "./BandDetails.module.scss";
 import {useEffect} from "react";
 import {useLocalStore} from "hooks/useLocalStore";
 import * as React from "react";
-import NotFoundPage from "pages/NotFoundPage";
+import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import BandDetailsSkeleton from "./BandDetailsSkeleton";
 import FavoriteButton from "components/FavoriteButton";
-import {Card} from "components";
+import Card from "components/Card";
 import AppRoutes from "routes";
 import BandLinksIcons from "components/icons/BandLinksIcons";
 

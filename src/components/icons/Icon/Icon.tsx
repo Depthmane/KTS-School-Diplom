@@ -7,6 +7,7 @@ export type IconProps = React.SVGAttributes<SVGElement> & {
     height?: number;
     viewBoxWidth?: number;
     viewBoxHeight?: number;
+    filled?: boolean;
 };
 
 const colorMap = {

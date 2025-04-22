@@ -10,7 +10,7 @@ import AppRoutes from "../routes";
 import 'styles/global.scss';
 import 'styles/_theme.scss';
 import {useEffect} from "react";
-import {authStore} from "stores";
+import {authStore} from "stores/index";
 import {observer} from "mobx-react-lite";
 
 const App: React.FC = observer(() => {

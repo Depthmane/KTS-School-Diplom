@@ -8,6 +8,7 @@ import {
 import {Band} from "types/band";
 import {collection, getDocs} from "firebase/firestore";
 import {db} from "firebaseConfig";
+import {normalizeBandData} from "../utils/normilizeData";
 
 class FavoriteBandsStore {
     bands: string[] = [];
@@ -36,13 +37,14 @@ class FavoriteBandsStore {
         try {
             const bands = await getFavoriteBands(userId);
             const bandsData = await getBandsByIds(bands);
+            const normalizedBandsData = bandsData.map(normalizeBandData);
 
             runInAction(() => {
                 if (isCurrentUser) {
                     this.bands = bands;
-                    this.bandsData = bandsData;
+                    this.bandsData = normalizedBandsData;
                 } else {
-                    this.viewedUserBands = bandsData;
+                    this.viewedUserBands = normalizedBandsData;
                 }
             });
         } catch (error) {
@@ -58,12 +60,9 @@ class FavoriteBandsStore {
     async add(userId: string, bandId: string) {
         try {
             await addFavoriteBand(userId, bandId);
+
             runInAction(() => {
                 this.bands.push(bandId);
-            });
-            const [band] = await getBandsByIds([bandId]);
-            runInAction(() => {
-                if (band) this.bandsData.push(band);
             });
         } catch (error) {
             runInAction(() => {
@@ -75,9 +74,11 @@ class FavoriteBandsStore {
     async remove(userId: string, bandId: string) {
         try {
             await removeFavoriteBand(userId, bandId);
+
             runInAction(() => {
                 this.bands = this.bands.filter(id => id !== bandId);
-                this.bandsData = this.bandsData.filter(b => b.id !== bandId);
+
+                this.bandsData = this.bandsData.filter(band => band.id !== bandId);
             });
         } catch (error) {
             runInAction(() => {

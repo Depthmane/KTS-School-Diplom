@@ -59,9 +59,12 @@ export const getReleasesByBandId = async (bandId: string): Promise<ServerRelease
         const q = query(releasesRef, where('band_id', '==', bandId));
         const releasesSnapshot = await getDocs(q);
 
-        return releasesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as ServerRelease[];
+        return releasesSnapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<ServerRelease, 'id'>;
+            return { id: doc.id, ...data };
+        });
     } catch (error) {
-        console.error("Error fetching releases for band ID ${bandId}:", error);
+        console.error(`Error fetching releases for band ID ${bandId}:`, error);
         return [];
     }
 };

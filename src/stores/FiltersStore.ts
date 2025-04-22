@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import {Option} from "components/Multidropdown";
+import {Option} from "components/MultiDropdown";
 import {parseQueryParams} from "../utils/queryParams";
 
 class FiltersStore {

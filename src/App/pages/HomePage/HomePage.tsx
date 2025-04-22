@@ -7,7 +7,7 @@ import Card from "components/Card";
 import Input from "components/Input";
 import MultiDropdown from "components/MultiDropdown";
 import styles from "./HomePage.module.scss";
-import {favoriteBandsStore, filtersStore} from "stores";
+import {favoriteBandsStore, filtersStore} from "stores/index";
 import {createRef, useEffect, useRef} from "react";
 import AppRoutes from "routes";
 import FavoriteButton from "components/FavoriteButton";
@@ -23,7 +23,7 @@ const HomePage = observer(() => {
         updateURL,
         handleHideFavorites
     } = useFilters();
-    const {initialLoadDone, shouldScrollToSavedPage, isFirstLoad} = usePagination(updateURL);
+    const {shouldScrollToSavedPage, isFirstLoad} = usePagination(updateURL);
 
     const displayedBands = filtersStore.hideFavorites
         ? bandsStore.bands.filter(band => !favoriteBandsStore.bands.includes(band.id))
@@ -55,7 +55,7 @@ const HomePage = observer(() => {
                 block: "start",
             });
         }
-    }, [initialLoadDone, filtersStore.currentPage, bandsStore.bands.length]);
+    }, [filtersStore.currentPage, bandsStore.bands.length]);
 
     /*    if (bandsStore.loading || bandsStore.bands.length === 0) {
             console.log('грузим')

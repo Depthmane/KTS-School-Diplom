@@ -1,7 +1,8 @@
-import bandsStore from "./BandsStore";
-import {uiStore} from "./UIStore.ts";
-import filtersStore from "./FiltersStore";
 import authStore from "./AuthStore";
+import bandsStore from "./BandsStore";
 import favoriteBandsStore from "./FavoriteBandsStore";
+import filtersStore from "./FiltersStore";
+import {uiStore} from "./UIStore.ts";
+import userStore from "./UserStore";
 
-export { bandsStore, uiStore, filtersStore,  authStore, favoriteBandsStore };
+export { bandsStore, uiStore, filtersStore,  authStore, favoriteBandsStore, userStore };

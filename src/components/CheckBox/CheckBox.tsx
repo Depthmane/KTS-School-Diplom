@@ -1,7 +1,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import styles from './CheckBox.module.scss';
-import CheckIcon from 'icons/CheckIcon';
+import { CheckIcon } from 'icons';
 import { observer } from 'mobx-react-lite';
 
 export type CheckBoxProps = Omit<

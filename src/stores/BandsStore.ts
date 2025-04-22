@@ -2,7 +2,7 @@ import { makeAutoObservable} from "mobx";
 import { Band } from "types/band";
 import { getBands, getRandomBandId } from "api/firebaseLoader";
 import filtersStore from "./FiltersStore";
-import {Option} from "components/Multidropdown";
+import {Option} from "components/MultiDropdown";
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { normalizeBandData } from "utils/normilizeData";
 

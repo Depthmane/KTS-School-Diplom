@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { authStore } from "stores";
+import { authStore } from "stores/index";
 import styles from './AuthModal.module.scss';
 import {observer} from "mobx-react-lite";
 import AuthButton from "./AuthButton/AuthButton";

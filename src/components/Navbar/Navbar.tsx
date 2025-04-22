@@ -1,13 +1,11 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
-import Text from 'components/Text/Text';
 import styles from "./Navbar.module.scss";
 import {NavLink, useLocation} from "react-router-dom";
 import RandomBandLink from "../RandomBandLink/RandomBandLink";
-import {authStore} from "stores";
+import {authStore, userStore} from "stores/index";
 import AuthModal from "components/AuthModal/AuthModal";
-import userStore from "stores/UserStore";
 import {observer} from "mobx-react-lite";
 
 
@@ -89,7 +87,7 @@ const Navbar: React.FC = observer(() => {
                                         <>
                                         </>
                                     )}
-                                    <li><RandomBandLink /></li>
+                                    <li onClick={() => setIsOpen(false)}><RandomBandLink /></li>
                                 </ul>
                             )}
                         </div>

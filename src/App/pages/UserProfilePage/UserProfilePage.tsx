@@ -4,12 +4,10 @@ import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import clsx from "clsx";
 
-import userStore from "stores/UserStore";
-import authStore from "stores/AuthStore";
 import styles from "./UserProfilePage.module.scss";
 import FavoriteButton from "components/FavoriteButton";
-import { favoriteBandsStore } from "stores";
-import { Card } from "components";
+import { favoriteBandsStore, authStore, userStore } from "stores/index";
+import Card  from "components/Card";
 import UserProfilePageSkeleton from "./UserProfilePageSkeleton";
 
 const UserProfilePage: React.FC = observer(() => {
@@ -91,7 +89,7 @@ const UserProfilePage: React.FC = observer(() => {
                                 image={band.image}
                                 title={band.name}
                                 captionSlot={band.genres.join(", ")}
-                                subtitle={band.description_short}
+                                subtitle={band.descriptionShort}
                                 actionSlot={<FavoriteButton bandId={band.id} />}
                                 onClick={() => navigate(`/band/${band.id}`)}
                             />

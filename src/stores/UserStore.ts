@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { getFavoriteBands } from "api/firebaseLoader/favoriteBandsLoader";
 import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
-import { UserProfile } from "types/User";
+import { UserProfile } from "types/user";
 
 class UserStore {
     ownProfile: UserProfile | null = null;
