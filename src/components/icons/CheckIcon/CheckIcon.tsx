@@ -16,6 +16,7 @@ const CheckIcon: React.FC<IconProps> = ({ color, width = 24, height = 24, classN
             {...props}
         >
             <path
+                className="checkmark"
                 d="M4 11.6129L9.87755 18L20 7"
                 fill="none"
                 stroke={color || 'currentColor'}

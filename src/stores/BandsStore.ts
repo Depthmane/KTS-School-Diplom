@@ -83,6 +83,7 @@ class BandsStore {
         this.setLastVisible(lastVisible);
         this.setHasMore(allBands.length === targetPage * 10);
         this.updateGenresBasedOnCurrentBands();
+        this.setIsInitialLoading(false);
     }
 
     get categoriesOptions(): Option[] {
@@ -95,6 +96,14 @@ class BandsStore {
         } catch (error) {
             console.error("Ошибка при получении случайной группы:", error);
             return null;
+        }
+    }
+
+    trimBandsToPage(pageSize: number = 10) {
+        const { currentPage } = filtersStore;
+        const expectedCount = currentPage * pageSize;
+        if (this.bands.length > expectedCount) {
+            this.setBands(this.bands.slice(0, expectedCount));
         }
     }
 

@@ -70,6 +70,7 @@ class AuthStore {
             userStore.clearOwnProfile();
             favoriteBandsStore.clear();
             this.user = null;
+/*            window.location.href = "/";*/
         } catch (error) {
             this.error = error.message;
         } finally {

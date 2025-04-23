@@ -29,3 +29,4 @@ dist-ssr
 /src/utils/importReleases.cjs
 /src/jsons/releases_backup.json
 /src/jsons/bands_backup.json
+/src/components/ThemeSwitch/ThemeSwitch.module.css

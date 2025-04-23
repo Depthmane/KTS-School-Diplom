@@ -18,7 +18,7 @@ const parseTsConfigPaths = (paths: Record<string, string[]>): Record<string, str
 
 export default defineConfig({
   plugins: [react()],
-  base:"/KTS-School-Diplom/",
+/*  base:"/KTS-School-Diplom/",*/
   resolve: {
     alias: {
       components: path.resolve(SRC_PATH, 'components'),

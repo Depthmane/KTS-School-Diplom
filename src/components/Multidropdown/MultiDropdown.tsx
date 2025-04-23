@@ -4,6 +4,7 @@ import Input from "components/Input";
 import styles from './MultiDropdown.module.scss';
 import {ArrowDownIcon, CrossIcon} from "icons";
 import clsx from "clsx";
+import { motion, AnimatePresence } from 'framer-motion';
 
 export type Option = {
     key: string;
@@ -19,14 +20,15 @@ export type MultiDropdownProps = {
     getTitle: (value: Option[]) => string;
 };
 
+
 const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
-                                                                  options,
-                                                                  value,
-                                                                  onChange,
-                                                                  disabled,
-                                                                  getTitle,
-                                                                  className
-                                                              }) => {
+                                                                    options,
+                                                                    value,
+                                                                    onChange,
+                                                                    disabled,
+                                                                    getTitle,
+                                                                    className
+                                                                }) => {
     const [isOpen, setOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
     const dropDownRef = useRef<HTMLDivElement | null>(null);
@@ -71,7 +73,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
 
     const handleClearSelection = () => {
         setSearchText('');
-        onChange([])
+        onChange([]);
     };
 
     return (
@@ -80,26 +82,35 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
                 value={searchText || (value.length > 0 ? getTitle(value) : '')}
                 onChange={setSearchText}
                 onFocus={handleFocus}
-                afterSlot= {
+                afterSlot={
                     searchText.length > 0 || value.length > 0 ? (
                         <CrossIcon
                             color="primary"
                             onClick={handleClearSelection}
-                            className = {styles.crossIcon}
+                            className={styles.crossIcon}
                         />
-                        ) :
+                    ) : (
                         <ArrowDownIcon
                             color="secondary"
-                            className = {styles.crossIcon}
-                            onClick={handleFocus}
+                            className={styles.crossIcon}
+                            onClick={() => setOpen((prev) => !prev)}
                         />
-            }
+                    )
+                }
                 disabled={disabled}
                 placeholder={value.length === 0 ? 'Жанры..' : undefined}
                 className={isOpen ? 'input-black-text' : ''}
             />
+            <AnimatePresence>
             {!disabled && isOpen && filteredOptions.length > 0 && (
-                <div className={styles.dropdownMenu}>
+                <motion.div
+                    className={styles.dropdownMenu}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    style={{ overflow: 'hidden' }}
+                    transition={{ duration: 0.4 }}
+                >
                     {filteredOptions.map((option) => (
                         <div
                             key={option.key}
@@ -112,8 +123,9 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
                             {option.value}
                         </div>
                     ))}
-                </div>
+                </motion.div>
             )}
+            </AnimatePresence>
         </div>
     );
 });

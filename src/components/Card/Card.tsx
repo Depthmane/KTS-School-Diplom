@@ -48,15 +48,4 @@ const Card: React.FC<CardProps> = ({
     );
 };
 
-/*Card.Skeleton = () => (
-    <div className={styles.card}>
-        <div className={styles.skeletonImage} />
-        <div className={styles.content}>
-            <div className={styles.skeletonTitle} />
-            <div className={styles.skeletonSubtitle} />
-            <div className={styles.skeletonCaption} />
-        </div>
-    </div>
-);*/
-
 export default React.memo(Card);

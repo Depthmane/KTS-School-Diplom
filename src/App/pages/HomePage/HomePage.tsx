@@ -12,6 +12,8 @@ import {createRef, useEffect, useRef} from "react";
 import AppRoutes from "routes";
 import FavoriteButton from "components/FavoriteButton";
 import CheckBox from "components/CheckBox"
+import CardSkeleton from "components/Card/CardSkeleton";
+import ScrollToTopButton from "components/ScrollToTop";
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
@@ -57,11 +59,6 @@ const HomePage = observer(() => {
         }
     }, [filtersStore.currentPage, bandsStore.bands.length]);
 
-    /*    if (bandsStore.loading || bandsStore.bands.length === 0) {
-            console.log('грузим')
-            return <Text view="title">все еще нужно добавить лоадер..</Text>;
-        }*/
-
     return (
         <div className={styles.container}>
             <Input
@@ -84,22 +81,30 @@ const HomePage = observer(() => {
                     Скрыть избранные группы
                 </CheckBox>
             </div>
-
             <div className={styles.bandList}>
-                {displayedBands.map((band, index) => (
-                    <div ref={cardRefs.current[index]} key={band.id}>
-                        <Card
-                            data-index={index}
-                            image={band.image}
-                            title={band.name}
-                            captionSlot={band.genres.join(", ")}
-                            subtitle={band.descriptionShort}
-                            actionSlot={<FavoriteButton bandId={band.id}/>}
-                            onClick={() => navigate(AppRoutes.bands.detail(band.id))}
-                        />
-                    </div>
-                ))}
+                {bandsStore.isInitialLoading
+                    ? Array.from({ length: 12 }).map((_, index) => (
+                        <div key={index}>
+                            <CardSkeleton />
+                        </div>
+                    ))
+                    : displayedBands.map((band, index) => (
+                        <div ref={cardRefs.current[index]} key={band.id}>
+                            <Card
+                                data-index={index}
+                                image={band.image}
+                                title={band.name}
+                                captionSlot={band.genres.join(", ")}
+                                subtitle={band.descriptionShort}
+                                actionSlot={<FavoriteButton bandId={band.id}/>}
+                                onClick={() => navigate(AppRoutes.bands.detail(band.id))}
+                            />
+                        </div>
+                    ))}
             </div>
+            {filtersStore.currentPage > 1 && (
+                <ScrollToTopButton updateURL={updateURL} />
+            )}
         </div>
     );
 });

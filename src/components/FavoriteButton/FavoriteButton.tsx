@@ -18,6 +18,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ bandId }) => {
 
     const handleClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
+
         if (!user) {
             setIsModalOpen(true);
             return;
@@ -38,7 +39,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ bandId }) => {
         <button onClick={handleClick} className={styles.favoriteButton}>
             <StarIcon filled={isFavorite} color="accent" className={styles.crossIcon}/>
         </button>
-    {isModalOpen && <AuthModal isOpen={isModalOpen} onClose={handleCloseModal}/>}
+            <AuthModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
     )
 })

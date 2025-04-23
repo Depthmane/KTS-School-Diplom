@@ -10,9 +10,15 @@ import { doc, setDoc } from "firebase/firestore";
 
 
 export const registerUser = async (email: string, password: string, login: string) => {
+    const loginRef = doc(db, "users_logins", login);
+
     try {
+        await setDoc(loginRef, { reserved: true }, { merge: false });
+
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+
+        await setDoc(loginRef, { uid: user.uid }, { merge: true });
 
         await setDoc(doc(db, "users", user.uid), {
             login: login,
@@ -21,7 +27,11 @@ export const registerUser = async (email: string, password: string, login: strin
         });
 
         return user;
-    } catch (error) {
+    } catch (error: any) {
+        if (error.code === "already-exists" || error.message.includes("ALREADY_EXISTS")) {
+            throw new Error("Этот логин уже занят =(");
+        }
+
         throw new Error(error.message);
     }
 };

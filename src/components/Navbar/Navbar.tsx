@@ -2,21 +2,32 @@ import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
 import styles from "./Navbar.module.scss";
-import {NavLink, useLocation} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import RandomBandLink from "../RandomBandLink/RandomBandLink";
 import {authStore, userStore} from "stores/index";
 import AuthModal from "components/AuthModal/AuthModal";
 import {observer} from "mobx-react-lite";
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 const Navbar: React.FC = observer(() => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false)
 
     const menuRef = useRef<HTMLUListElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; }
+    }, [isOpen]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -48,7 +59,7 @@ const Navbar: React.FC = observer(() => {
                     </ul>
 
                     <div className={styles.rightSection}>
-                            <ThemeSwitch />
+                        <ThemeSwitch />
                         {!authStore.user ? (
                             <button onClick={() => setShowAuthModal(true)} className={styles.authButton}>
                                 Войти или зарегистрироваться
@@ -65,8 +76,16 @@ const Navbar: React.FC = observer(() => {
                             >
                                 Меню
                             </button>
+                            <AnimatePresence>
                             {isOpen && (
-                                <ul className={styles.dropdownMenu} ref={menuRef}>
+                                <motion.div className={styles.dropdownMenu}
+                                            ref={menuRef}
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            style={{ overflow: 'hidden' }}
+                                            transition={{ duration: 0.4 }}
+                                >
                                     {authStore.user ? (
                                         <>
                                             <li>
@@ -75,9 +94,10 @@ const Navbar: React.FC = observer(() => {
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <button onClick={() => {
-                                                    authStore.logout();
+                                                <button onClick={async() => {
+                                                    await authStore.logout();
                                                     setIsOpen(false);
+                                                    navigate('/')
                                                 }} className={styles.exitButton}>
                                                     Выйти из аккаунта
                                                 </button>
@@ -88,8 +108,9 @@ const Navbar: React.FC = observer(() => {
                                         </>
                                     )}
                                     <li onClick={() => setIsOpen(false)}><RandomBandLink /></li>
-                                </ul>
+                                </motion.div>
                             )}
+                                </AnimatePresence>
                         </div>
                     </div>
                 </div>

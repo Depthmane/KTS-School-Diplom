@@ -1,7 +1,12 @@
 import * as React from 'react';
 import Icon, { IconProps } from '../Icon';
 
-const ArrowDownIcon: React.FC<IconProps> = ({ color, width = 24, height = 24, className, ...props }) => {
+const ArrowDownIcon: React.FC<IconProps> = ({
+                                                color,
+                                                width = 24,
+                                                height = 24,
+                                                className,
+                                                ...props }) => {
 
 
     return (
