@@ -4,7 +4,7 @@ import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
 import styles from "./Navbar.module.scss";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import RandomBandLink from "../RandomBandLink/RandomBandLink";
-import {authStore, userStore} from "stores/index";
+import {authStore, uiStore, userStore} from "stores/index";
 import AuthModal from "components/AuthModal/AuthModal";
 import {observer} from "mobx-react-lite";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,6 +19,8 @@ const Navbar: React.FC = observer(() => {
 
     const menuRef = useRef<HTMLUListElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+    const currentTheme = uiStore.theme;
 
     useEffect(() => {
         if (isOpen) {
@@ -53,7 +55,20 @@ const Navbar: React.FC = observer(() => {
                         <li>
                             <NavLink to="/" onClick={(e) => {
                                 if (location.pathname === "/") e.preventDefault();
-                            }}>BandPedia</NavLink>
+                            }}>
+                                <div className={styles.logoWrapper}>
+                                    <img
+                                        src="public/logo-light.svg"
+                                        alt="BandPedia Logo"
+                                        className={`${styles.logo} ${currentTheme === "dark" ? styles.visible : styles.hidden}`}
+                                    />
+                                    <img
+                                        src="public/logo-dark.svg"
+                                        alt="BandPedia Logo"
+                                        className={`${styles.logo} ${currentTheme === "light" ? styles.visible : styles.hidden}`}
+                                    />
+                                </div>
+                            </NavLink>
                         </li>
 
                     </ul>
@@ -65,7 +80,7 @@ const Navbar: React.FC = observer(() => {
                                 Войти или зарегистрироваться
                             </button>
                         ) : (
-                            <span className={styles.username}>Салют, {userStore.ownProfile?.login}!</span>
+                            <span className={styles.username}>Салют, <strong>{userStore.ownProfile?.login}!</strong></span>
                         )}
 
                         <div className={styles.dropdown}>

@@ -12,6 +12,7 @@ export interface ServerBand {
     description_long: string;
     members: ServerMember[];
     resources_links?: ServerLink;
+    images_swiper?: string[];
 }
 
 export interface ServerMember {
@@ -42,6 +43,8 @@ export interface Band {
     descriptionLong: string;
     members: Member[];
     resourcesLinks?: Link;
+    imagesSwiper?: string[];
+
 }
 
 export interface Member {

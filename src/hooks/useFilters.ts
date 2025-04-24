@@ -48,9 +48,16 @@ export function useFilters() {
 
     const handleHideFavorites = useCallback((checked: boolean) => {
         filtersStore.setHideFavorites(checked);
-        filtersStore.setCurrentPage(1);
         updateURL();
     }, [updateURL, handleCategoryChange]);
 
-    return { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL, handleHideFavorites };
+    const handleClearFilters = useCallback(() => {
+        filtersStore.setSelectedCategories([]);
+        filtersStore.setSearchQuery('');
+        filtersStore.setHideFavorites(false);
+        filtersStore.setCurrentPage(1)
+        updateURL();
+    }, [])
+
+    return { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL, handleHideFavorites, handleClearFilters };
 }

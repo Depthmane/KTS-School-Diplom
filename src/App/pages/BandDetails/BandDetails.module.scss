@@ -8,37 +8,9 @@
   gap: $spacing-l;
 }
 
-.bandImageAndLinks {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  .bandImage {
-    position: relative;
-    max-width: 500px;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-  }
-
-  .bandLinks {
-    position: relative;
-    margin-top: $spacing-l;
-    margin-left: 65%;
-  }
-}
-
-
-
-.bandHeader{
-    display: flex;
-  gap: $spacing-l
-}
-
-.detailsFavoriteButton{
-  position: relative;
-  margin: 0;
+.bandBio {
+  display: flex;
+  margin-right: auto;
 }
 
 .bandInfo {
@@ -48,9 +20,14 @@
   gap: 10px;
 }
 
-.bandBio {
+.bandHeader {
   display: flex;
-  margin-right: auto;
+  gap: $spacing-l;
+}
+
+.detailsFavoriteButton {
+  position: relative;
+  margin: 0;
 }
 
 .genreLink {
@@ -75,3 +52,18 @@
   margin: 0 auto;
   padding: $spacing-l;
 }
+
+.bandImageAndLinks {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  .bandLinks {
+    position: relative;
+    margin-top: $spacing-l;
+    margin-left: 65%;
+  }
+}
+
+
+

@@ -5,6 +5,29 @@
   box-shadow: 0 2px 8px var(--shadow-color);
   margin-bottom: 30px;
 
+  .logoWrapper {
+    position:absolute;
+    width: 200px;
+    height: auto;
+    top: -10px;
+  }
+
+  .logo {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .hidden {
+    opacity: 0;
+  }
+
+  .visible {
+    opacity: 1;
+  }
+
+
   .container {
     max-width: 1200px;
     margin: auto;
@@ -38,7 +61,6 @@
       }
     }
   }
-
   .rightSection {
     margin-left: auto;
     display: flex;

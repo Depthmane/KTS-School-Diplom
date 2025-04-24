@@ -30,3 +30,4 @@ dist-ssr
 /src/jsons/releases_backup.json
 /src/jsons/bands_backup.json
 /src/components/ThemeSwitch/ThemeSwitch.module.css
+/src/utils/updateBandsImagesSwiper.cjs

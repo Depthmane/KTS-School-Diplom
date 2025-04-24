@@ -39,3 +39,33 @@
 .container::-webkit-scrollbar {
   display: none;
 }
+
+.clearFiltersButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  background-color: var(--default-bg);
+  border: 1px solid var(--text-secondary);
+  margin-top: $spacing-s;
+  border-radius: 4px;
+  height: 40px;
+  font-size: 18px;
+  padding: var(--space-s) var(--space-l);
+  cursor: pointer;
+  transition: background-color 1s ease;
+  color: var(--text-primary);
+
+  &:hover:not(.btnLoading):not(:disabled) {
+    background-color: var(--text-accent);
+    color: black;
+  }
+}
+
+.nothingFound{
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+  align-items: center;
+  justify-content: center;
+}

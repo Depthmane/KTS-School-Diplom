@@ -5,6 +5,7 @@ import {usePagination} from "hooks/usePagination";
 import {useFilters} from "hooks/useFilters";
 import Card from "components/Card";
 import Input from "components/Input";
+import Text from "components/Text"
 import MultiDropdown from "components/MultiDropdown";
 import styles from "./HomePage.module.scss";
 import {favoriteBandsStore, filtersStore} from "stores/index";
@@ -23,7 +24,8 @@ const HomePage = observer(() => {
         setLocalSearchValue,
         handleCategoryChange,
         updateURL,
-        handleHideFavorites
+        handleHideFavorites,
+        handleClearFilters
     } = useFilters();
     const {shouldScrollToSavedPage, isFirstLoad} = usePagination(updateURL);
 
@@ -42,7 +44,7 @@ const HomePage = observer(() => {
 
     useEffect(() => {
         const page = filtersStore.currentPage;
-        const indexToScroll = (page - 1) * 10;
+        const indexToScroll = (page - 1) * 9;
 
         if (
             page > 1 &&
@@ -104,6 +106,17 @@ const HomePage = observer(() => {
             </div>
             {filtersStore.currentPage > 1 && (
                 <ScrollToTopButton updateURL={updateURL} />
+            )}
+            {!bandsStore.hasMore && bandsStore.bands.length === 0 && (
+                <div className={styles.nothingFound}>
+                    <Text tag="h2">Ничего не нашлось. Может, очистить фильтры?</Text>
+                    <button
+                        onClick={handleClearFilters}
+                        className= {styles.clearFiltersButton}
+                    >
+                        Да, очистить!
+                    </button>
+                </div>
             )}
         </div>
     );

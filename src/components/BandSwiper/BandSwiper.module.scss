@@ -1,0 +1,74 @@
+.bandSwiperWrapper {
+  position: relative;
+  width: 500px;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.bandSwiper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.bandImageBlur {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px) brightness(0.8);
+  transform: scale(1.1);
+  z-index: 1;
+  border-radius: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+.bandImageMain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.bandSwiper :global(.swiper-pagination-bullet) {
+  background-color: var(--text-secondary);
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px;
+  transition: all 0.3s;
+}
+
+.bandSwiper :global(.swiper-pagination-bullet-active) {
+  background-color: var(--text-accent);
+  opacity: 1;
+  width: 12px;
+  height: 12px;
+}
+
+.bandSwiper :global(.swiper-button-prev),
+.bandSwiper :global(.swiper-button-next) {
+  color: var(--text-accent-default);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    font-size: 70px;
+    transform: scaleX(0.5) rotate(0deg);
+  }
+}
