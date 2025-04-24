@@ -1,5 +1,6 @@
 import * as React from "react";
 import styles from "./UserProfilePageSkeleton.module.scss";
+import CardSkeleton from "components/Card/CardSkeleton";
 
 const UserProfilePageSkeleton: React.FC = () => {
     return (
@@ -21,7 +22,7 @@ const UserProfilePageSkeleton: React.FC = () => {
                 <div className={styles.skeletonTextMedium} />
                 <div className={styles.bandList}>
                     {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className={styles.skeletonCard} />
+                        < CardSkeleton key={i}/>
                     ))}
                 </div>
             </div>

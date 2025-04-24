@@ -1,5 +1,6 @@
 import styles from "./BandDetails.module.scss";
 import Skeleton from "components/Skeleton/Skeleton";
+import CardSkeleton from "components/Card/CardSkeleton";
 
 const BandDetailsSkeleton = () => {
     return (
@@ -59,7 +60,7 @@ const BandDetailsSkeleton = () => {
                 <Skeleton width={300} height={30} style={{ margin: "30px 0 20px" }} /> {/* также могут понравиться */}
                 <div className={styles.similarBands}>
                     {Array.from({ length: 3 }).map((_, index) => (
-                        <Skeleton key={index} width={348} height={622} /> // сюда Card skeleton бахнуть
+                        <CardSkeleton key={index} />
                     ))}
                 </div>
             </div>

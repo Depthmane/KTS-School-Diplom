@@ -14,11 +14,13 @@ const UserProfilePage: React.FC = observer(() => {
     const { login } = useParams();
     const navigate = useNavigate();
 
+    const isOwnProfile = authStore.user?.uid && userStore.ownProfile?.login === login;
+
     useEffect(() => {
         if (!login) return;
 
-        const fetch = async () => {
-            if (authStore.user?.uid && userStore.ownProfile?.login === login) {
+        (async () => {
+            if (isOwnProfile) {
                 await favoriteBandsStore.fetchForUser(authStore.user.uid, true);
             } else {
                 const user = await userStore.fetchUserProfileByLogin(login);
@@ -26,15 +28,12 @@ const UserProfilePage: React.FC = observer(() => {
                     await favoriteBandsStore.fetchForUser(user.id, false);
                 }
             }
-        };
-
-        fetch();
+        })();
 
         return () => {
             favoriteBandsStore.viewedUserBands = [];
             userStore.clearViewedProfile();
         };
-
     }, [login]);
 
     if (userStore.loading) return <UserProfilePageSkeleton />;
@@ -82,7 +81,7 @@ const UserProfilePage: React.FC = observer(() => {
             <div className={styles.favoriteBands}>
                 <h2>Любимые группы: </h2>
                 <div className={styles.bandList}>
-                    {bands.length > 0 ? (
+                    {bands?.length > 0 ? (
                         bands.map(band => (
                             <Card
                                 key={band.id}

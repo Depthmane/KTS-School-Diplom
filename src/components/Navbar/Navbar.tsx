@@ -58,12 +58,12 @@ const Navbar: React.FC = observer(() => {
                             }}>
                                 <div className={styles.logoWrapper}>
                                     <img
-                                        src="public/logo-light.svg"
+                                        src="logo-light.svg"
                                         alt="BandPedia Logo"
                                         className={`${styles.logo} ${currentTheme === "dark" ? styles.visible : styles.hidden}`}
                                     />
                                     <img
-                                        src="public/logo-dark.svg"
+                                        src="logo-dark.svg"
                                         alt="BandPedia Logo"
                                         className={`${styles.logo} ${currentTheme === "light" ? styles.visible : styles.hidden}`}
                                     />

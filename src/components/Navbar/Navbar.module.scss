@@ -142,3 +142,55 @@
     }
   }
 }
+
+@media (max-width: 520px) {
+  .navbar {
+    padding: $spacing-m $spacing-m $spacing-m 0;
+    margin-bottom: 20px;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navItems {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .logoWrapper {
+    position: absolute;
+    top: 10px;
+    left: 58%;
+    transform: translateX(-50%);
+  }
+
+  .logo {
+    max-width: 150px;
+  }
+
+  .rightSection {
+    margin-top: 30px;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .dropdownMenu {
+    width: 100%;
+    top: 50px;
+  }
+
+  .menuButton {
+    display: block;
+    margin: 0 auto;
+  }
+}
+

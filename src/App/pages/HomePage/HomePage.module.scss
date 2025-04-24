@@ -2,6 +2,11 @@
   max-width: 1200px;
   margin: auto;
   scroll-behavior: smooth;
+  padding: 0 $spacing-m;
+
+  @media (max-width: 600px) {
+    padding: 0 $spacing-s;
+  }
 }
 
 .dropdownAndCheckboxContainer{
