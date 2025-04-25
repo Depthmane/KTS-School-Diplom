@@ -18,8 +18,8 @@ const BandDetailsSkeleton = () => {
                     <Skeleton width={180} height={20} /> {/* год распада  */}
                     <Skeleton width={300} height={20} /> {/* жанры */}
                     <Skeleton width={250} height={20} /> {/* ссылка на сайт */}
-                    <Skeleton width={450} height={50} /> {/* описание короткое */}
-                    <Skeleton width={450} height={200} /> {/* описание длинное */}
+                    <Skeleton style={{ width: "100%" }} height={50} /> {/* описание короткое */}
+                    <Skeleton style={{ width: "100%" }} height={200} /> {/* описание длинное */}
                 </div>
 
                 <div className={styles.bandImageAndLinks}>
