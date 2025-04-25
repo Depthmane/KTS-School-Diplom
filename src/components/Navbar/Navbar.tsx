@@ -1,24 +1,35 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import ThemeSwitch from "components/ThemeSwitch/ThemeSwitch";
-import Text from 'components/Text/Text';
 import styles from "./Navbar.module.scss";
-import {NavLink, useLocation} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import RandomBandLink from "../RandomBandLink/RandomBandLink";
-import {authStore} from "stores";
+import {authStore, uiStore, userStore} from "stores/index";
 import AuthModal from "components/AuthModal/AuthModal";
-import userStore from "stores/UserStore";
 import {observer} from "mobx-react-lite";
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 const Navbar: React.FC = observer(() => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false)
 
     const menuRef = useRef<HTMLUListElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+    const currentTheme = uiStore.theme;
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; }
+    }, [isOpen]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -44,17 +55,32 @@ const Navbar: React.FC = observer(() => {
                         <li>
                             <NavLink to="/" onClick={(e) => {
                                 if (location.pathname === "/") e.preventDefault();
-                            }}>BandPedia</NavLink>
+                            }}>
+                                <div className={styles.logoWrapper}>
+                                    <img
+                                        src="logo-light.svg"
+                                        alt="BandPedia Logo"
+                                        className={`${styles.logo} ${currentTheme === "dark" ? styles.visible : styles.hidden}`}
+                                    />
+                                    <img
+                                        src="logo-dark.svg"
+                                        alt="BandPedia Logo"
+                                        className={`${styles.logo} ${currentTheme === "light" ? styles.visible : styles.hidden}`}
+                                    />
+                                </div>
+                            </NavLink>
                         </li>
+
                     </ul>
 
                     <div className={styles.rightSection}>
+                        <ThemeSwitch />
                         {!authStore.user ? (
                             <button onClick={() => setShowAuthModal(true)} className={styles.authButton}>
                                 Войти или зарегистрироваться
                             </button>
                         ) : (
-                            <span className={styles.username}>Салют, {userStore.profile?.login}!</span>
+                            <span className={styles.username}>Салют, <strong>{userStore.ownProfile?.login}!</strong></span>
                         )}
 
                         <div className={styles.dropdown}>
@@ -65,19 +91,28 @@ const Navbar: React.FC = observer(() => {
                             >
                                 Меню
                             </button>
+                            <AnimatePresence>
                             {isOpen && (
-                                <ul className={styles.dropdownMenu} ref={menuRef}>
+                                <motion.div className={styles.dropdownMenu}
+                                            ref={menuRef}
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            style={{ overflow: 'hidden' }}
+                                            transition={{ duration: 0.4 }}
+                                >
                                     {authStore.user ? (
                                         <>
                                             <li>
-                                                <NavLink to={userStore.profile ? `/profile/${userStore.profile.login}` : "/"} onClick={() => setIsOpen(false)}>
+                                                <NavLink to={userStore.ownProfile ? `/profile/${userStore.ownProfile.login}` : "/"} onClick={() => setIsOpen(false)}>
                                                     Мой профиль
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <button onClick={() => {
-                                                    authStore.logout();
+                                                <button onClick={async() => {
+                                                    await authStore.logout();
                                                     setIsOpen(false);
+                                                    navigate('/')
                                                 }} className={styles.exitButton}>
                                                     Выйти из аккаунта
                                                 </button>
@@ -87,10 +122,10 @@ const Navbar: React.FC = observer(() => {
                                         <>
                                         </>
                                     )}
-                                    <li><RandomBandLink /></li>
-                                    <li><ThemeSwitch /></li>
-                                </ul>
+                                    <li onClick={() => setIsOpen(false)}><RandomBandLink /></li>
+                                </motion.div>
                             )}
+                                </AnimatePresence>
                         </div>
                     </div>
                 </div>

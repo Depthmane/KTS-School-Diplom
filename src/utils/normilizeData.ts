@@ -34,6 +34,7 @@ export function normalizeBandData(serverBand: ServerBand): Band {
         descriptionLong: serverBand.description_long,
         members: serverBand.members.map(normalizeMemberData),
         resourcesLinks: normalizeLinksData(serverBand.resources_links),
+        imagesSwiper: serverBand.images_swiper || [],
     };
 }
 

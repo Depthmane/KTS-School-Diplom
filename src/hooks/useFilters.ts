@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import filtersStore from "stores/FiltersStore";
 import { parseQueryParams } from "utils/queryParams";
 import { useDebounce } from "./useDebounce";
-import { bandsStore } from "stores";
+import { bandsStore, favoriteBandsStore } from "stores/index";
 
 export function useFilters() {
     const [localSearchValue, setLocalSearchValue] = useState(filtersStore.searchQuery);
@@ -46,5 +46,18 @@ export function useFilters() {
         updateURL();
     }, [updateURL]);
 
-    return { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL };
+    const handleHideFavorites = useCallback((checked: boolean) => {
+        filtersStore.setHideFavorites(checked);
+        updateURL();
+    }, [updateURL, handleCategoryChange]);
+
+    const handleClearFilters = useCallback(() => {
+        filtersStore.setSelectedCategories([]);
+        filtersStore.setSearchQuery('');
+        filtersStore.setHideFavorites(false);
+        filtersStore.setCurrentPage(1)
+        updateURL();
+    }, [])
+
+    return { categoriesOptions, localSearchValue, setLocalSearchValue, handleCategoryChange, updateURL, handleHideFavorites, handleClearFilters };
 }

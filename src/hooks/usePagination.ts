@@ -8,6 +8,14 @@ export function usePagination(
     const shouldScrollToSavedPage = useRef(true);
     const isFirstLoad = useRef(true);
 
+    const handleScrollToTop = useCallback(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        const previousPage = filtersStore.currentPage - 1;
+        filtersStore.setCurrentPage(previousPage);
+        bandsStore.trimBandsToPage();
+        updateURL(previousPage, filtersStore.searchQuery, filtersStore.selectedCategories)
+    },[])
+
     const handleScroll = useCallback(() => {
         const scrollTop = window.scrollY;
         const windowHeight = window.innerHeight;
@@ -35,5 +43,5 @@ export function usePagination(
     }, [handleScroll]);
 
 
-    return { handleScroll, shouldScrollToSavedPage, isFirstLoad };
+    return { handleScroll, shouldScrollToSavedPage, isFirstLoad, handleScrollToTop };
 }

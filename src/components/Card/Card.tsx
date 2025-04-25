@@ -23,10 +23,10 @@ const Card: React.FC<CardProps> = ({
                                        onClick,
                                    }) => {
     return (
-        <div className={clsx(styles.card, className?? "")} onClick={onClick}>
+        <div className={clsx(styles.card, className ?? "")} onClick={onClick}>
             <div className={styles.cardHeader}>
-                <div className={styles.blurBackground} style={{ backgroundImage: `url(${image})` }} />
-                <img src={image} alt="card-image" className={styles.image} />
+                <div className={styles.blurBackground} style={{backgroundImage: `url(${image})`}}/>
+                <img src={image} alt="card-image" className={styles.image}/>
             </div>
             <div className={styles.cardBody}>
                 <div className={styles.favoriteButton}>{actionSlot}</div>

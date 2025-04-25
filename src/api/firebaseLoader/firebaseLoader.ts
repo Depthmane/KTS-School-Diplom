@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, query, where, limit, startAfter, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { db } from 'firebaseConfig';
-import {Band, Release, ServerBand, ServerRelease} from 'types';
+import { ServerBand, ServerRelease } from 'types';
 
 export const getBands = async (
     page: number,
@@ -13,7 +13,7 @@ export const getBands = async (
         let q = query(bandsCollection, limit(10));
 
         if (search) {
-            q = query(q, where('name', '>=', search), where('name', '<=', search + '\uf8ff'));
+            q = query(q, where('search_name', '>=', search), where('search_name', '<=', search + '\uf8ff'));
         }
 
         if (categories.length > 0) {
@@ -36,7 +36,6 @@ export const getBands = async (
     }
 };
 
-
 export const getBandById = async (id: string): Promise<ServerBand | null> => {
     try {
         const bandDoc = doc(db, 'bands', id);
@@ -50,15 +49,19 @@ export const getBandById = async (id: string): Promise<ServerBand | null> => {
         return null;
     }
 };
+
 export const getReleasesByBandId = async (bandId: string): Promise<ServerRelease[]> => {
     try {
         const releasesRef = collection(db, 'releases');
         const q = query(releasesRef, where('band_id', '==', bandId));
         const releasesSnapshot = await getDocs(q);
 
-        return releasesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as ServerRelease[];
+        return releasesSnapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<ServerRelease, 'id'>;
+            return { id: doc.id, ...data };
+        });
     } catch (error) {
-        console.error("Error fetching releases for band ID ${bandId}:", error);
+        console.error(`Error fetching releases for band ID ${bandId}:`, error);
         return [];
     }
 };

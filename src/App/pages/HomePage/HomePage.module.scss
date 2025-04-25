@@ -1,6 +1,25 @@
 .container {
   max-width: 1200px;
   margin: auto;
+  scroll-behavior: smooth;
+  padding: 0 $spacing-m;
+  overflow-x: hidden;
+
+  @media (max-width: 600px) {
+    padding: 0 $spacing-s;
+  }
+}
+
+.dropdownAndCheckboxContainer{
+  display: flex;
+  align-items: center;
+  gap: $spacing-xl;
+
+  .checkBox{
+    gap: $spacing-s;
+    margin-bottom: 6px;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
 }
 
 .bandList {
@@ -14,7 +33,9 @@
 
 @media (max-width: 1024px) {
   .bandList {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 350px);
+    justify-content: space-around;
+
   }
 }
 
@@ -26,4 +47,56 @@
 
 .container::-webkit-scrollbar {
   display: none;
+}
+
+.clearFiltersButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  background-color: var(--default-bg);
+  border: 1px solid var(--text-secondary);
+  margin-top: $spacing-s;
+  border-radius: 4px;
+  height: 40px;
+  font-size: 18px;
+  padding: var(--space-s) var(--space-l);
+  cursor: pointer;
+  transition: background-color 1s ease;
+  color: var(--text-primary);
+
+  &:hover:not(.btnLoading):not(:disabled) {
+    background-color: var(--text-accent);
+    color: black;
+  }
+}
+
+.nothingFound{
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+  align-items: center;
+  justify-content: center;
+}
+
+.crossIcon {
+  cursor: pointer;
+}
+
+.reloadContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.reloadIcon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  color: var(--text-secondary);
+
+  &:hover {
+    transform: rotate(90deg);
+    color: var(--text-primary);
+  }
 }

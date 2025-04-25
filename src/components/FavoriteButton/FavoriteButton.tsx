@@ -1,12 +1,13 @@
-import {authStore, favoriteBandsStore}  from "stores";
+import {authStore, favoriteBandsStore}  from "stores/index";
 import styles from './FavoriteButton.module.scss'
 import {observer} from "mobx-react-lite";
 import AuthModal from "../AuthModal/AuthModal";
 import {useState} from "react";
-import StarIcon from "icons/StarIcon";
+import { StarIcon } from "icons";
 
 type FavoriteButtonProps ={
     bandId: string;
+    className?: string;
 }
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ bandId }) => {
@@ -17,6 +18,8 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ bandId }) => {
 
     const handleClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
+        e.preventDefault()
+
         if (!user) {
             setIsModalOpen(true);
             return;
@@ -37,7 +40,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ bandId }) => {
         <button onClick={handleClick} className={styles.favoriteButton}>
             <StarIcon filled={isFavorite} color="accent" className={styles.crossIcon}/>
         </button>
-    {isModalOpen && <AuthModal isOpen={isModalOpen} onClose={handleCloseModal}/>}
+            <AuthModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
     )
 })

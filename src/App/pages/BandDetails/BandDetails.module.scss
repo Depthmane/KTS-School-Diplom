@@ -6,51 +6,32 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-l;
+  overflow-x: hidden;
 }
 
-.bandImageAndLinks {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  .bandImage {
-    position: relative;
-    max-width: 500px;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-  }
-
-  .bandLinks {
-    position: relative;
-    margin-top: $spacing-l;
-    margin-left: 65%;
-  }
-}
-
-
-
-.bandHeader{
-    display: flex;
-  gap: $spacing-l
-}
-
-.detailsFavoriteButton{
-  position: relative;
-  margin: 0;
+.bandBio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xl;
 }
 
 .bandInfo {
-  padding-right: 520px;
+  flex: 1 1 320px;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.bandBio {
+.bandHeader {
   display: flex;
-  margin-right: auto;
+  flex-wrap: wrap;
+  gap: $spacing-l;
+  align-items: center;
+}
+
+.detailsFavoriteButton {
+  margin: 0;
 }
 
 .genreLink {
@@ -61,17 +42,40 @@
   }
 }
 
+.bandImageAndLinks {
+  flex: 1 1 320px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-m;
+
+  .bandLinks {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-m;
+    flex-wrap: wrap;
+  }
+}
+
 .separator {
   border: 1px solid var(--text-primary);
   opacity: 0.7;
-  width: 1150px;
+  width: 100%;
 }
 
 .similarBands {
-  width: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: $spacing-l;
-  margin: 0 auto;
-  padding: $spacing-l;
+  padding: $spacing-l 0;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 350px);
+    justify-content: space-around;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }

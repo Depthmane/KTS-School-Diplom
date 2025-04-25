@@ -1,9 +1,10 @@
-import * as React from 'react'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Input from "components/Input";
 import styles from './MultiDropdown.module.scss';
-import {ArrowDownIcon, CrossIcon} from "icons";
+import { ArrowDownIcon, CrossIcon } from "icons";
 import clsx from "clsx";
+import { motion, AnimatePresence } from 'framer-motion';
 
 export type Option = {
     key: string;
@@ -20,13 +21,13 @@ export type MultiDropdownProps = {
 };
 
 const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
-                                                                  options,
-                                                                  value,
-                                                                  onChange,
-                                                                  disabled,
-                                                                  getTitle,
-                                                                  className
-                                                              }) => {
+                                                                    options,
+                                                                    value,
+                                                                    onChange,
+                                                                    disabled,
+                                                                    getTitle,
+                                                                    className
+                                                                }) => {
     const [isOpen, setOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
     const dropDownRef = useRef<HTMLDivElement | null>(null);
@@ -71,7 +72,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
 
     const handleClearSelection = () => {
         setSearchText('');
-        onChange([])
+        onChange([]);
     };
 
     return (
@@ -80,40 +81,72 @@ const MultiDropdown: React.FC<MultiDropdownProps> = React.memo(({
                 value={searchText || (value.length > 0 ? getTitle(value) : '')}
                 onChange={setSearchText}
                 onFocus={handleFocus}
-                afterSlot= {
-                    searchText.length > 0 || value.length > 0 ? (
-                        <CrossIcon
-                            color="primary"
-                            onClick={handleClearSelection}
-                            className = {styles.crossIcon}
-                        />
-                        ) :
-                        <ArrowDownIcon
-                            color="secondary"
-                            className = {styles.crossIcon}
-                            onClick={handleFocus}
-                        />
-            }
+                afterSlot={
+                    <AnimatePresence mode="wait" initial={false}>
+                        {(searchText.length > 0 || value.length > 0) ? (
+                            <motion.div
+                                key="cross-icon"
+                                initial={{ opacity: 0, rotate: 0 }}
+                                animate={{ opacity: 1, rotate: -90 }}
+                                exit={{ opacity: 0, rotate: 0 }}
+                                transition={{ duration: 0.4, ease: 'easeInOut'}}
+                                style={{ transformOrigin: 'center', display: 'inline-flex' }}
+                            >
+                                <CrossIcon
+                                    color="primary"
+                                    onClick={handleClearSelection}
+                                    className={styles.crossIcon}
+                                />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="arrow-icon"
+                                initial={{ opacity: 0, rotate: 0 }}
+                                animate={{ opacity: 1, rotate: isOpen ? 180 : 0 }}
+                                exit={{ opacity: 0, rotate: 0 }}
+                                transition={{ duration: 0.4, ease: 'easeInOut'}}
+                                style={{ transformOrigin: 'center', display: 'inline-flex' }}
+                            >
+                                <ArrowDownIcon
+                                    color="secondary"
+                                    className={styles.crossIcon}
+                                    onClick={() => setOpen((prev) => !prev)}
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                }
+
                 disabled={disabled}
                 placeholder={value.length === 0 ? 'Жанры..' : undefined}
                 className={isOpen ? 'input-black-text' : ''}
             />
-            {!disabled && isOpen && filteredOptions.length > 0 && (
-                <div className={styles.dropdownMenu}>
-                    {filteredOptions.map((option) => (
-                        <div
-                            key={option.key}
-                            className={clsx(
-                                styles.dropdownItem,
-                                isSelected(option) && styles.dropdownItemSelected
-                            )}
-                            onClick={() => handleSearch(option)}
-                        >
-                            {option.value}
-                        </div>
-                    ))}
-                </div>
-            )}
+
+            <AnimatePresence>
+                {!disabled && isOpen && filteredOptions.length > 0 && (
+                    <motion.div
+                        className={styles.dropdownMenu}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        style={{ overflow: 'hidden' }}
+                        transition={{ duration: 0.4 }}
+                    >
+                        {filteredOptions.map((option) => (
+                            <div
+                                key={option.key}
+                                className={clsx(
+                                    styles.dropdownItem,
+                                    isSelected(option) && styles.dropdownItemSelected
+                                )}
+                                onClick={() => handleSearch(option)}
+                            >
+                                {option.value}
+                            </div>
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 });

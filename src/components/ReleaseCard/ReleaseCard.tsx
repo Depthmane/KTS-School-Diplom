@@ -34,7 +34,7 @@ const ReleaseCard: React.FC<ReleaseCardProps> = observer(({ release, className }
                 <Text className={styles.releaseCardInfo}>
                     Рейтинг: {release.rating}
                     <br />
-                    Продолжительность: {release.total_length}
+                    Продолжительность: {release.totalLength}
                 </Text>
                 <Text>Треки:</Text>
                 <ul>

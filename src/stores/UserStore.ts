@@ -2,20 +2,23 @@ import { makeAutoObservable } from "mobx";
 import { getFavoriteBands } from "api/firebaseLoader/favoriteBandsLoader";
 import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
-import { UserProfile } from "types/User";
+import { UserProfile } from "types/user";
 
 class UserStore {
-    profile: UserProfile | null = null;
+    ownProfile: UserProfile | null = null;
+    viewedProfile: UserProfile | null = null;
     loading = false;
     error = "";
+    errorLoadingProfile = false;
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    async fetchUserProfileByUid(uid: string) {
+    async fetchOwnProfile(uid: string) {
         this.loading = true;
         this.error = "";
+        this.errorLoadingProfile = false;
         try {
             const userDoc = await getDoc(doc(db, "users", uid));
             const data = userDoc.data();
@@ -24,15 +27,16 @@ class UserStore {
 
             const favoriteBands = await getFavoriteBands(uid);
 
-            this.profile = {
+            this.ownProfile = {
                 id: uid,
                 login: data.login,
-                favoriteGenres: [], // если добавишь в базу — заполняй здесь
+                favoriteGenres: [],
                 favoriteBands
             };
         } catch (error) {
             this.error = error instanceof Error ? error.message : String(error);
-            console.error("Ошибка при загрузке профиля пользователя:", error);
+            this.errorLoadingProfile = true;
+            console.error("Ошибка при загрузке вашего пользователя:", error);
         } finally {
             this.loading = false;
         }
@@ -41,6 +45,7 @@ class UserStore {
     async fetchUserProfileByLogin(login: string) {
         this.loading = true;
         this.error = "";
+        this.errorLoadingProfile = false;
         try {
             const q = query(collection(db, "users"), where("login", "==", login));
             const querySnapshot = await getDocs(q);
@@ -51,22 +56,30 @@ class UserStore {
             const data = docSnap.data();
             const favoriteBands = await getFavoriteBands(docSnap.id);
 
-            this.profile = {
+            this.viewedProfile = {
                 id: docSnap.id,
                 login: data.login,
-                favoriteGenres: [], // если нужно
+                favoriteGenres: [],
                 favoriteBands
             };
+
+            return this.viewedProfile;
         } catch (error) {
             this.error = error instanceof Error ? error.message : String(error);
+            this.errorLoadingProfile = true;
             console.error("Ошибка при загрузке профиля пользователя:", error);
+            return null;
         } finally {
             this.loading = false;
         }
     }
 
-    clearProfile() {
-        this.profile = null;
+    clearOwnProfile() {
+        this.ownProfile = null;
+    }
+
+    clearViewedProfile() {
+        this.viewedProfile = null;
     }
 }
 

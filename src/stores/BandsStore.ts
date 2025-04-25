@@ -1,10 +1,10 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable} from "mobx";
 import { Band } from "types/band";
 import { getBands, getRandomBandId } from "api/firebaseLoader";
 import filtersStore from "./FiltersStore";
-import {Option} from "components/Multidropdown";
+import {Option} from "components/MultiDropdown";
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
-import {normalizeBandData} from "utils/normilizeData";
+import { normalizeBandData } from "utils/normilizeData";
 
 
 class BandsStore {
@@ -12,6 +12,7 @@ class BandsStore {
     genres: string[] = [];
     loading: boolean = false;
     isInitialLoading: boolean = true;
+    isLoadingMore: boolean = false;
     lastVisible: QueryDocumentSnapshot<DocumentData> | null = null;
     hasMore: boolean = true;
 
@@ -25,13 +26,14 @@ class BandsStore {
         if (this.loading) return;
 
         this.setLoading(true);
+        if (currentPage === 1) {
+            this.setIsInitialLoading(true);
+        } else {
+            this.setIsLoadingMore(true);
+        }
 
         try {
-            if (currentPage === 1) {
-                this.setIsInitialLoading(true);
-            }
             const { bands: serverBands, lastVisible } = await getBands(currentPage, searchQuery, selectedCategories, this.lastVisible);
-
             const normalizedBands = serverBands.map(normalizeBandData);
             const filteredBands = this.filterBandsByGenres(normalizedBands, selectedCategories);
 
@@ -44,16 +46,19 @@ class BandsStore {
             this.setLastVisible(lastVisible);
             this.setHasMore(filteredBands.length === 10);
             this.updateGenresBasedOnCurrentBands();
+
         } catch (error) {
             console.error("Ошибка загрузки групп:", error);
         } finally {
             this.setLoading(false);
             if (currentPage === 1) {
                 this.setIsInitialLoading(false);
+            } else {
+                this.setIsLoadingMore(false);
             }
-
         }
     }
+
     async loadMoreBands() {
         await this.loadBands();
     }
@@ -78,6 +83,7 @@ class BandsStore {
         this.setLastVisible(lastVisible);
         this.setHasMore(allBands.length === targetPage * 10);
         this.updateGenresBasedOnCurrentBands();
+        this.setIsInitialLoading(false);
     }
 
     get categoriesOptions(): Option[] {
@@ -86,11 +92,18 @@ class BandsStore {
 
     async fetchRandomBandId(): Promise<string | null> {
         try {
-            const randomId = await getRandomBandId();
-            return randomId;
+            return await getRandomBandId();
         } catch (error) {
             console.error("Ошибка при получении случайной группы:", error);
             return null;
+        }
+    }
+
+    trimBandsToPage(pageSize: number = 10) {
+        const { currentPage } = filtersStore;
+        const expectedCount = currentPage * pageSize;
+        if (this.bands.length > expectedCount) {
+            this.setBands(this.bands.slice(0, expectedCount));
         }
     }
 
@@ -110,6 +123,10 @@ class BandsStore {
         this.loading = loading;
     }
 
+    private setIsLoadingMore(value: boolean) {
+        this.isLoadingMore = value;
+    }
+
     private setIsInitialLoading(value: boolean) {
         this.isInitialLoading = value;
     }
@@ -120,7 +137,7 @@ class BandsStore {
 
     private filterBandsByGenres(bands: Band[], genres: string[]): Band[] {
         if (!genres.length) return bands;
-        return bands.filter((band) => genres.every((genre) => band.genres.includes(genre)));
+        return bands.filter(band => genres.every(genre => band.genres.includes(genre)));
     }
 
     private updateGenresBasedOnCurrentBands() {
@@ -134,3 +151,4 @@ class BandsStore {
 
 const bandsStore = new BandsStore();
 export default bandsStore;
+

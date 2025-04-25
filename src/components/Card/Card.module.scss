@@ -6,10 +6,9 @@
   cursor: pointer;
   background-color: var(--card-bg);
   gap: $spacing-xl;
-  transition:
-          background-color 0.5s ease-in-out,
-          color 0.5s ease-in-out,
-          box-shadow 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out,
+  color 0.5s ease-in-out,
+  box-shadow 0.5s ease-in-out;
 
   &:hover {
     box-shadow: 0 6px 10px 0 var(--shadow-color);
@@ -51,9 +50,22 @@
     height: 130px;
   }
 
-  .favoriteButton{
+  .favoriteButton {
     position: absolute;
     margin-left: 295px;
     margin-top: -5px;
+
+    @media (max-width: 1024px) {
+      margin-left: 290px;
+    }
+    @media (max-width: 768px) {
+      margin-left: 260px;
+    }
+    @media (max-width: 360px) {
+      margin-left: 240px;
+    }
+    @media (max-width: 320px) {
+      margin-left: 230px;
+    }
   }
 }

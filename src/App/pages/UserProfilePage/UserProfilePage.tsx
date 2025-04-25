@@ -4,37 +4,63 @@ import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import clsx from "clsx";
 
-import userStore from "stores/UserStore";
-import authStore from "stores/AuthStore";
 import styles from "./UserProfilePage.module.scss";
 import FavoriteButton from "components/FavoriteButton";
-import {favoriteBandsStore} from "stores";
-import {Card} from "components";
+import { favoriteBandsStore, authStore, userStore } from "stores/index";
+import Card  from "components/Card";
+import UserProfilePageSkeleton from "./UserProfilePageSkeleton";
+import NotFoundPage from "../NotFoundPage";
 
 const UserProfilePage: React.FC = observer(() => {
     const { login } = useParams();
     const navigate = useNavigate();
 
+    const isOwnProfile = authStore.user?.uid && userStore.ownProfile?.login === login;
+
     useEffect(() => {
-        if (login) {
-            userStore.fetchUserProfileByLogin(login);
-        }
+        if (!login) return;
+
+        (async () => {
+            if (isOwnProfile) {
+                await favoriteBandsStore.fetchForUser(authStore.user.uid, true);
+            } else {
+                const user = await userStore.fetchUserProfileByLogin(login);
+                if (user) {
+                    await favoriteBandsStore.fetchForUser(user.id, false);
+                }
+            }
+        })();
+
+        return () => {
+            favoriteBandsStore.viewedUserBands = [];
+            userStore.clearViewedProfile();
+        };
     }, [login]);
 
-    if (userStore.loading) return <div>Идет загрузка</div>;
+    if (userStore.loading || favoriteBandsStore.loading || favoriteBandsStore.bandsLoading) {
+        return <UserProfilePageSkeleton />;
+    }
+
+    if (userStore.error === "Пользователь не найден!") return <NotFoundPage />;
     if (userStore.error) return <div>Error: {userStore.error}</div>;
 
-    const profile = userStore.profile;
+    const profile = (authStore.user?.uid && userStore.ownProfile?.login === login)
+        ? userStore.ownProfile
+        : userStore.viewedProfile;
+
+    const bands = (authStore.user?.uid && userStore.ownProfile?.login === login)
+        ? favoriteBandsStore.bandsData
+        : favoriteBandsStore.viewedUserBands;
 
     const uniqueGenres = Array.from(
         new Set(
-            favoriteBandsStore.bandsData.flatMap(band => band.genres || [])
+            bands.flatMap(band => band.genres || [])
         )
     );
 
-    if (!profile) return <div>Нет данных для данного профиля</div>;
-
-
+    if (!profile) {
+        return <div/>;
+    }
 
     return (
         <div className={clsx(styles.profilePage)}>
@@ -48,10 +74,10 @@ const UserProfilePage: React.FC = observer(() => {
                     <div className={styles.genres}>
                         {uniqueGenres.map((genre, index) => (
                             <span key={genre} className={styles.genre}>
-                    <NavLink to={{ pathname: "/", search: `?categories=${genre}` }} className={styles.genreLink}>
-                        {genre} {index < uniqueGenres.length - 1 && " · "}
-                    </NavLink>
-                </span>
+                                <NavLink to={{ pathname: "/", search: `?categories=${genre}` }} className={styles.genreLink}>
+                                    {genre} {index < uniqueGenres.length - 1 && " · "}
+                                </NavLink>
+                            </span>
                         ))}
                     </div>
                 ) : (
@@ -62,14 +88,14 @@ const UserProfilePage: React.FC = observer(() => {
             <div className={styles.favoriteBands}>
                 <h2>Любимые группы: </h2>
                 <div className={styles.bandList}>
-                    {favoriteBandsStore.bandsData.length > 0 ? (
-                        favoriteBandsStore.bandsData.map(band => (
+                    {bands?.length > 0 ? (
+                        bands.map(band => (
                             <Card
                                 key={band.id}
                                 image={band.image}
                                 title={band.name}
                                 captionSlot={band.genres.join(", ")}
-                                subtitle={band.description_short}
+                                subtitle={band.descriptionShort}
                                 actionSlot={<FavoriteButton bandId={band.id} />}
                                 onClick={() => navigate(`/band/${band.id}`)}
                             />

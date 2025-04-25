@@ -1,11 +1,12 @@
 import { makeAutoObservable } from "mobx";
-import {Option} from "components/Multidropdown";
+import {Option} from "components/MultiDropdown";
 import {parseQueryParams} from "../utils/queryParams";
 
 class FiltersStore {
     searchQuery: string = '';
     selectedCategories: string[] = [];
     currentPage: number = 1;
+    hideFavorites: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -15,20 +16,22 @@ class FiltersStore {
         return this.selectedCategories.map((cat) => ({key: cat, value: cat}));
     }
 
-    syncFromSearchParams(params: URLSearchParams): { page: number, search: string, categories: string[] } {
-        const {page, search, categories} = parseQueryParams(params);
+    syncFromSearchParams(params: URLSearchParams): { page: number, search: string, categories: string[], hideFavorites:boolean } {
+        const {page, search, categories, hideFavorites} = parseQueryParams(params);
 
-        this.setSearchQuery(search);
+        this.setSearchQuery(search.toLowerCase());
         this.setSelectedCategories(categories);
         this.setCurrentPage(page);
+        this.setHideFavorites(hideFavorites)
 
-        return {page, search, categories};
+        return {page, search, categories, hideFavorites};
     }
 
     toSearchParams() {
         const params = new URLSearchParams();
         params.set("page", String(this.currentPage));
         if (this.searchQuery) params.set("search", this.searchQuery);
+        if (this.hideFavorites) params.set("hideFavorites", "true");
         if (this.selectedCategories.length) {
             params.set("categories", this.selectedCategories.join(","));
         }
@@ -39,20 +42,25 @@ class FiltersStore {
         this.searchQuery = '';
         this.selectedCategories = [];
         this.currentPage = 1;
+        this.hideFavorites = false;
     }
 
 
-    private setSearchQuery(query: string) {
+    setSearchQuery(query: string) {
         this.searchQuery = query;
     }
 
-    private setSelectedCategories(categories: string[]) {
+    setSelectedCategories(categories: string[]) {
         this.selectedCategories = categories;
     }
 
 
-    private setCurrentPage(page: number) {
+    setCurrentPage(page: number) {
         this.currentPage = page;
+    }
+
+    setHideFavorites(hide: boolean) {
+        this.hideFavorites = hide;
     }
 }
 

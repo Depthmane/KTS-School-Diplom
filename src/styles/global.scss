@@ -11,6 +11,7 @@ html, body {
   color: var(--text-primary);
   height: auto;
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 body {

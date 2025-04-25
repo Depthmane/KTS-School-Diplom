@@ -1,0 +1,45 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: var(--default-bg);
+  border: 1px solid var(--text-secondary);
+  margin-top: $spacing-s;
+  border-radius: 4px;
+  height: 40px;
+  padding: var(--space-s) var(--space-l);
+  cursor: pointer;
+  transition: background-color 1s ease;
+  color: var(--text-primary);
+
+  &:hover:not(.btnLoading):not(:disabled) {
+    background-color: var(--text-accent);
+    color: black;
+  }
+
+  &:active:not(.btnLoading):not(:disabled) {
+    background-color: var(--button-primary-bg-active);
+  }
+
+  &:disabled {
+    background-color: var(--button-primary-bg-disabled);
+    cursor: default;
+  }
+}
+
+.content {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+
+.textLoading {
+  opacity: 0.5;
+}
+
+.btnLoading {
+  pointer-events: none;
+}

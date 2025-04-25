@@ -1,0 +1,79 @@
+.card {
+  display: grid;
+  margin: 0;
+  width: 100%;
+  max-width: 348px;
+  max-height: 622px;
+  background-color: var(--card-bg);
+  gap: $spacing-xl;
+  transition:
+          background-color 0.5s ease-in-out,
+          color 0.5s ease-in-out,
+          box-shadow 0.5s ease-in-out;
+
+
+  .cardHeader {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 360px;
+    overflow: hidden;
+
+    .blurBackground {
+      position: absolute;
+      background-color: gray;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: blur(15px);
+      transform: scale(1.2);
+    }
+
+  }
+  .cardBody {
+    display: grid;
+    gap: 8px;
+    padding-right: $spacing-xs;
+    padding-left: $spacing-xs;
+    padding-bottom: $spacing-xs;
+    height: 130px;
+  }
+
+  .genres{
+    width: 70%;
+    height: 15px;
+  }
+
+  .favorite{
+    position: absolute;
+    margin-left: 295px;
+    margin-top: -5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    @media (max-width: 768px) {
+      margin-left: 260px;
+    }
+    @media (max-width: 360px) {
+      margin-left: 240px;
+    }
+
+    @media (max-width: 320px) {
+      margin-left: 200px;
+    }
+
+  }
+
+  .title{
+    width: 50%;
+    height: 30px;
+  }
+
+  .subtitle{
+    width: 100%;
+    height: 50px;
+  }
+
+}
