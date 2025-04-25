@@ -15,6 +15,8 @@ import FavoriteButton from "components/FavoriteButton";
 import CheckBox from "components/CheckBox"
 import CardSkeleton from "components/Card/CardSkeleton";
 import ScrollToTopButton from "components/ScrollToTop";
+import CrossIcon from "components/icons/CrossIcon";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
@@ -67,6 +69,26 @@ const HomePage = observer(() => {
                 value={localSearchValue}
                 onChange={setLocalSearchValue}
                 placeholder={"Поиск по названию группы.."}
+                afterSlot={             // вот это костыыыыыль... извините
+                    <AnimatePresence mode="wait" initial={false}>
+                        {localSearchValue.length > 0 && (
+                            <motion.div
+                                key="cross-icon"
+                                initial={{ opacity: 0, rotate: 0 }}
+                                animate={{ opacity: 1, rotate: -90 }}
+                                exit={{ opacity: 0, rotate: 0 }}
+                                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                style={{ transformOrigin: 'center', display: 'inline-flex' }}
+                            >
+                                <CrossIcon
+                                    color="primary"
+                                    onClick={() => setLocalSearchValue('')}
+                                    className={styles.crossIcon}
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                }
             />
             <div className={styles.dropdownAndCheckboxContainer}>
                 <MultiDropdown

@@ -23,6 +23,7 @@ class AuthStore {
         this.error = '';
         try {
             this.user = await registerUser(email, password, login);
+            await userStore.fetchOwnProfile(this.user.uid)
         } catch (error) {
             this.error = error.message;
         } finally {

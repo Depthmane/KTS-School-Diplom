@@ -13,10 +13,7 @@ export const getBands = async (
         let q = query(bandsCollection, limit(10));
 
         if (search) {
-            q = query(
-                q,
-                where('search_keywords', 'array-contains', search.toLowerCase())
-            );
+            q = query(q, where('search_name', '>=', search), where('search_name', '<=', search + '\uf8ff'));
         }
 
         if (categories.length > 0) {

@@ -18,6 +18,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ bandId }) => {
 
     const handleClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
+        e.preventDefault()
 
         if (!user) {
             setIsModalOpen(true);

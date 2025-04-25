@@ -3,6 +3,7 @@
   margin: auto;
   scroll-behavior: smooth;
   padding: 0 $spacing-m;
+  overflow-x: hidden;
 
   @media (max-width: 600px) {
     padding: 0 $spacing-s;
@@ -31,7 +32,9 @@
 
 @media (max-width: 1024px) {
   .bandList {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 350px);
+    justify-content: space-around;
+
   }
 }
 
@@ -73,4 +76,8 @@
   gap: $spacing-xl;
   align-items: center;
   justify-content: center;
+}
+
+.crossIcon {
+  cursor: pointer;
 }

@@ -6,20 +6,30 @@ import {
     User,
 } from "firebase/auth";
 import {auth, db} from "firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 
 export const registerUser = async (email: string, password: string, login: string) => {
     const loginRef = doc(db, "users_logins", login);
 
     try {
-        await setDoc(loginRef, { reserved: true }, { merge: false });
+        // Проверка: не занят ли логин
+        const existingLogin = await getDoc(loginRef);
+        if (existingLogin.exists()) {
+            throw new Error("Этот логин уже занят =(");
+        }
 
+        // Бронируем логин до регистрации
+        await setDoc(loginRef, { reserved: true });
+
+        // Создаём пользователя
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
+        // Привязываем логин к uid
         await setDoc(loginRef, { uid: user.uid }, { merge: true });
 
+        // Создаём профиль пользователя
         await setDoc(doc(db, "users", user.uid), {
             login: login,
             email: user.email,

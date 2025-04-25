@@ -1,4 +1,4 @@
-import styles from "./BandDetails.module.scss";
+import styles from "./BandDetailsSkeleton.module.scss";
 import Skeleton from "components/Skeleton/Skeleton";
 import CardSkeleton from "components/Card/CardSkeleton";
 
@@ -8,7 +8,7 @@ const BandDetailsSkeleton = () => {
             <div className={styles.bandBio}>
                 <div className={styles.bandInfo}>
                     <div className={styles.bandHeader}>
-                        <Skeleton width={300} height={40} /> {/* название группы */}
+                        <Skeleton width={250} height={40} /> {/* название группы */}
                         <Skeleton width={32} height={32} borderRadius="50%" /> {/* звездочка */}
                     </div>
 
@@ -18,20 +18,26 @@ const BandDetailsSkeleton = () => {
                     <Skeleton width={180} height={20} /> {/* год распада  */}
                     <Skeleton width={300} height={20} /> {/* жанры */}
                     <Skeleton width={250} height={20} /> {/* ссылка на сайт */}
-                    <Skeleton width={640} height={50} /> {/* описание короткое */}
-                    <Skeleton width={640} height={200} /> {/* описание длинное */}
+                    <Skeleton width={450} height={50} /> {/* описание короткое */}
+                    <Skeleton width={450} height={200} /> {/* описание длинное */}
                 </div>
 
                 <div className={styles.bandImageAndLinks}>
-                    <Skeleton
-                        width={500}
-                        height={400}
-                        className={styles.bandImage
-                    }  /> {/* Картинка группы */}
+                    <div className={styles.bandSwiperWrapper}>
+                        <Skeleton
+                            width="100%"
+                            height="100%"
+                            className={`${styles.bandImageBlur}`}
+                        /> {/* Картинка группы - скелет */}
+                        <div className={styles.bandSwiper}>
+                            <Skeleton width="100%" height="100%" /> {/* Картинка скелет в swiper */}
+                        </div>
+                    </div>
+
                     <div className={styles.bandLinks} style={{ display: "flex", gap: "16px" }}>
-                        <Skeleton width={40} height={40}  borderRadius="50%" /> {/* иконки ссылок */}
-                        <Skeleton width={40} height={40}  borderRadius="50%" />
-                        <Skeleton width={40} height={40}  borderRadius="50%" />
+                        <Skeleton width={40} height={40} borderRadius="50%" /> {/* иконки ссылок */}
+                        <Skeleton width={40} height={40} borderRadius="50%" />
+                        <Skeleton width={40} height={40} borderRadius="50%" />
                     </div>
                 </div>
             </div>

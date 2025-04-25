@@ -69,4 +69,13 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: $spacing-l;
   padding: $spacing-l 0;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 350px);
+    justify-content: space-around;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }
