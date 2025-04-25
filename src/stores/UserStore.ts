@@ -3,6 +3,7 @@ import { getFavoriteBands } from "api/firebaseLoader/favoriteBandsLoader";
 import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 import { UserProfile } from "types/user";
+import notFoundPage from "../App/pages/NotFoundPage";
 
 class UserStore {
     ownProfile: UserProfile | null = null;

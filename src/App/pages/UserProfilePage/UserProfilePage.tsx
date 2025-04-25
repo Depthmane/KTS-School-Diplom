@@ -9,6 +9,7 @@ import FavoriteButton from "components/FavoriteButton";
 import { favoriteBandsStore, authStore, userStore } from "stores/index";
 import Card  from "components/Card";
 import UserProfilePageSkeleton from "./UserProfilePageSkeleton";
+import NotFoundPage from "../NotFoundPage";
 
 const UserProfilePage: React.FC = observer(() => {
     const { login } = useParams();
@@ -37,6 +38,7 @@ const UserProfilePage: React.FC = observer(() => {
     }, [login]);
 
     if (userStore.loading) return <UserProfilePageSkeleton />;
+    if (userStore.error === "Пользователь не найден!") return <NotFoundPage />;
     if (userStore.error) return <div>Error: {userStore.error}</div>;
 
     const profile = (authStore.user?.uid && userStore.ownProfile?.login === login)

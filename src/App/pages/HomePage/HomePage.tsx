@@ -17,6 +17,8 @@ import CardSkeleton from "components/Card/CardSkeleton";
 import ScrollToTopButton from "components/ScrollToTop";
 import CrossIcon from "components/icons/CrossIcon";
 import { motion, AnimatePresence } from 'framer-motion';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = observer(() => {
     const navigate = useNavigate();
@@ -138,6 +140,14 @@ const HomePage = observer(() => {
                     >
                         Да, очистить!
                     </button>
+                    <div className={styles.reloadContainer}>
+                        <Text tag="h5" color="secondary">Не помогло? Перезагрузите страницу вот тут —</Text>
+                        <FontAwesomeIcon
+                            icon={faRotateRight}
+                            className={styles.reloadIcon}
+                            onClick={() => window.location.reload()}
+                        />
+                    </div>
                 </div>
             )}
         </div>

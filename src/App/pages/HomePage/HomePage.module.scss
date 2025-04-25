@@ -18,6 +18,7 @@
   .checkBox{
     gap: $spacing-s;
     margin-bottom: 6px;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
   }
 }
 
@@ -80,4 +81,22 @@
 
 .crossIcon {
   cursor: pointer;
+}
+
+.reloadContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.reloadIcon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  color: var(--text-secondary);
+
+  &:hover {
+    transform: rotate(90deg);
+    color: var(--text-primary);
+  }
 }
