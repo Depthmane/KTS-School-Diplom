@@ -37,7 +37,10 @@ const UserProfilePage: React.FC = observer(() => {
         };
     }, [login]);
 
-    if (userStore.loading) return <UserProfilePageSkeleton />;
+    if (userStore.loading || favoriteBandsStore.loading || favoriteBandsStore.bandsLoading) {
+        return <UserProfilePageSkeleton />;
+    }
+
     if (userStore.error === "Пользователь не найден!") return <NotFoundPage />;
     if (userStore.error) return <div>Error: {userStore.error}</div>;
 
@@ -55,7 +58,9 @@ const UserProfilePage: React.FC = observer(() => {
         )
     );
 
-    if (!profile) return <div>Нет данных для данного профиля</div>;
+    if (!profile) {
+        return <div/>;
+    }
 
     return (
         <div className={clsx(styles.profilePage)}>

@@ -9,27 +9,25 @@ import {auth, db} from "firebaseConfig";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
 
+
 export const registerUser = async (email: string, password: string, login: string) => {
     const loginRef = doc(db, "users_logins", login);
 
     try {
-        // Проверка: не занят ли логин
         const existingLogin = await getDoc(loginRef);
         if (existingLogin.exists()) {
-            throw new Error("Этот логин уже занят =(");
+            throw { code: "auth/login-already-in-use", message: "Этот логин уже занят." };
         }
 
-        // Бронируем логин до регистрации
-        await setDoc(loginRef, { reserved: true });
-
-        // Создаём пользователя
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Привязываем логин к uid
+        await setDoc(loginRef, { reserved: true });
+
+        // Привязываем uid к логину
         await setDoc(loginRef, { uid: user.uid }, { merge: true });
 
-        // Создаём профиль пользователя
+        // Создаем профиль пользователя
         await setDoc(doc(db, "users", user.uid), {
             login: login,
             email: user.email,
@@ -38,11 +36,11 @@ export const registerUser = async (email: string, password: string, login: strin
 
         return user;
     } catch (error: any) {
-        if (error.code === "already-exists" || error.message.includes("ALREADY_EXISTS")) {
-            throw new Error("Этот логин уже занят =(");
-        }
-
-        throw new Error(error.message);
+        const errorMessage = {
+            code: error.code || "auth/unknown-error",
+            message: error.message || "Ошибка регистрации"
+        };
+        throw errorMessage;
     }
 };
 
@@ -50,8 +48,11 @@ export const loginUser = async (email: string, password: string) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         return userCredential.user;
-    } catch (error) {
-        throw new Error(error.message)
+    } catch (error: any) {
+        throw {
+            code: error.code || null,
+            message: error.message || "Ошибка входа"
+        };
     }
 };
 

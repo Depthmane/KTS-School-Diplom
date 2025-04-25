@@ -5,18 +5,19 @@ import {
     removeFavoriteBand,
     getBandsByIds
 } from "api/firebaseLoader/favoriteBandsLoader";
-import {Band} from "types/band";
-import {collection, getDocs} from "firebase/firestore";
-import {db} from "firebaseConfig";
-import {normalizeBandData} from "../utils/normilizeData";
+import { Band } from "types/band";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "firebaseConfig";
+import { normalizeBandData } from "../utils/normilizeData";
 
 class FavoriteBandsStore {
     bands: string[] = [];
-    bandsData: Band[] = []
+    bandsData: Band[] = [];
     viewedUserBands: Band[] = [];
     loading: boolean = false;
     error: string = '';
     favoriteBandIds: Set<string> = new Set();
+    bandsLoading: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -34,6 +35,7 @@ class FavoriteBandsStore {
     async fetchForUser(userId: string, isCurrentUser = false) {
         this.loading = true;
         this.error = '';
+        this.bandsLoading = true;
         try {
             const bands = await getFavoriteBands(userId);
             const bandsData = await getBandsByIds(bands);
@@ -54,9 +56,11 @@ class FavoriteBandsStore {
         } finally {
             runInAction(() => {
                 this.loading = false;
+                this.bandsLoading = false;
             });
         }
     }
+
     async add(userId: string, bandId: string) {
         try {
             await addFavoriteBand(userId, bandId);
@@ -77,7 +81,6 @@ class FavoriteBandsStore {
 
             runInAction(() => {
                 this.bands = this.bands.filter(id => id !== bandId);
-
                 this.bandsData = this.bandsData.filter(band => band.id !== bandId);
             });
         } catch (error) {

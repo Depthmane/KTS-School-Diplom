@@ -104,7 +104,11 @@ const AuthModal: React.FC<ModalProps> = observer(({ isOpen, onClose }) => {
                                    onChange={e => setPassword(e.target.value)}
                                    required
                             />
-                            {authStore.error && <p className={styles.error}>{authStore.error}</p>}
+                            {authStore.error && (
+                                <p className={styles.error}>
+                                    {authStore.error}
+                                </p>
+                            )}
                             <AuthButton type="submit"
                                         disabled={authStore.loading}
                                         loading={authStore.loading}>

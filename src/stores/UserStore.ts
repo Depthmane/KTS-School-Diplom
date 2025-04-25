@@ -3,13 +3,13 @@ import { getFavoriteBands } from "api/firebaseLoader/favoriteBandsLoader";
 import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 import { UserProfile } from "types/user";
-import notFoundPage from "../App/pages/NotFoundPage";
 
 class UserStore {
     ownProfile: UserProfile | null = null;
     viewedProfile: UserProfile | null = null;
     loading = false;
     error = "";
+    errorLoadingProfile = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -18,6 +18,7 @@ class UserStore {
     async fetchOwnProfile(uid: string) {
         this.loading = true;
         this.error = "";
+        this.errorLoadingProfile = false;
         try {
             const userDoc = await getDoc(doc(db, "users", uid));
             const data = userDoc.data();
@@ -34,6 +35,7 @@ class UserStore {
             };
         } catch (error) {
             this.error = error instanceof Error ? error.message : String(error);
+            this.errorLoadingProfile = true;
             console.error("Ошибка при загрузке вашего пользователя:", error);
         } finally {
             this.loading = false;
@@ -43,6 +45,7 @@ class UserStore {
     async fetchUserProfileByLogin(login: string) {
         this.loading = true;
         this.error = "";
+        this.errorLoadingProfile = false;
         try {
             const q = query(collection(db, "users"), where("login", "==", login));
             const querySnapshot = await getDocs(q);
@@ -63,6 +66,7 @@ class UserStore {
             return this.viewedProfile;
         } catch (error) {
             this.error = error instanceof Error ? error.message : String(error);
+            this.errorLoadingProfile = true;
             console.error("Ошибка при загрузке профиля пользователя:", error);
             return null;
         } finally {
